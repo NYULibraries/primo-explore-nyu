@@ -1,7 +1,7 @@
 # The Primo New UI Customization Workflow Development Environment
 
 
-##css documentation
+## css documentation
 
 - Primo uses Angular Directives massively in this project
 
@@ -92,7 +92,7 @@ prm-topbar.md-primoExplore-theme input {....}
 
 The colors are mapped to different elements in the user interface:
 
-![Color Changes image](../../help_files/colors3.png "Color Changes")
+![Color Changes image](https://github.com/ExLibrisGroup/primo-explore-package/help_files/colors3.png "Color Changes")
 
 -  Open a new command line window
 
@@ -119,9 +119,9 @@ The colors are mapped to different elements in the user interface:
 
 You will get:
 
- ![Color Changes image](../../help_files/colors1.png "Color Changes")
+ ![Color Changes image](https://github.com/ExLibrisGroup/primo-explore-package/tree/master/colors1.png "Color Changes")
 
- ![Color Changes image](../../help_files/colors2.png "Color Changes")
+ ![Color Changes image](https://github.com/ExLibrisGroup/primo-explore-package/tree/master/colors2.png "Color Changes")
 
 # css Recipe 2 - Moving the Facets to the Left
 
@@ -155,11 +155,4 @@ prm-search > md-content.md-primoExplore-theme .main, prm-search > md-content.md-
 -  The result:
 
 
- ![Facets image](../../help_files/facets.png "Factes Changes")
-
-
-
-
-
-
-
+ ![Facets image](https://github.com/ExLibrisGroup/primo-explore-package/tree/master/help_files/facets.png "Factes Changes")

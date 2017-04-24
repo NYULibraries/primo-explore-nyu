@@ -1,7 +1,7 @@
 # The Primo New UI Customization Workflow Development Environment
 
 
-##html documentation
+## html documentation
 
  - In this folder you will find static html files in their OTB state
  - The files are separated into directories (starting from the November 2016 Release)
@@ -14,13 +14,8 @@
 
    -    This is how your directory structure should look like:
 
- ![August 2016 Release structure image](../../help_files/htmlStructureAug.png "August 2016 Release structure")
+ ![August 2016 Release structure image](https://github.com/ExLibrisGroup/primo-explore-package/tree/master/help_files/htmlStructureAug.png "August 2016 Release structure")
 
 
  - Note that you can use Angular Material directives in your html:
  > https://material.angularjs.org/latest/
-
-
-
-
-

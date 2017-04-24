@@ -1,7 +1,7 @@
 # The Primo New UI Customization Workflow Development Environment
 
 
-##JavaScript documentation
+## JavaScript documentation
 
 - When you want to add functionality to your Primo installation you will be using Angular Directives.
 
@@ -71,7 +71,7 @@ To solve this you can replace the '`' with regular apostrophe ("'") and use a si
 , just add the content of the file as a bookmark to your browser) scriplet to identify the `prmSearchBarAfter` directive which you will plugin to
 
 
-![Show Directives image](../../help_files/showDirectives.png "Show Directives Changes")
+![Show Directives image](https://github.com/ExLibrisGroup/primo-explore-package/tree/master/help_files/showDirectives.png "Show Directives Changes")
 
 -  Edit the primo-explore/custom/js/custom.js file and add a component declaration for the `prmSearchBarAfter` directive
 
@@ -92,7 +92,7 @@ To solve this you can replace the '`' with regular apostrophe ("'") and use a si
 
 -  Save and refresh your browser
 
-![Hello World image](../../help_files/js1.png "Hello World  Changes")
+![Hello World image](https://github.com/ExLibrisGroup/primo-explore-package/tree/master/help_files/js1.png "Hello World  Changes")
 
 # JavaScript Recipe 2 - a Dynamic Directive
 -  Use the `showDirectives` scriplet to identify the `prmSearchBarAfter` directive which you will plugin to
@@ -102,7 +102,7 @@ To solve this you can replace the '`' with regular apostrophe ("'") and use a si
 ```
 -  Focus on the `prmSearchBarAfter` directive
 
-![Focus image](../../help_files/js2.png "Focus")
+![Focus image](https://github.com/ExLibrisGroup/primo-explore-package/tree/master/help_files/js2.png "Focus")
 
 -  Run the following command in your browsers' console tab:
 ```
@@ -111,7 +111,7 @@ To solve this you can replace the '`' with regular apostrophe ("'") and use a si
 
 - Review the properties of the directive to decide which data elements can be used, avoid methods/functions as they wont be backwards compatible
 
-![properties image](../../help_files/js3.png "properties")
+![properties image](https://github.com/ExLibrisGroup/primo-explore-package/tree/master/help_files/js3.png "properties")
 
 
 - Edit  primo-explore/custom/js/custom.js file and add a component declaration for the `prmSearchBarAfter` directive
@@ -169,12 +169,12 @@ template: `<div layout="row" layout-align="center center">
   ```
 -  Save and refresh your browser
 
-![dynamic example image](../../help_files/js4.png "dynamic example")
+![dynamic example image](https://github.com/ExLibrisGroup/primo-explore-package/tree/master/help_files/js4.png "dynamic example")
 
 # JavaScript Recipe 3 - Adding the Altmetrics Widget
 -  Use the `showDirectives` scriplet to identify the `prmFullViewAfter` directive which you will plugin to
 
-![Altmetrics example image](../../help_files/js5.png "Altmetrics example")
+![Altmetrics example image](https://github.com/ExLibrisGroup/primo-explore-package/tree/master/help_files/js5.png "Altmetrics example")
 
 -  Run the following command in your browsers' console tab:
 `angular.reloadWithDebugInfo()`
@@ -184,7 +184,7 @@ template: `<div layout="row" layout-align="center center">
 
 - Review the properties of the directive to decide which data elements can be used, avoid methods/functions as they wont be backwards compatible
 
-![Altmetrics example 2 image](../../help_files/js6.png "Altmetrics 2 example")
+![Altmetrics example 2 image](https://github.com/ExLibrisGroup/primo-explore-package/tree/master/help_files/js6.png "Altmetrics 2 example")
 
 - Edit  primo-explore/custom/js/custom.js file and add a component declaration for the `prmFullViewAfter` directive
 
@@ -254,4 +254,4 @@ app.component('prmFullViewAfter', {
 
 -  Save and refresh your browser
 
-![Altmetrics example 3 image](../../help_files/js7.png "Altmetrics 3 example")
+![Altmetrics example 3 image](https://github.com/ExLibrisGroup/primo-explore-package/tree/master/help_files/js7.png "Altmetrics 3 example")
