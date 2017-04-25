@@ -1,0 +1,139 @@
+
+/* Search button */
+.md-button.button-confirm._md-focused:not([disabled]),
+.md-button.button-confirm.hovered:not([disabled]),
+.md-button.button-confirm.md-focused:not([disabled]),
+.md-button.button-confirm:focus:not([disabled]),
+.md-button.button-confirm:hover:not([disabled]) {
+  background-color: #22272d;
+  border: medium none;
+  border-radius: 0;
+  color: #fff;
+  margin: 0;
+  min-width: 0;
+  padding: 0 1.2em;
+  transition: background-color 0.3s ease 0s;
+  color: #000;
+  background-color: #106470;
+}
+/*the text coler in the search pox*/
+input::-webkit-input-placeholder {
+    color: #404040 !important;
+}
+
+input:-moz-placeholder { /* Firefox 18- */
+    color: #404040 !important;
+}
+
+input::-moz-placeholder {  /* Firefox 19+ */
+    color: #404040 !important;
+}
+
+input:-ms-input-placeholder {
+    color: #404040 !important;
+}
+
+.md-button.button-confirm {
+	background-color: #000;
+}
+
+prm-request-services,prm-service-button, /*prm-location-items h3,prm-location-items md-list, prm-location-items div.layout-column.layout-row,*/prm-location-items .bar.alert-bar, prm-opac md-divider:first-of-type{
+    display:none!important;
+}
+
+/*prm-location-items .margin-bottom-medium, md-tab-content .tab-content-header{
+    cursor: pointer;
+}*/
+
+
+.custom-request-panel{
+    opacity: 1;
+    background-color: #f3f3f3;
+}
+._md-panel-backdrop{
+    background-color: #4a667c;
+    opacity: 0.48;
+}
+.md-panel-outer-wrapper{
+    height:150%;
+}
+
+/* disable non-working reference management tools on brief results page */
+/* disable non-working reference management tools on details page */
+prm-action-list md-tab-item:nth-child(3),
+prm-action-list md-tab-item:nth-child(4) {
+    display: none;
+}
+
+/* rsi widget */
+.action-list-addon-text {
+
+
+    font-size: .75em;
+    font-weight: 400;
+
+    letter-spacing: 0.05em;
+    color: rgba(0, 0, 0, 0.57);
+
+    text-align: center;
+    white-space: nowrap;
+
+    text-transform: uppercase;
+    padding-top:2px;
+
+    /*overflow: hidden;*/
+
+    text-overflow: ellipsis;
+
+}
+
+
+
+md-tabs.icon-tabs {
+
+  display:inline-block;
+  width:70%;
+
+  }
+
+
+prm-full-view .action-list-addon, prm-full-view .action-list-addon, prm-search-result-list .action-list-addon {
+  display:inline-block;
+  vertical-align:top;
+  min-width: 4em;
+  padding: .5em 0;
+  line-height: 24px;
+  margin-top: 6px;
+
+}
+
+
+/* Add the RIS export for Zotero */
+.action-list-addon-text {
+    font-size: .75em;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    color: rgba(0, 0, 0, 0.57);
+    text-align: center;
+    white-space: nowrap;
+    text-transform: uppercase;
+    padding-top:2px;
+    /*overflow: hidden;*/
+    text-overflow: ellipsis;
+}
+
+
+md-tabs.icon-tabs {
+  display:inline-block;
+  width:70%;
+  }
+
+
+prm-search-result-list .action-list-addon {
+  display:inline-block;
+  vertical-align:top;
+  min-width: 4em;
+  padding: .5em 0;
+  line-height: 24px;
+  margin-top: 6px;
+}

@@ -1,35 +1,62 @@
 
 
-/*Uncomment the follwoing lines to move facets to the left*/
-
-prm-search > md-content.md-primoExplore-theme .main {
-    display: -webkit-flex; !* Safari *!
-    -webkit-flex-flow: row-reverse wrap; !* Safari 6.1+ *!
-    display: flex;
-    flex-flow: row-reverse wrap;
-
+/* Facets on the left */
+prm-search > md-content.md-primoExplore-theme .main,
+prm-search > md-content.md-primoExplore-theme.main.padded-container {
+  display: -webkit-flex;
+  -webkit-flex-flow: row-reverse wrap;
+  display: flex;
+  flex-flow: row-reverse wrap;
 }
 .screen-gt-sm .sidebar{
-    webkit-flex: 0 0 15%;
-    flex: 0 0 15%;
+  webkit-flex: 0 0 15%;
+  flex: 0 0 15%;
 }
 
+/* Top nav */
+prm-topbar {
+  height: 108px;
+}
 
-prm-topbar .top-nav-bar {
+.prm-primary-bg.prm-hue1, prm-search-bar.prm-hue1, prm-spinner.prm-hue1.overlay-cover.light-on-dark:after, prm-topbar .top-nav-bar {
   background-color: #57068C;
 }
 
-prm-search-bar {
-  /*background-image: url(../img/banner-bg.png);*/
-  background-image: url("../img/banner-bg.png");
-  background-color: #f5f7fa;
-  background-position: center center;
+prm-topbar .product-logo {
+  padding: 0 1em;
+  line-height: 122px;
 }
 
+prm-logo {
+  height: 120px;
+}
+
+/* Search bar */
 prm-search-bar .search-switch-buttons .md-button.switch-to-advanced {
   color: black;
 }
 
 prm-change-lang {
   display: none;
+}
+
+prm-topbar .md-button:hover {
+  background-color: #42056a;
+}
+
+md-fab-toolbar md-toolbar {
+    background-color: #42056a !important;
+}
+
+prm-search-bar {
+  background-image: url("../img/banner-bg.png");
+  background-color: #f5f7fa;
+  background-position: center center;
+  font-size: inherit;
+  /*padding: 1em;*/
+}
+
+/* Color of the loading spinner */
+prm-spinner.half-transparent .diamond{
+    background-color: #57068C;
 }
