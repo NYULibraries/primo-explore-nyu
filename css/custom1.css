@@ -1,7 +1,6 @@
 
 
 /* Facets on the left */
-prm-search > md-content.md-primoExplore-theme .main,
 prm-search > md-content.md-primoExplore-theme.main.padded-container {
   display: -webkit-flex;
   -webkit-flex-flow: row-reverse wrap;
@@ -59,4 +58,43 @@ prm-search-bar {
 /* Color of the loading spinner */
 prm-spinner.half-transparent .diamond{
     background-color: #57068C;
+}
+
+/* Search button */
+.md-button.button-confirm._md-focused:not([disabled]),
+.md-button.button-confirm.hovered:not([disabled]),
+.md-button.button-confirm.md-focused:not([disabled]),
+.md-button.button-confirm:focus:not([disabled]),
+.md-button.button-confirm:hover:not([disabled]) {
+  border: medium none;
+  border-radius: 0;
+  margin: 0;
+  min-width: 0;
+  padding: 0 1.2em;
+  transition: background-color 0.3s ease 0s;
+  color: black !important;
+  background-color: white;
+}
+
+/*the text coler in the search pox*/
+input::-webkit-input-placeholder {
+    color: #22272d !important;
+}
+
+input:-moz-placeholder { /* Firefox 18- */
+    color: #22272d !important;
+}
+
+input::-moz-placeholder {  /* Firefox 19+ */
+    color: #22272d !important;
+}
+
+input:-ms-input-placeholder {
+    color: #22272d !important;
+}
+
+.md-button.button-confirm {
+	background-color: #22272d;
+  color: white !important;
+  border-radius: 0 !important;
 }
