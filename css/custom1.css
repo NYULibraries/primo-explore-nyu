@@ -18,3 +18,18 @@ prm-search > md-content.md-primoExplore-theme .main {
 prm-topbar .top-nav-bar {
   background-color: #57068C;
 }
+
+prm-search-bar {
+  /*background-image: url(../img/banner-bg.png);*/
+  background-image: url("../img/banner-bg.png");
+  background-color: #f5f7fa;
+  background-position: center center;
+}
+
+prm-search-bar .search-switch-buttons .md-button.switch-to-advanced {
+  color: black;
+}
+
+prm-change-lang {
+  display: none;
+}
