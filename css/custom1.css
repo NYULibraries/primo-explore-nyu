@@ -2,7 +2,6 @@
 
 /*Uncomment the follwoing lines to move facets to the left*/
 
-/*
 prm-search > md-content.md-primoExplore-theme .main {
     display: -webkit-flex; !* Safari *!
     -webkit-flex-flow: row-reverse wrap; !* Safari 6.1+ *!
@@ -15,6 +14,7 @@ prm-search > md-content.md-primoExplore-theme .main {
     flex: 0 0 15%;
 }
 
-*/
 
-
+prm-topbar .top-nav-bar {
+  background-color: #57068C;
+}
