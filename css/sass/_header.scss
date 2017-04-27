@@ -1,6 +1,6 @@
 /* Top nav */
 prm-topbar {
-  height: 108px;
+  // height: 108px;
 }
 
 .prm-primary-bg.prm-hue1, prm-search-bar.prm-hue1, prm-spinner.prm-hue1.overlay-cover.light-on-dark:after, prm-topbar .top-nav-bar {
@@ -13,5 +13,16 @@ prm-topbar .product-logo {
 }
 
 prm-logo {
-  height: 120px;
+  // height: 120px;
 }
+
+/* Call the clickable logo */
+// prm-logo div.product-logo {
+//     display:none;
+// }
+// prm-logo div.product-logo-local {
+//   display: flex;
+// }
+// prm-logo .logo-image, prm-logo img {
+//     max-height: 35px;
+// }
