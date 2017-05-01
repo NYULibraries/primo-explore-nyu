@@ -12,20 +12,11 @@ prm-change-lang {
   display: none;
 }
 
-/*prm-topbar .md-button:hover {
-  background-color: $dark-purple;
-}
-
-md-fab-toolbar md-toolbar {
-    background-color: $dark-purple !important;
-}*/
-
 prm-search-bar {
   background-image: url("../img/banner-bg.png");
   background-color: $background_light_gray;
   background-position: center center;
   font-size: inherit;
-  /*padding: 1em;*/
 }
 
 /* Color of the loading spinner */
@@ -43,7 +34,6 @@ prm-spinner.half-transparent .diamond{
   border-radius: 0;
   margin: 0;
   min-width: 0;
-  padding: 0 1.2em;
   transition: background-color 0.3s ease 0s;
   color: black !important;
   background-color: white;
