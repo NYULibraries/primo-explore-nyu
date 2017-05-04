@@ -1,25 +1,20 @@
 import { viewName } from './viewName';
 
-// Clickable logo.
-class PrmLogoAfterController {
-  constructor(navigation) {
-    this.navigation = navigation;
-  }
-
+// Add Clickable Logo
+class prmLogoAfterController {
+  // Get the image url
   getIconLink() {
     return this.parentCtrl.iconLink;
   };
 }
 
-PrmLogoAfterController.$inject = ['navigation'];
-
-export let PrmLogoAfterConfig = {
+export let prmLogoAfterConfig = {
   name: 'prmLogoAfter',
   config: {
     bindings: {
       parentCtrl: '<'
     },
-    controller: PrmLogoAfterController,
+    controller: prmLogoAfterController,
     templateUrl: 'custom/' + viewName + '/html/prmLogoAfter.html'
   }
 };

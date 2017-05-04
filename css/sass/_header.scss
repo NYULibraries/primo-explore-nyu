@@ -16,13 +16,22 @@ prm-logo {
   // height: 120px;
 }
 
-/* Call the clickable logo */
-// prm-logo div.product-logo {
-//     display:none;
-// }
-// prm-logo div.product-logo-local {
-//   display: flex;
-// }
-// prm-logo .logo-image, prm-logo img {
-//     max-height: 35px;
-// }
+/* Create clickable logo */
+prm-logo div.product-logo {
+  display:none;
+}
+prm-logo div.product-logo-local {
+  display: flex;
+}
+prm-logo .logo-image, prm-logo img {
+  max-height: 35px;
+}
+prm-logo-after div.product-logo-local a {
+  max-width: none;
+  padding: 0;
+  line-height: 1em;
+  &:hover, &:active {
+    box-shadow: none !important;
+    background-color: inherit !important;
+  }
+}
