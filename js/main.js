@@ -1,7 +1,8 @@
 import { viewName } from './viewName';
 import { prmLogoAfterConfig } from './prmLogoAfter';
-// import { PrmTopbarAfterConfig } from './prmTopbarAfter';
+import { prmBriefResultAfterConfig } from './prmBriefResultAfter';
 
 let app = angular.module('viewCustom', ['angularLoad']);
 
-app.component(prmLogoAfterConfig.name, prmLogoAfterConfig.config);
+app.component(prmLogoAfterConfig.name, prmLogoAfterConfig.config)
+   .component(prmBriefResultAfterConfig.name, prmBriefResultAfterConfig.config);

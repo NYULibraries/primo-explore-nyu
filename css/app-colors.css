@@ -21,10 +21,10 @@
       color: #24003c;
       background-color: rgba(66, 5, 106, 0.1); }
   .md-button.button-confirm {
-    color: #027bc2; }
+    color: #799a05; }
     .md-button.button-confirm:hover:not([disabled]), .md-button.button-confirm:focus:not([disabled]), .md-button.button-confirm.hovered:not([disabled]), .md-button.button-confirm.md-focused:not([disabled]), .md-button.button-confirm._md-focused:not([disabled]) {
-      color: #005b91;
-      background-color: rgba(2, 123, 194, 0.1); }
+      color: #546c00;
+      background-color: rgba(121, 154, 5, 0.1); }
     .light-on-dark-dialog .md-button.button-confirm {
       color: #73E9FF; }
       .light-on-dark-dialog .md-button.button-confirm:hover:not([disabled]), .light-on-dark-dialog .md-button.button-confirm:focus:not([disabled]), .light-on-dark-dialog .md-button.button-confirm.hovered:not([disabled]), .light-on-dark-dialog .md-button.button-confirm.md-focused:not([disabled]), .light-on-dark-dialog .md-button.button-confirm._md-focused:not([disabled]) {
@@ -487,12 +487,12 @@ md-toolbar.default-toolbar:not(.md-menu-toolbar) {
 .not_restricted > span:first-of-type,
 .fulltext > span:first-of-type,
 .fulltext_linktorsrc > span:first-of-type {
-  color: #027bc2; }
+  color: #799a05; }
 
 .prm-negative, .status-unavailable, [class*="unavailable"] > span:first-of-type,
 [class*="no_"] > span:first-of-type,
 .restricted > span:first-of-type,
 .duedate > span:first-of-type {
-  color: white; }
+  color: #0aa3fc; }
 
 /* primary color hook end*/
