@@ -5,4 +5,9 @@ import { prmBriefResultContainerAfterConfig } from './prmBriefResultContainerAft
 let app = angular.module('viewCustom', ['angularLoad']);
 
 app.component(prmLogoAfterConfig.name, prmLogoAfterConfig.config)
-   .component(prmBriefResultContainerAfterConfig.name, prmBriefResultContainerAfterConfig.config);
+   .component(prmBriefResultContainerAfterConfig.name, prmBriefResultContainerAfterConfig.config)
+  //  .controller('prmBriefResults', function ($scope, $controller) {
+  //   'use strict';
+  //   $controller('prmBriefResults', {$scope: $scope});
+  //   $scope.handleDetails=function(){}
+  // });

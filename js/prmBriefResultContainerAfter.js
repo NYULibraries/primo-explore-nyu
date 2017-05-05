@@ -2,8 +2,7 @@ import { viewName } from './viewName';
 
 class prmBriefResultContainerAfterController {
   getGetitLink() {
-    let openUrlIndex = this.parentCtrl.item.delivery.link.findIndex( (element,index,array) => element.displayLabel === 'openurl');
-    return this.parentCtrl.item.delivery.link[openUrlIndex].linkURL;
+    return this.parentCtrl.item.link['openurl'];
   };
 }
 
