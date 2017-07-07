@@ -1,0 +1,53 @@
+$frame_width: 300px;
+$frame_height: 280px;
+
+.chat-tab, .chat-frame-wrap{
+  position: fixed;
+  bottom: 0;
+  right: 10px;
+  border: 0 none;
+  z-index: 200;
+}
+
+.chat-tab{
+  color: $text_lavender;
+  padding: 10px 10px 8px;
+  font-size: $font_size_base;
+  border-radius: $radius $radius 0 0;
+  background: $purple;
+}
+
+.chat-close{
+  border: 0 none;
+  background: $background_light_gray;
+  font-size: 16px;
+  border-radius: 50%;
+  position: absolute;
+  right: -5px;
+  top: -15px;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  padding: 0;
+
+  &:hover{
+    color: $text_blue;
+  }
+}
+
+.chat-frame-wrap{
+  width: $frame_width;
+}
+
+.chat-frame{
+  width: $frame_width;
+  height: $frame_height;
+  vertical-align: bottom;
+  border-radius: $radius $radius 0 0;
+}
+
+@media only screen and (max-width: $bp_collapsed_nav) {
+  .chat-tab, .chat-frame-wrap{
+    bottom: 60px;
+  }
+}
