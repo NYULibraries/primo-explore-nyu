@@ -61,3 +61,8 @@ input:-ms-input-placeholder {
   color: white !important;
   border-radius: 0 !important;
 }
+
+// hide check availability button in results
+prm-search-result-list .check-avail-link {
+  display: none;
+}
