@@ -62,6 +62,11 @@ input:-ms-input-placeholder {
   border-radius: 0 !important;
 }
 
+.check-avail-link {
+  color: $getit_green;
+  font-size: 18px;
+}
+
 // hide check availability button in results
 prm-search-result-list .check-avail-link {
   display: none;
