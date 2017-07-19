@@ -66,3 +66,8 @@ input:-ms-input-placeholder {
 prm-search-result-list .check-avail-link {
   display: none;
 }
+
+// hide OOB availability links
+prm-search-result-availability-line .layout-align-start-start.layout-row {
+  display: none;
+}
