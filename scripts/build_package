@@ -1,0 +1,5 @@
+#!/bin/bash
+mkdir NYU-NUI
+rsync -a --exclude NYU-NUI --exclude scripts/ --exclude .git --exclude .gitignore --exclude *.json --exclude *.scss . NYU-NUI/
+zip -r NYU-NUI.zip NYU-NUI
+rm -rf NYU-NUI
