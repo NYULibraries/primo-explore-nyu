@@ -61,24 +61,3 @@ input:-ms-input-placeholder {
   color: white !important;
   border-radius: 0 !important;
 }
-
-.check-avail-link {
-  color: $getit_green;
-  font-size: 18px;
-}
-
-// hide check availability button in results
-prm-search-result-list .check-avail-link {
-  display: none;
-}
-
-// hide OOB availability links
-prm-search-result-availability-line .layout-align-start-start.layout-row {
-  display: none;
-}
-#getit_link1_1 {
-  display: none;
-}
-#services-index button[aria-label="Get It"] {
-  display: none;
-}
