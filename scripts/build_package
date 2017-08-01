@@ -1,5 +1,5 @@
 #!/bin/bash
 mkdir NYU-NUI
-rsync -a --exclude NYU-NUI --exclude scripts/ --exclude .git --exclude .gitignore --exclude *.json --exclude *.scss . NYU-NUI/
+rsync -a --exclude='NYU-NUI' --include='package.json' --include='*.png' --include='*.jpg' --include='*.gif' --include='*.js' --include='*.html' --include='*.css' --include='*/' --exclude='*' . NYU-NUI/
 zip -r NYU-NUI.zip NYU-NUI
 rm -rf NYU-NUI
