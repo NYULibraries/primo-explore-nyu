@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/NYULibraries/primo-explore-nyu/issues"
   },
-  "homepage": "https://github.com/NYULibraries/primo-explore-nyu#readme"
+  "homepage": "https://github.com/NYULibraries/primo-explore-nyu#readme",
+  "devDependencies": {
+    "primo-explore-custom-actions": "^2.0.0"
+  }
 }
