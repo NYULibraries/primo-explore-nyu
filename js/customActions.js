@@ -1,14 +1,14 @@
 export let customActionsConstant = {
   name: 'customActions',
-  definition: [
+  config: [
     {
-      name: "EasyBiB",
+      name: "EasyBIB",
       type: 'template',
       icon: {
           set: 'action',
           name: 'ic_open_in_new_24px'
       },
-      action: "/primo_library/libweb/action/PushToAction.do?doc={recordId}&recId={recordId}&docs={recordId}&pushToType=EasyBiB&fromEshelf=false"
+      action: "/primo_library/libweb/action/PushToAction.do?indx=1&doc={recordId}&recId={recordId}&docs={recordId}&pushToType=EasyBIB&fromEshelf=false"
     },
     {
       name: "RIS",

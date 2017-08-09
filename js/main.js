@@ -5,7 +5,7 @@ import { prmLogoAfterConfig } from './prmLogoAfter';
 import { prmBriefResultContainerAfterConfig } from './prmBriefResultContainerAfter';
 import { chatWidgetConfig } from './chatWidget';
 import { checkAvailLinkConfig } from './checkAvailLink';
-import { customActionsConstant } from './constants/customActionsConstant'
+import { customActionsConstant } from './customActions'
 
 let app = angular.module('viewCustom', ['angularLoad', 'customActions']);
 
@@ -19,4 +19,4 @@ app.component(prmLogoAfterConfig.name, prmLogoAfterConfig.config)
   //   $scope.handleDetails=function(){}
   // });
 
-app.constant(customActionsConstant.name, customActionsConstant.definition)
+app.constant(customActionsConstant.name, customActionsConstant.config)
