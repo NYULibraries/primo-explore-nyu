@@ -1,6 +1,6 @@
 import { viewName } from './viewName';
 
-export let chatWidgetConfig = {
+export let prmExploreMainAfterConfig = {
   name: 'prmExploreMainAfter',
   config: {
     bindings: {

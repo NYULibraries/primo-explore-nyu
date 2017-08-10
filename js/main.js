@@ -3,16 +3,16 @@ import 'primo-explore-custom-actions';
 import { viewName } from './viewName';
 import { prmLogoAfterConfig } from './prmLogoAfter';
 import { prmBriefResultContainerAfterConfig } from './prmBriefResultContainerAfter';
-import { chatWidgetConfig } from './chatWidget';
-import { checkAvailLinkConfig } from './checkAvailLink';
+import { prmExploreMainAfterConfig } from './prmExploreMainAfter';
+import { prmSearchResultAvailabilityLineAfterConfig } from './prmSearchResultAvailabilityLineAfter';
 import { customActionsConstant } from './customActions'
 
 let app = angular.module('viewCustom', ['angularLoad', 'customActions']);
 
 app.component(prmLogoAfterConfig.name, prmLogoAfterConfig.config)
    .component(prmBriefResultContainerAfterConfig.name, prmBriefResultContainerAfterConfig.config)
-   .component(chatWidgetConfig.name, chatWidgetConfig.config)
-   .component(checkAvailLinkConfig.name, checkAvailLinkConfig.config)
+   .component(prmExploreMainAfterConfig.name, prmExploreMainAfterConfig.config)
+   .component(prmSearchResultAvailabilityLineAfterConfig.name, prmSearchResultAvailabilityLineAfterConfig.config)
   //  .controller('prmBriefResults', function ($scope, $controller) {
   //   'use strict';
   //   $controller('prmBriefResults', {$scope: $scope});
