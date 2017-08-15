@@ -1,0 +1,17 @@
+<md-card class="default-card zero-margin _md md-primoExplore-theme">
+  <md-card-title>
+    <md-card-title-text>
+      <span translate="" class="md-headline">No records found</span>
+    </md-card-title-text>
+  </md-card-title>
+  <md-card-content>
+    <p>
+      <span>Your search returned 0 results. Try one of the options below:</span>
+    </p>
+    <ul>
+      <li><a ng-href="https://pds.library.nyu.edu/ezborrow?query={{ $ctrl.parentCtrl.term }}">Request a book from E-ZBorrow (NYU only)</a></li>
+      <li><a ng-href="http://www.worldcat.org/search?qt=worldcat_org_all&q={{ $ctrl.parentCtrl.term }}">Search WorldCat for items in nearby libraries</a></li>
+      <li><a href="http://library.nyu.edu/ask">Ask a Librarian</a></li>
+    </ul>
+  </md-card-content>
+</md-card>
