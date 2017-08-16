@@ -4,9 +4,9 @@
 }
 
 // hide OOB availability links
-prm-search-result-list .check-avail-link,
-prm-search-result-availability-line .layout-align-start-start.layout-row,
-#services-index button[aria-label="Get It"],
-#getit_link1_1 {
+prm-search-result-list .check-avail-link, // search results
+prm-search-result-availability-line .layout-align-start-start.layout-row, // search results
+#services-index button[aria-label="Get It"], // details page: sidebar "GETIT" link
+#getit_link1_1, #getit_link1_0 { // details page: GetIt section
   display: none;
 }
