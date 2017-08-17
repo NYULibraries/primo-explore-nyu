@@ -2,6 +2,24 @@ export let customActionsConstant = {
   name: 'customActions',
   config: [
     {
+      name: "EndNote",
+      type: 'template',
+      icon: {
+          set: 'action',
+          name: 'ic_open_in_new_24px'
+      },
+      action: "/primo_library/libweb/action/PushToAction.do?indx=1&doc={recordId}&recId={recordId}&docs={recordId}&pushToType=EndNote&fromEshelf=false"
+    },
+    {
+      name: "RefWorks",
+      type: 'template',
+      icon: {
+          set: 'action',
+          name: 'ic_open_in_new_24px'
+      },
+      action: "/primo_library/libweb/action/PushToAction.do?indx=1&doc={recordId}&recId={recordId}&docs={recordId}&pushToType=RefWorks&fromEshelf=false"
+    },
+    {
       name: "EasyBIB",
       type: 'template',
       icon: {
