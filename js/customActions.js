@@ -23,8 +23,8 @@ export let customActionsConstant = {
       name: "EasyBIB",
       type: 'template',
       icon: {
-          set: 'file',
-          name: 'ic_file_download_24px'
+          set: 'action',
+          name: 'ic_description_24px'
       },
       action: "/primo_library/libweb/action/PushToAction.do?indx=1&doc={recordId}&recId={recordId}&docs={recordId}&pushToType=EasyBIB&fromEshelf=false"
     },
