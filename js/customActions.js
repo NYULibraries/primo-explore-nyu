@@ -8,7 +8,7 @@ export let customActionsConstant = {
           set: 'action',
           name: 'ic_description_24px'
       },
-      action: "/primo_library/libweb/action/PushToAction.do?indx=1&doc={recordId}&recId={recordId}&docs={recordId}&pushToType=EndNote&fromEshelf=false"
+      action: "/primo_library/libweb/action/PushToAction.do?doc={recordId}&recId={recordId}&docs={recordId}&pushToType=EndNote&fromEshelf=false"
     },
     {
       name: "RefWorks",
@@ -17,7 +17,7 @@ export let customActionsConstant = {
           set: 'action',
           name: 'ic_description_24px'
       },
-      action: "/primo_library/libweb/action/PushToAction.do?indx=1&doc={recordId}&recId={recordId}&docs={recordId}&pushToType=RefWorks&fromEshelf=false"
+      action: "/primo_library/libweb/action/PushToAction.do?doc={recordId}&recId={recordId}&docs={recordId}&pushToType=RefWorks&fromEshelf=false"
     },
     {
       name: "EasyBIB",
@@ -26,7 +26,7 @@ export let customActionsConstant = {
           set: 'action',
           name: 'ic_description_24px'
       },
-      action: "/primo_library/libweb/action/PushToAction.do?indx=1&doc={recordId}&recId={recordId}&docs={recordId}&pushToType=EasyBIB&fromEshelf=false"
+      action: "/primo_library/libweb/action/PushToAction.do?doc={recordId}&recId={recordId}&docs={recordId}&pushToType=EasyBIB&fromEshelf=false"
     },
     {
       name: "RIS",
