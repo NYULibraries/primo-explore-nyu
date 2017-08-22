@@ -1,6 +1,10 @@
 $frame_width: 300px;
 $frame_height: 280px;
 
+#chat_widget_icon svg {
+  fill: $text_lavender;
+}
+
 .chat-tab, .chat-frame-wrap{
   position: fixed;
   bottom: 0;
@@ -15,6 +19,7 @@ $frame_height: 280px;
   font-size: $font_size_base;
   border-radius: $radius $radius 0 0;
   background: $purple;
+  font-weight: bold;
 }
 
 .chat-close{
