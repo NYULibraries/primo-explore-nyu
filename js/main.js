@@ -2,7 +2,6 @@ import 'primo-explore-custom-actions';
 
 import { viewName } from './viewName';
 import { prmLogoAfterConfig } from './prmLogoAfter';
-import { prmBriefResultContainerAfterConfig } from './prmBriefResultContainerAfter';
 import { prmExploreMainAfterConfig } from './prmExploreMainAfter';
 import { prmSearchResultAvailabilityLineAfterConfig } from './prmSearchResultAvailabilityLineAfter';
 import { prmNoSearchResultAfterConfig } from './prmNoSearchResultAfter';
@@ -11,7 +10,6 @@ import { customActionsConstant } from './customActions'
 let app = angular.module('viewCustom', ['angularLoad', 'customActions']);
 
 app.component(prmLogoAfterConfig.name, prmLogoAfterConfig.config)
-   .component(prmBriefResultContainerAfterConfig.name, prmBriefResultContainerAfterConfig.config)
    .component(prmExploreMainAfterConfig.name, prmExploreMainAfterConfig.config)
    .component(prmSearchResultAvailabilityLineAfterConfig.name, prmSearchResultAvailabilityLineAfterConfig.config)
    .component(prmNoSearchResultAfterConfig.name, prmNoSearchResultAfterConfig.config)
