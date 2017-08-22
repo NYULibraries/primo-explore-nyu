@@ -24,6 +24,11 @@ prm-spinner.half-transparent .diamond{
     background-color: $purple;
 }
 
+// Move the pagination widget up so it doesnt overlap the chat
+prm-page-nav-menu {
+  bottom: 50px !important;
+}
+
 /* Search button */
 .md-button.button-confirm._md-focused:not([disabled]),
 .md-button.button-confirm.hovered:not([disabled]),
