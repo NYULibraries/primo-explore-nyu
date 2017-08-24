@@ -7,11 +7,6 @@ prm-topbar {
   background-color: $dark-purple;
 }
 
-// Hide default library card menu
-prm-library-card-menu > button {
-  display: none !important;
-}
-
 prm-topbar .product-logo {
   padding: 0 1em;
   line-height: 73px;

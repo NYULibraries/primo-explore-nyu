@@ -1,34 +1,27 @@
-import { viewName } from './viewName';
-
 angular
   .module('customLibraryCardMenu', [])
-  .factory('customLibraryCardMenuFactory', ['$filter', ($filter) => {
-    class CustomLibraryCardMenuItem {
-      constructor(item) {
-        this.item = item;
-        this.itemText = this.translate(this.item.name);
-        this.itemUrl = this.translate(this.item.action);
-        this.itemDescription = this.translate(this.item.description);
-      }
-      translate(original) {
-        return original.replace(/\{(.+)\}/g, (match, p1) => $filter('translate')(p1));
-      }
-      goToUrl() {
-        window.open(this.itemUrl, '_blank');
-      }
-    }
-    return CustomLibraryCardMenuItem;
-  }])
-  .controller('customLibraryCardMenuController', ['customLibraryCardMenuItems', 'customLibraryCardMenuFactory', '$scope', function(customLibraryCardMenuItems, customLibraryCardMenuFactory, $scope) {
+  .controller('customLibraryCardMenuController', ['customLibraryCardMenuItems', '$scope', '$filter', function(customLibraryCardMenuItems, $scope, $filter) {
     this.$onInit = () => {
-      $scope.customLibraryCardMenuItemsArray = customLibraryCardMenuItems.map(item => new customLibraryCardMenuFactory(item));
+      $scope.customLibraryCardMenuItemsArray = customLibraryCardMenuItems.map(item => {
+        return {
+          name: item.name,
+          action: item.action,
+          description: item.description
+        }
+      });
+    }
+    $scope.translate = (original) => {
+      return original.replace(/\{(.+)\}/g, (match, p1) => $filter('translate')(p1));
+    }
+    $scope.goToUrl = (url) => {
+      window.open(url, '_blank');
     }
   }])
   .component('prmLibraryCardMenuAfter', {
-    bindings: {
-      parentCtrl: '<'
-    },
-    require: { prmLibraryCardMenuCtrl: '^prmLibraryCardMenu' },
     controller: 'customLibraryCardMenuController',
-    templateUrl: 'custom/' + viewName + '/html/libraryCardMenu.html'
+    template: '<button ng-repeat="item in customLibraryCardMenuItemsArray" aria-label="{{ translate(item.description) }}" ng-click="goToUrl(translate(item.action))" class="button-with-icon zero-margin md-button md-primoExplore-theme md-ink-ripple" type="button">'+
+                '<prm-icon style="z-index:1" icon-type="svg" svg-icon-set="primo-ui" icon-definition="account-card-details"></prm-icon>'+
+                '<span class="customLibraryCardMenuItem">{{ translate(item.name) }}</span>'+
+              '</button>'
+
   });
