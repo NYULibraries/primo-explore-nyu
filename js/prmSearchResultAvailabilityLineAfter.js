@@ -2,6 +2,7 @@ import { viewName } from './viewName';
 
 class prmSearchResultAvailabilityLineAfterController {
   getGetitLink() {
+    // This is the PNX path to get the correct OpenURL for GetIt
     return this.parentCtrl.result.link['lln10'];
   };
 }
