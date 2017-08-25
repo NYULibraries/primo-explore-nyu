@@ -8,7 +8,6 @@ import { prmNoSearchResultAfterConfig } from './prmNoSearchResultAfter';
 import { customActionsConstant } from './customActions';
 import { customLibraryCardMenu } from './customLibraryCardMenu';
 
-
 let app = angular.module('viewCustom', ['angularLoad', 'customActions', 'customLibraryCardMenu']);
 
 app.component(prmLogoAfterConfig.name, prmLogoAfterConfig.config)
@@ -22,7 +21,11 @@ app.constant('customLibraryCardMenuItems',
     {
       name: "{nui.menu.librarycard}",
       description: "Go to {nui.menu.librarycard}",
-      action: "{urls.eshelf}/account"
+      action: "{urls.eshelf}/account",
+      icon: {
+        set: 'social',
+        icon: 'ic_person_outline_24px'
+      }
     }
   ]
 )
