@@ -44,7 +44,7 @@ export let customActionsConstant = {
         set: "file",
         name: "ic_file_download_24px"
       },
-      action: "http://nyu-pushtocite.herokuapp.com/?calling_system=primo&institution=NYU-NUI&local_id={recordId}&cite_to=bibtext"
+      action: "http://nyu-pushtocite.herokuapp.com/?calling_system=primo&institution=NYU-NUI&local_id={recordId}&cite_to=bibtex"
     }
   ]
 };
