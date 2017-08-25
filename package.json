@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/NYULibraries/primo-explore-nyu#readme",
   "devDependencies": {
-    "primo-explore-custom-actions": "^2.0.0"
+    "primo-explore-custom-actions": "^2.0.0",
+    "primo-explore-custom-library-card-menu": "^1.0.0"
   }
 }

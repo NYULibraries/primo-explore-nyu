@@ -1,4 +1,5 @@
 import 'primo-explore-custom-actions';
+import 'primo-explore-custom-library-card-menu';
 
 import { viewName } from './viewName';
 import { prmLogoAfterConfig } from './prmLogoAfter';
@@ -6,7 +7,6 @@ import { prmExploreMainAfterConfig } from './prmExploreMainAfter';
 import { prmSearchResultAvailabilityLineAfterConfig } from './prmSearchResultAvailabilityLineAfter';
 import { prmNoSearchResultAfterConfig } from './prmNoSearchResultAfter';
 import { customActionsConstant } from './customActions';
-import { customLibraryCardMenu } from './customLibraryCardMenu';
 
 let app = angular.module('viewCustom', ['angularLoad', 'customActions', 'customLibraryCardMenu']);
 
