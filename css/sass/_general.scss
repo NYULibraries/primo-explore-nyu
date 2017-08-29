@@ -66,8 +66,3 @@ input:-ms-input-placeholder {
   color: white !important;
   border-radius: 0 !important;
 }
-
-// Hide OOB no search result card
-prm-no-search-result > md-card.default-card {
-  display: none;
-}
