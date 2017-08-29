@@ -8,7 +8,7 @@ export let customActionsConstant = {
           set: 'action',
           name: 'ic_description_24px'
       },
-      action: "/primo_library/libweb/action/PushToAction.do?doc={recordId}&recId={recordId}&docs={recordId}&pushToType=EndNote&fromEshelf=false"
+      action: "http://nyu-pushtocite.herokuapp.com/?calling_system=primo&institution=NYU-NUI&local_id={recordId}&cite_to=endnote"
     },
     {
       name: "RefWorks",
@@ -17,7 +17,7 @@ export let customActionsConstant = {
           set: 'action',
           name: 'ic_description_24px'
       },
-      action: "/primo_library/libweb/action/PushToAction.do?doc={recordId}&recId={recordId}&docs={recordId}&pushToType=RefWorks&fromEshelf=false"
+      action: "http://nyu-pushtocite.herokuapp.com/?calling_system=primo&institution=NYU-NUI&local_id={recordId}&cite_to=refworks"
     },
     {
       name: "EasyBIB",
@@ -26,7 +26,7 @@ export let customActionsConstant = {
           set: 'action',
           name: 'ic_description_24px'
       },
-      action: "/primo_library/libweb/action/PushToAction.do?doc={recordId}&recId={recordId}&docs={recordId}&pushToType=EasyBIB&fromEshelf=false"
+      action: "http://nyu-pushtocite.herokuapp.com/?calling_system=primo&institution=NYU-NUI&local_id={recordId}&cite_to=easybibpush"
     },
     {
       name: "RIS",
@@ -35,7 +35,7 @@ export let customActionsConstant = {
         set: "file",
         name: "ic_file_download_24px"
       },
-      action: "/primo_library/libweb/action/PushToAction.do?doc={recordId}&recId={recordId}&docs={recordId}&pushToType=RIS&fromEshelf=false"
+      action: "http://nyu-pushtocite.herokuapp.com/?calling_system=primo&institution=NYU-NUI&local_id={recordId}&cite_to=ris"
     },
     {
       name: "BibTeX",
@@ -44,7 +44,7 @@ export let customActionsConstant = {
         set: "file",
         name: "ic_file_download_24px"
       },
-      action: "/primo_library/libweb/action/PushToAction.do?doc={recordId}&recId={recordId}&docs={recordId}&pushToType=BibTeX&fromEshelf=false"
+      action: "http://nyu-pushtocite.herokuapp.com/?calling_system=primo&institution=NYU-NUI&local_id={recordId}&cite_to=bibtex"
     }
   ]
 };
