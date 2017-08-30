@@ -4,9 +4,17 @@
 }
 
 // Hide OOB availability links
-prm-search-result-list .check-avail-link, // search results
-prm-search-result-availability-line .layout-align-start-start.layout-row, // search results
-[aria-label="Get It"], // details page: sidebar "GETIT" link
-&[id^='getit_link1_'] { // details page: GetIt section
+prm-search-result-list .check-avail-link,
+prm-search-result-availability-line .layout-align-start-start.layout-row {
+  display: none;
+}
+
+// [aria-label="Get It"],
+// &[id^='getit_link1_'] {
+//   display: none;
+// }
+
+prm-opac > md-tabs,
+prm-opac prm-requests-services-ovl {
   display: none;
 }

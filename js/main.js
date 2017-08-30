@@ -5,8 +5,27 @@ import 'primo-explore-custom-no-search-results';
 import 'primo-explore-libraryh3lp-widget';
 
 import { viewName } from './viewName';
-import { prmSearchResultAvailabilityLineAfterConfig } from './prmSearchResultAvailabilityLineAfter';
 import { customActionsConstant } from './customActions';
+
+angular
+  .module('getitToLinkResolver', [])
+  .controller('getitToLinkResolverController', ['$scope', function($scope) {
+    this.$onInit = function() {
+      this.getitLinkField = 'lln10';
+      $scope.getitLink = this.parentCtrl.item.delivery.link.filter(link => link["displayLabel"] == this.getitLinkField)[0]["linkURL"]
+    };
+    $scope.checkAvailabilityLinkText = 'Check Availability';
+  }])
+  .component('prmOpacAfter', {
+    bindings: {
+      parentCtrl: '<'
+    },
+    controller: 'getitToLinkResolverController',
+    template: '<a ng-href="{{ getitLink }}" class="arrow-link check-avail-link" target="_blank">{{ checkAvailabilityLinkText }} '+
+              '<prm-icon style="z-index:1" icon-type="svg" svg-icon-set="primo-ui" icon-definition="open-in-new"></prm-icon>'+
+              '<prm-icon link-arrow="" icon-type="svg" svg-icon-set="primo-ui" icon-definition="chevron-right"></prm-icon>'+
+              '</a> '
+  });
 
 let app = angular.module('viewCustom', [
                                         'angularLoad',
@@ -14,11 +33,9 @@ let app = angular.module('viewCustom', [
                                         'customLibraryCardMenu',
                                         'clickableLogoToAnyLink',
                                         'customNoSearchResults',
-                                        'libraryh3lpWidget'
+                                        'libraryh3lpWidget',
+                                        'getitToLinkResolver'
                                       ]);
-
-app
-   .component(prmSearchResultAvailabilityLineAfterConfig.name, prmSearchResultAvailabilityLineAfterConfig.config)
 
 app.constant(customActionsConstant.name, customActionsConstant.config)
 
