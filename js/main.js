@@ -2,9 +2,9 @@ import 'primo-explore-custom-actions';
 import 'primo-explore-custom-library-card-menu';
 import 'primo-explore-clickable-logo-to-any-link';
 import 'primo-explore-custom-no-search-results';
+import 'primo-explore-libraryh3lp-widget';
 
 import { viewName } from './viewName';
-import { prmExploreMainAfterConfig } from './prmExploreMainAfter';
 import { prmSearchResultAvailabilityLineAfterConfig } from './prmSearchResultAvailabilityLineAfter';
 import { customActionsConstant } from './customActions';
 
@@ -13,11 +13,11 @@ let app = angular.module('viewCustom', [
                                         'customActions',
                                         'customLibraryCardMenu',
                                         'clickableLogoToAnyLink',
-                                        'customNoSearchResults'
+                                        'customNoSearchResults',
+                                        'libraryh3lpWidget'
                                       ]);
 
 app
-   .component(prmExploreMainAfterConfig.name, prmExploreMainAfterConfig.config)
    .component(prmSearchResultAvailabilityLineAfterConfig.name, prmSearchResultAvailabilityLineAfterConfig.config)
 
 app.constant(customActionsConstant.name, customActionsConstant.config)
@@ -42,3 +42,12 @@ app.constant('clickableLogoLinkConfig', {
 });
 
 app.value('customNoSearchResultsTemplateUrl', 'custom/' + viewName + '/html/noSearchResults.html')
+
+app.constant('libraryh3lpWidgetConfig', {
+  url: 'https://us.libraryh3lp.com/chat/askbobst@chat.libraryh3lp.com?skin=23106',
+  prompt: 'Chat with us',
+  icon: {
+    set: 'communication',
+    icon: 'ic_chat_24px'
+  }
+});
