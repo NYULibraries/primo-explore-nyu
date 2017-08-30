@@ -10,13 +10,3 @@ prm-search-result-availability-line .layout-align-start-start.layout-row, // sea
 &[id^='getit_link1_'] { // details page: GetIt section
   display: none;
 }
-
-// From: https://knowledge.exlibrisgroup.com/Primo/Knowledge_Articles/How_to_disable_the_tags_in_Primo_classic_and_new_UI
-// Hide Tags in Detailed Display
-[aria-label="Tags"],
-#tags,
-// Hide Tags in Menu Tab
-a.md-button[aria-label="Tags"],
-a.md-buttom[aria-label="nui.mainmenu.label.tags"] {
-  display: none;
-}

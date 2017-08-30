@@ -1,0 +1,40 @@
+/* Search bar */
+prm-search-bar .search-switch-buttons .md-button.switch-to-advanced {
+  color: black;
+}
+
+prm-search-bar {
+  background-image: url("../img/banner-bg.png");
+  background-color: $background_light_gray;
+  background-position: center center;
+  font-size: inherit;
+}
+
+/* Search button */
+.md-button.button-confirm._md-focused:not([disabled]),
+.md-button.button-confirm.hovered:not([disabled]),
+.md-button.button-confirm.md-focused:not([disabled]),
+.md-button.button-confirm:focus:not([disabled]),
+.md-button.button-confirm:hover:not([disabled]) {
+  border: medium none;
+  border-radius: 0;
+  margin: 0;
+  min-width: 0;
+  transition: background-color 0.3s ease 0s;
+  color: black !important;
+  background-color: white;
+}
+
+/* Text color in search box */
+input::-webkit-input-placeholder,
+input::-moz-placeholder,
+input:-moz-placeholder,
+input:-ms-input-placeholder  {
+  color: $text_black !important;
+}
+
+.md-button.button-confirm {
+	background-color: $text_black;
+  color: white !important;
+  border-radius: 0 !important;
+}
