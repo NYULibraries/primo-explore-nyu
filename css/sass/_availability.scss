@@ -4,9 +4,18 @@
 }
 
 // Hide OOB availability links
-prm-search-result-list .check-avail-link, // search results
-prm-search-result-availability-line .layout-align-start-start.layout-row, // search results
-[aria-label="Get It"], // details page: sidebar "GETIT" link
-&[id^='getit_link1_'] { // details page: GetIt section
+prm-brief-result-container prm-search-result-availability-line > *:not(:last-child),
+prm-full-view prm-search-result-availability-line > *:not(:last-child),
+prm-full-view prm-search-result-availability-line-after a.check-avail-link {
+  display: none;
+}
+
+// [aria-label="Get It"],
+// &[id^='getit_link1_'] {
+//   display: none;
+// }
+
+// Hide OOB OPAC info
+prm-opac > *:not(:last-child) {
   display: none;
 }

@@ -1,4 +1,4 @@
-export let customActionsConstant = {
+export let customActionsConfig = {
   name: 'customActions',
   config: [
     {
