@@ -94,5 +94,5 @@ app.constant('getitToLinkResolverConfig', {
     set: 'primo-ui',
     icon: 'open-in-new'
   },
-  showInBriefResults: true
+  showInBriefResults: false
 });
