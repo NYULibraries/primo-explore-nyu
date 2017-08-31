@@ -26,11 +26,17 @@ import { getitToLinkResolverConfig } from './getitToLinkResolver'
       }
 
       $scope.checkEshelf = function() {
-        var url = "https://dev.eshelf.library.nyu.edu/records/from/primo.json?";
-        var data = {"per":"all", "external_id[]":[$scope.externalId]};
-        $http.get(url , data).then(
+        var url = "https://dev.eshelf.library.nyu.edu/records/from/primo.json?per=all&external_id[]=" + $scope.externalId;
+        var config =
+        {
+          "xsrfCookieName": "X-CSRF-Token",
+          "withCredentials": true,
+          "xsrfHeaderName": "X-CSRF-Token",
+        };
+        $http.get(url, config).then(
             function(response){
               console.log("Success");
+              console.log(response.headers());
               console.log(response);
             },
             function(response){
