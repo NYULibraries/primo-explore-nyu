@@ -29,15 +29,27 @@ angular
   .controller('getitToLinkResolverFullController', ['getitToLinkResolverService', '$scope', function(getitToLinkResolverService, $scope) {
     this.$onInit = function() {
       $scope.config = getitToLinkResolverService.config;
-    }
-    $scope.getitLink = this.parentCtrl.item.delivery.link.filter(link => link["displayLabel"] == getitToLinkResolverService.config.linkField)[0]["linkURL"];
+    };
+    $scope.getitLink = () => {
+      try {
+        return this.parentCtrl.item.delivery.link.filter(link => link["displayLabel"] == getitToLinkResolverService.config.linkField)[0]["linkURL"];
+      } catch (e) {
+        return '';
+      }
+    };
     $scope.translate = (original) => getitToLinkResolverService.translate(original);
   }])
   .controller('getitToLinkResolverBriefController', ['getitToLinkResolverService', '$scope', function(getitToLinkResolverService, $scope) {
     this.$onInit = function() {
       $scope.config = getitToLinkResolverService.config;
-    }
-    $scope.getitLink = this.parentCtrl.result.link[getitToLinkResolverService.config.linkField];
+    };
+    $scope.getitLink = () => {
+      try {
+        return this.parentCtrl.result.link[getitToLinkResolverService.config.linkField];
+      } catch (e) {
+        return '';
+      }
+    };
     $scope.translate = (original) => getitToLinkResolverService.translate(original);
   }])
   .component('prmOpacAfter', {
@@ -45,7 +57,7 @@ angular
       parentCtrl: '<'
     },
     controller: 'getitToLinkResolverFullController',
-    template: '<a ng-href="{{ getitLink }}" class="arrow-link check-avail-link check-avail-link-full" target="_blank">'+
+    template: '<a ng-href="{{ getitLink() }}" class="arrow-link check-avail-link check-avail-link-full" target="_blank">'+
               '<prm-icon style="z-index:1" icon-type="svg" svg-icon-set="{{config.iconBefore.set}}" icon-definition="{{config.iconBefore.icon}}"></prm-icon>'+
               ' {{ translate(config.linkText) }} '+
               '<prm-icon style="z-index:1" icon-type="svg" svg-icon-set="{{config.iconAfter.set}}" icon-definition="{{config.iconAfter.icon}}"></prm-icon>'+
@@ -57,7 +69,7 @@ angular
       parentCtrl: '<'
     },
     controller: 'getitToLinkResolverBriefController',
-    template: '<a ng-if="config.showInBriefResults" ng-href="{{ getitLink }}" class="arrow-link check-avail-link check-avail-link-brief" target="_blank">'+
+    template: '<a ng-if="config.showInBriefResults" ng-href="{{ getitLink() }}" class="arrow-link check-avail-link check-avail-link-brief" target="_blank">'+
               '<prm-icon style="z-index:1" icon-type="svg" svg-icon-set="{{config.iconBefore.set}}" icon-definition="{{config.iconBefore.icon}}"></prm-icon>'+
               ' {{ translate(config.linkText) }} '+
               '<prm-icon style="z-index:1" icon-type="svg" svg-icon-set="{{config.iconAfter.set}}" icon-definition="{{config.iconAfter.icon}}"></prm-icon>'+
@@ -85,7 +97,7 @@ app
 
 app.constant('getitToLinkResolverConfig', {
   linkField: 'lln10',
-  linkText: '{fulldisplay.availabilty.check_holdings}',
+  linkText: 'Check Availability',
   iconBefore: {
     set: 'primo-ui',
     icon: 'book-open'
