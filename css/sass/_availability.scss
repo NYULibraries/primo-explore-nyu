@@ -4,8 +4,9 @@
 }
 
 // Hide OOB availability links
-prm-search-result-list .check-avail-link,
-prm-search-result-availability-line .layout-align-start-start.layout-row {
+prm-brief-result-container prm-search-result-availability-line > *:not(:last-child),
+prm-full-view prm-search-result-availability-line > *:not(:last-child),
+prm-full-view prm-search-result-availability-line-after a.check-avail-link {
   display: none;
 }
 
@@ -14,7 +15,7 @@ prm-search-result-availability-line .layout-align-start-start.layout-row {
 //   display: none;
 // }
 
-prm-opac > md-tabs,
-prm-opac prm-requests-services-ovl {
+// Hide OOB OPAC info
+prm-opac > *:not(:last-child) {
   display: none;
 }
