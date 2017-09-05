@@ -3,19 +3,7 @@
   font-size: 18px;
 }
 
-// Hide OOB availability links
-prm-brief-result-container prm-search-result-availability-line > *:not(:last-child),
-prm-full-view prm-search-result-availability-line > *:not(:last-child),
-prm-full-view prm-search-result-availability-line-after a.check-avail-link {
-  display: none;
-}
-
 // [aria-label="Get It"],
 // &[id^='getit_link1_'] {
 //   display: none;
 // }
-
-// Hide OOB OPAC info
-prm-opac > *:not(:last-child) {
-  display: none;
-}
