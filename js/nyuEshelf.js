@@ -1,3 +1,8 @@
+// To do:
+// - Pre-check already saved records
+// - Link to login in "login to save permanently"
+// - Have logged in user text when there is a session
+// - Clicking in either full or brief should show selected in the other
 angular.module('nyuEshelf', [])
   .config(function($httpProvider) {
     //Enable cross domain calls
@@ -22,7 +27,7 @@ angular.module('nyuEshelf', [])
       token: ''
     };
   })
-  .controller('nyuEshelfController', ['csrfTokenService', 'nyuEshelfConfig', '$scope', '$http', '$sce', function(csrfTokenService, config, $scope, $http, $sce) {
+  .controller('nyuEshelfController', ['csrfTokenService', 'nyuEshelfConfig', '$scope', '$http', function(csrfTokenService, config, $scope, $http) {
     this.$onInit = function() {
       $scope.elementText = config.addToEshelf;
       $scope.externalId = this.prmSearchResultAvailabilityLine.result.pnx.control.recordid[0];
@@ -36,6 +41,20 @@ angular.module('nyuEshelf', [])
       $scope.recordData = { "record": { "external_system": "primo", "external_id": $scope.externalId }};
       $scope.running = false;
       $scope.checkEshelf();
+    }
+
+    $scope.generateRequest = function(httpMethod) {
+      if (!/^(DELETE|POST)$/.test(httpMethod.toUpperCase())) {
+        return {};
+      }
+      let headers = { 'X-CSRF-Token': csrfTokenService.token, 'Content-type': 'application/json;charset=utf-8' }
+      let request = {
+        method: httpMethod.toUpperCase(),
+        url: $scope.eshelfBase + "/records.json",
+        headers: headers,
+        data: $scope.recordData
+      }
+      return request;
     }
 
     $scope.checkEshelf = function() {
@@ -58,14 +77,7 @@ angular.module('nyuEshelf', [])
 
     $scope.addToEshelf = function() {
       $scope.elementText = config.adding;
-      let headers = { 'X-CSRF-Token': csrfTokenService.token, 'Content-type': 'application/json;charset=utf-8' }
-      let request = {
-        method: 'POST',
-        url: $scope.eshelfBase + "/records.json",
-        headers: headers,
-        data: $scope.recordData
-      }
-      $http(request)
+      $http($scope.generateRequest('post'))
         .then(
           function(response){
             $scope.running = false;
@@ -80,14 +92,7 @@ angular.module('nyuEshelf', [])
 
     $scope.removeFromEshelf = function() {
       $scope.elementText = config.deleting;
-      let headers = { 'X-CSRF-Token': csrfTokenService.token, 'Content-type': 'application/json;charset=utf-8' }
-      let request = {
-        method: 'DELETE',
-        url: $scope.eshelfBase + "/records.json",
-        headers: headers,
-        data: $scope.recordData
-      }
-      $http(request, config)
+      $http($scope.generateRequest('delete'))
         .then(
           function(response){
             $scope.running = false;
