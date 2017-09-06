@@ -1,37 +1,27 @@
 angular.module('nyuEshelf', [])
-  // .config(function($sceDelegateProvider) {
-  //   $sceDelegateProvider.resourceUrlWhitelist([
-  //     'self',
-  //     '**.eshelf.library.nyu.edu/**',
-  //     'eshelf.library.nyu.edu'
-  //   ])
-  // })
-  .filter('trust', ['$sce', function($sce) {
-    return function(htmlCode){
-      return $sce.trustAsHtml(htmlCode);
-    }
-  }])
   .constant('nyuEshelfConfig', {
     addToEshelf: "Add to e-Shelf",
     inEshelf: "In e-Shelf",
     inGuestEshelf: "In guest e-Shelf (<a href=\"#\">login to save permanently</a>)",
     adding: "Adding to e-Shelf...",
     deleting: "Removing from e-Shelf...",
-    error: "Could not connect to e-Shelf"
+    error: "Could not connect to e-Shelf",
+    eshelfBase: 'https://qa.eshelf.library.nyu.edu'
   })
   .controller('nyuEshelfController', ['nyuEshelfConfig', '$scope', '$http', '$sce', function(config, $scope, $http, $sce) {
     this.$onInit = function() {
       $scope.elementText = config.addToEshelf;
       $scope.externalId = this.prmSearchResultAvailabilityLine.result.pnx.control.recordid[0];
-      $scope.elementId = "eshelf_" + this.externalId;
+      $scope.elementId = "eshelf_" + $scope.externalId;
 
-      $scope.eshelfUrl = 'https://qa.eshelf.library.nyu.edu/records.json';
+      $scope.eshelfBase = config.eshelfBase;
       $scope.recordData = { "record": { "external_system": "primo", "external_id": $scope.externalId }};
+      $scope.running = false;
       $scope.checkEshelf();
     }
 
     $scope.checkEshelf = function() {
-      var url = "https://qa.eshelf.library.nyu.edu/records/from/primo.json?per=all&external_id[]=" + $scope.externalId;
+      var url = $scope.eshelfBase + "/records/from/primo.json?per=all&external_id[]=" + $scope.externalId;
       var config =
       {
         "xsrfCookieName": "X-CSRF-Token",
@@ -53,9 +43,10 @@ angular.module('nyuEshelf', [])
 
     $scope.addToEshelf = function() {
       $scope.elementText = config.adding;
-      $http.post($scope.eshelfUrl, $scope.recordData)
+      $http.post($scope.eshelfBase + "/records.json", $scope.recordData)
         .then(
           function(response){
+            $scope.running = false;
             $scope.elementText = config.inGuestEshelf;
           },
           function(response){
@@ -66,9 +57,10 @@ angular.module('nyuEshelf', [])
 
     $scope.removeFromEshelf = function() {
       $scope.elementText = config.deleting;
-      $http.delete($scope.eshelfUrl , $scope.recordData)
+      $http.delete($scope.eshelfBase + "/records.json", $scope.recordData)
         .then(
           function(response){
+            $scope.running = false;
             $scope.elementText = config.addToEshelf;
           },
           function(response){
@@ -84,6 +76,8 @@ angular.module('nyuEshelf', [])
         $scope.removeFromEshelf();
       }
     }
+
+
   }])
   .component('nyuEshelf', {
     controller: 'nyuEshelfController',
@@ -94,8 +88,8 @@ angular.module('nyuEshelf', [])
       prmSearchResultAvailabilityLine: '^prmSearchResultAvailabilityLine'
     },
     template: '<div class="nyu-eshelf"><button class="neutralized-button md-button md-primoExplore-theme" >' +
-      '<input id="{{ elementId }}" type="checkbox" data-eshelf-external-id="{{ externalId }}" ng-click="eshelfCheckBoxTrigger()" >' +
-      '<label for="{{ elementId }}">{{ elementText | trust }}</label>' +
+      '<input ng-disabled="running" id="{{ elementId }}" type="checkbox" data-eshelf-external-id="{{ externalId }}" ng-click="running = true; eshelfCheckBoxTrigger()" >' +
+      '<label for="{{ elementId }}"><span ng-bind-html="elementText"></span></label>' +
     '</button></div>'
 
   })
