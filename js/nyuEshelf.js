@@ -8,11 +8,20 @@ angular.module('nyuEshelf', [])
     error: "Could not connect to e-Shelf",
     eshelfBase: 'https://qa.eshelf.library.nyu.edu'
   })
-  .controller('nyuEshelfController', ['nyuEshelfConfig', '$scope', '$http', '$sce', function(config, $scope, $http, $sce) {
+  .factory('csrfTokenService', function() {
+    return {
+      token: '',
+    };
+  })
+  .controller('nyuEshelfController', ['csrfTokenService', 'nyuEshelfConfig', '$scope', '$http', '$sce', function(csrfTokenService, config, $scope, $http, $sce) {
     this.$onInit = function() {
       $scope.elementText = config.addToEshelf;
       $scope.externalId = this.prmSearchResultAvailabilityLine.result.pnx.control.recordid[0];
-      $scope.elementId = "eshelf_" + $scope.externalId;
+      if (this.prmSearchResultAvailabilityLine.isFullView) {
+        $scope.elementId = "eshelf_" + $scope.externalId + "_full";
+      } else {
+        $scope.elementId = "eshelf_" + $scope.externalId + "_brief";
+      }
 
       $scope.eshelfBase = config.eshelfBase;
       $scope.recordData = { "record": { "external_system": "primo", "external_id": $scope.externalId }};
@@ -30,9 +39,11 @@ angular.module('nyuEshelf', [])
       };
       $http.get(url, config).then(
           function(response){
-            console.log("Success");
-            console.log(response.headers());
-            console.log(response);
+            // console.log("Success");
+            // console.log(response.headers('x-csrf-token'));
+            // console.log(response);
+            csrfTokenService.token = response.headers('x-csrf-token');
+            console.log(csrfTokenService.token)
           },
           function(response){
             console.log("Failure");
@@ -43,11 +54,21 @@ angular.module('nyuEshelf', [])
 
     $scope.addToEshelf = function() {
       $scope.elementText = config.adding;
-      $http.post($scope.eshelfBase + "/records.json", $scope.recordData)
+      let headers = { 'X-CSRF-Token': csrfTokenService.token }
+      let request = {
+        method: 'POST',
+        url: $scope.eshelfBase + "/records.json",
+        headers: headers,
+        data: $scope.recordData
+      }
+      $http(request)
         .then(
           function(response){
             $scope.running = false;
             $scope.elementText = config.inGuestEshelf;
+            console.log(csrfTokenService.token);
+            csrfTokenService.token = response.headers('x-csrf-token');
+            console.log(csrfTokenService.token);
           },
           function(response){
             $scope.elementText = config.error;
@@ -57,11 +78,21 @@ angular.module('nyuEshelf', [])
 
     $scope.removeFromEshelf = function() {
       $scope.elementText = config.deleting;
-      $http.delete($scope.eshelfBase + "/records.json", $scope.recordData)
+      let headers = { 'X-CSRF-Token': csrfTokenService.token }
+      let request = {
+        method: 'DELETE',
+        url: $scope.eshelfBase + "/records.json",
+        headers: headers,
+        data: $scope.recordData
+      }
+      $http(request)
         .then(
           function(response){
             $scope.running = false;
             $scope.elementText = config.addToEshelf;
+            console.log(csrfTokenService.token);
+            csrfTokenService.token = response.headers('x-csrf-token');
+            console.log(csrfTokenService.token);
           },
           function(response){
             $scope.elementText = config.error;
