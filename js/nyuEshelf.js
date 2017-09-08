@@ -7,6 +7,7 @@ angular.module('nyuEshelf', [])
   .config(function($httpProvider) {
     //Enable cross domain calls
     $httpProvider.defaults.useXDomain = true;
+    //Enable passing of cookies for CORS calls
     $httpProvider.defaults.withCredentials = true;
 
     //Remove the header containing XMLHttpRequest used to identify ajax call
@@ -25,7 +26,7 @@ angular.module('nyuEshelf', [])
     pdsUrl: {
       base: 'https://pdsdev.library.nyu.edu/pds',
       callingSystem: 'primo',
-      institution: 'NYU-NUI'
+      institution: 'NYU'
     }
   })
   .factory('csrfTokenService', function() {
@@ -33,7 +34,7 @@ angular.module('nyuEshelf', [])
       token: ''
     };
   })
-  .controller('nyuEshelfController', ['csrfTokenService', 'nyuEshelfConfig', '$scope', '$http', '$location', function(csrfTokenService, config, $scope, $http, $location) {
+  .controller('nyuEshelfController', ['csrfTokenService', 'nyuEshelfConfig', '$scope', '$http', '$location', '$window', function(csrfTokenService, config, $scope, $http, $location, $window) {
     this.$onInit = function() {
       $scope.elementText = config.addToEshelf;
       $scope.externalId = this.prmSearchResultAvailabilityLine.result.pnx.control.recordid[0];
@@ -47,6 +48,11 @@ angular.module('nyuEshelf', [])
       $scope.recordData = { "record": { "external_system": "primo", "external_id": $scope.externalId }};
       $scope.running = false;
       $scope.checkEshelf();
+      this.searchResultCtrl = this.prmSearchResultList
+      this.hasSearchResults = this.prmExploreMain.hasSearchResults();
+      this.loggedIn = this.prmExploreMain.skipToService.userSessionManagerService.isGuest();
+      this.recordIds = [].concat.apply([], this.prmSearchResultList.itemlist.map(item => item.pnx.control.recordid));
+      this.recordIdsAsString = "&external_id[]=" + this.recordIds.join("&external_id[]=");
     }
 
     $scope.generateRequest = function(httpMethod) {
@@ -64,11 +70,15 @@ angular.module('nyuEshelf', [])
     }
 
     $scope.inEshelfText = function() {
-      return config.inGuestEshelf + " (<a href=\"" + $scope.pdsUrl() + "\">" + config.loginToSave + "</a>)";
+      if (this.loggedIn) {
+        return config.inGuestEshelf + " (<a href=\"" + $scope.pdsUrl() + "\">" + config.loginToSave + "</a>)";
+      } else {
+        return config.inEshelf;
+      }
     };
 
     $scope.pdsUrl = function() {
-      return config.pdsUrl.base + "?func=load-login&calling_system=" + config.pdsUrl.callingSystem + "&institute=" + config.pdsUrl.institution + "&url=" + $location.absUrl();
+      return config.pdsUrl.base + "?func=load-login&calling_system=" + config.pdsUrl.callingSystem + "&institute=" + config.pdsUrl.institution + "&url=" + $window.encodeURIComponent($location.absUrl());
     };
 
     $scope.checkEshelf = function() {
@@ -76,8 +86,6 @@ angular.module('nyuEshelf', [])
 
       $http.get(url).then(
           function(response){
-            console.log(response)
-            console.log(response.cookies)
             csrfTokenService.token = response.headers('x-csrf-token');
             if (response.data.length > 0) {
               if (response.data.filter(item => item["external_id"] == $scope.externalId)) {
@@ -133,15 +141,14 @@ angular.module('nyuEshelf', [])
   }])
   .component('nyuEshelf', {
     controller: 'nyuEshelfController',
-    bindings: {
-      parentCtrl: '<'
-    },
     require: {
-      prmSearchResultAvailabilityLine: '^prmSearchResultAvailabilityLine'
+      prmSearchResultAvailabilityLine: '^prmSearchResultAvailabilityLine',
+      prmExploreMain: '^^prmExploreMain',
+      prmSearchResultList: '^^prmSearchResultList',
+      // prmAuthentication: '^^prmAuthentication'
     },
     template: '<div class="nyu-eshelf"><button class="neutralized-button md-button md-primoExplore-theme" >' +
       '<input ng-checked="inEshelf" ng-disabled="running" id="{{ elementId }}" type="checkbox" data-eshelf-external-id="{{ externalId }}" ng-click="running = true; eshelfCheckBoxTrigger()" >' +
       '<label for="{{ elementId }}"><span ng-bind-html="elementText"></span></label>' +
     '</button></div>'
-
   })
