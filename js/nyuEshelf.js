@@ -36,7 +36,7 @@ angular.module('nyuEshelf', [])
       callingSystem: 'primo',
       institution: 'NYU-NUI'
     },
-    eshelfBaseUrl: 'http://localhost:3000'
+    eshelfBaseUrl: 'https://qa.eshelf.library.nyu.edu'
   })
   .controller('nyuEshelfController', ['nyuEshelfService', 'nyuEshelfConfig', '$rootScope', '$scope', '$http', '$location', '$window', function(nyuEshelfService, config, $rootScope, $scope, $http, $location, $window) {
     this.$onInit = function() {
