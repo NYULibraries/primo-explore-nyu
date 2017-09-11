@@ -1,8 +1,3 @@
-// To do:
-// - ~~Pre-check already saved records~~
-// - Link to login in "login to save permanently"
-// - Have logged in user text when there is a session
-// - Clicking in either full or brief should show selected in the other ($watch the other element from this one)
 angular.module('nyuEshelf', [])
   .config(function($httpProvider) {
     //Enable cross domain calls
@@ -14,6 +9,20 @@ angular.module('nyuEshelf', [])
     //that would prevent CORS from working
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
   })
+  .factory('nyuEshelfService', () => {
+    return {
+      csrfToken: '',
+      loggedIn: false
+    };
+  })
+  .run(['nyuEshelfService', 'nyuEshelfConfig', '$http', function(nyuEshelfService, config, $http){
+    var url = config.eshelfBaseUrl+"/records/from/primo.json?per=all&external_id[]=";
+    $http.get(url).then(
+      function(response){
+        nyuEshelfService.csrfToken = response.headers('x-csrf-token');
+      }
+    );
+  }])
   .constant('nyuEshelfConfig', {
     addToEshelf: "Add to e-Shelf",
     inEshelf: "In e-Shelf",
@@ -22,44 +31,69 @@ angular.module('nyuEshelf', [])
     adding: "Adding to e-Shelf...",
     deleting: "Removing from e-Shelf...",
     error: "Could not connect to e-Shelf",
-    eshelfBaseUrl: 'http://localhost:3000',
     pdsUrl: {
       base: 'https://pdsdev.library.nyu.edu/pds',
       callingSystem: 'primo',
-      institution: 'NYU'
-    }
+      institution: 'NYU-NUI'
+    },
+    eshelfBaseUrl: 'http://localhost:3000'
   })
-  .factory('csrfTokenService', function() {
-    return {
-      token: ''
-    };
-  })
-  .controller('nyuEshelfController', ['csrfTokenService', 'nyuEshelfConfig', '$scope', '$http', '$location', '$window', function(csrfTokenService, config, $scope, $http, $location, $window) {
+  .controller('nyuEshelfController', ['nyuEshelfService', 'nyuEshelfConfig', '$rootScope', '$scope', '$http', '$location', '$window', function(nyuEshelfService, config, $rootScope, $scope, $http, $location, $window) {
     this.$onInit = function() {
       $scope.elementText = config.addToEshelf;
       $scope.externalId = this.prmSearchResultAvailabilityLine.result.pnx.control.recordid[0];
+      $scope.elementIdFull = "eshelf_" + $scope.externalId + "_full";
+      $scope.elementIdBrief = "eshelf_" + $scope.externalId + "_brief";
       if (this.prmSearchResultAvailabilityLine.isFullView) {
-        $scope.elementId = "eshelf_" + $scope.externalId + "_full";
+        $scope.elementId = $scope.elementIdFull;
       } else {
-        $scope.elementId = "eshelf_" + $scope.externalId + "_brief";
+        $scope.elementId = $scope.elementIdBrief;
       }
 
       $scope.eshelfBaseUrl = config.eshelfBaseUrl;
       $scope.recordData = { "record": { "external_system": "primo", "external_id": $scope.externalId }};
       $scope.running = false;
+      nyuEshelfService.loggedIn = !this.prmBriefResultContainer.userSessionManagerService.isGuest();
       $scope.checkEshelf();
-      this.searchResultCtrl = this.prmSearchResultList
-      this.hasSearchResults = this.prmExploreMain.hasSearchResults();
-      this.loggedIn = this.prmExploreMain.skipToService.userSessionManagerService.isGuest();
-      this.recordIds = [].concat.apply([], this.prmSearchResultList.itemlist.map(item => item.pnx.control.recordid));
-      this.recordIdsAsString = "&external_id[]=" + this.recordIds.join("&external_id[]=");
-    }
+    };
+
+    $scope.inEshelfText = function() {
+      if (nyuEshelfService.loggedIn) {
+        return config.inEshelf;
+      } else {
+        return config.inGuestEshelf + " (<a href=\"" + $scope.pdsUrl() + "\">" + config.loginToSave + "</a>)";
+      }
+    };
+
+    $scope.pdsUrl = function() {
+      return config.pdsUrl.base + "?func=load-login&calling_system=" + config.pdsUrl.callingSystem + "&institute=" + config.pdsUrl.institution + "&url=http://bobcatdev.library.nyu.edu:80/primo_library/libweb/pdsLogin?targetURL=" + $window.encodeURIComponent($location.absUrl()) + "&from-new-ui=1&authenticationProfile=BASE_PROFILE";
+    };
+
+    $scope.inEshelf = function() {
+      return nyuEshelfService[$scope.externalId] == true;
+    };
+
+    $scope.setElementText = function() {
+      if (nyuEshelfService[$scope.externalId]) {
+        if ($scope.running) {
+          return config.deleting;
+        } else {
+          return $scope.inEshelfText();
+        }
+      } else {
+        if ($scope.running) {
+          return config.adding;
+        } else {
+          return config.addToEshelf;
+        }
+      }
+    };
 
     $scope.generateRequest = function(httpMethod) {
       if (!/^(DELETE|POST)$/.test(httpMethod.toUpperCase())) {
         return {};
       }
-      let headers = { 'X-CSRF-Token': csrfTokenService.token, 'Content-type': 'application/json;charset=utf-8' }
+      let headers = { 'X-CSRF-Token': nyuEshelfService.csrfToken, 'Content-type': 'application/json;charset=utf-8' }
       let request = {
         method: httpMethod.toUpperCase(),
         url: $scope.eshelfBaseUrl+ "/records.json",
@@ -67,18 +101,6 @@ angular.module('nyuEshelf', [])
         data: $scope.recordData
       }
       return request;
-    }
-
-    $scope.inEshelfText = function() {
-      if (this.loggedIn) {
-        return config.inGuestEshelf + " (<a href=\"" + $scope.pdsUrl() + "\">" + config.loginToSave + "</a>)";
-      } else {
-        return config.inEshelf;
-      }
-    };
-
-    $scope.pdsUrl = function() {
-      return config.pdsUrl.base + "?func=load-login&calling_system=" + config.pdsUrl.callingSystem + "&institute=" + config.pdsUrl.institution + "&url=" + $window.encodeURIComponent($location.absUrl());
     };
 
     $scope.checkEshelf = function() {
@@ -86,11 +108,10 @@ angular.module('nyuEshelf', [])
 
       $http.get(url).then(
           function(response){
-            csrfTokenService.token = response.headers('x-csrf-token');
+            nyuEshelfService.csrfToken = response.headers('x-csrf-token');
             if (response.data.length > 0) {
               if (response.data.filter(item => item["external_id"] == $scope.externalId)) {
-                $scope.inEshelf = true;
-                $scope.elementText = $scope.inEshelfText();
+                nyuEshelfService[$scope.externalId] = true;
               }
             }
           },
@@ -98,57 +119,53 @@ angular.module('nyuEshelf', [])
             $scope.elementText = config.error;
           }
        );
-    }
+    };
 
     $scope.addToEshelf = function() {
-      $scope.elementText = config.adding;
       $http($scope.generateRequest('post'))
         .then(
           function(response){
+            nyuEshelfService.csrfToken = response.headers('x-csrf-token');
+            nyuEshelfService[$scope.externalId] = true;
             $scope.running = false;
-            $scope.elementText = $scope.inEshelfText();
-            csrfTokenService.token = response.headers('x-csrf-token');
           },
           function(response){
             $scope.elementText = config.error;
           }
         );
-    }
+    };
 
     $scope.removeFromEshelf = function() {
-      $scope.elementText = config.deleting;
       $http($scope.generateRequest('delete'))
         .then(
           function(response){
+            nyuEshelfService.csrfToken = response.headers('x-csrf-token');
+            nyuEshelfService[$scope.externalId] = false;
             $scope.running = false;
-            $scope.elementText = config.addToEshelf;
-            csrfTokenService.token = response.headers('x-csrf-token');
           },
           function(response){
             $scope.elementText = config.error;
           }
         );
-    }
+    };
 
     $scope.eshelfCheckBoxTrigger = function() {
-      if(document.getElementById($scope.elementId).checked == true){
-        $scope.addToEshelf();
-      } else {
+      if($scope.inEshelf()){
         $scope.removeFromEshelf();
+      } else {
+        $scope.addToEshelf();
       }
-    }
+    };
 
   }])
   .component('nyuEshelf', {
     controller: 'nyuEshelfController',
     require: {
       prmSearchResultAvailabilityLine: '^prmSearchResultAvailabilityLine',
-      prmExploreMain: '^^prmExploreMain',
-      prmSearchResultList: '^^prmSearchResultList',
-      // prmAuthentication: '^^prmAuthentication'
+      prmBriefResultContainer: '^prmBriefResultContainer'
     },
     template: '<div class="nyu-eshelf"><button class="neutralized-button md-button md-primoExplore-theme" >' +
-      '<input ng-checked="inEshelf" ng-disabled="running" id="{{ elementId }}" type="checkbox" data-eshelf-external-id="{{ externalId }}" ng-click="running = true; eshelfCheckBoxTrigger()" >' +
-      '<label for="{{ elementId }}"><span ng-bind-html="elementText"></span></label>' +
+      '<input ng-checked="inEshelf()" ng-disabled="running" id="{{ elementId }}" type="checkbox" data-eshelf-external-id="{{ externalId }}" ng-click="running = true; eshelfCheckBoxTrigger()" >' +
+      '<label for="{{ elementId }}"><span ng-bind-html="setElementText()"></span></label>' +
     '</button></div>'
   })
