@@ -1,3 +1,5 @@
+// TODO:
+// - Currently doesn't work when a user is logged in to Eshelf
 angular.module('nyuEshelf', [])
   .config(function($httpProvider) {
     //Enable cross domain calls
