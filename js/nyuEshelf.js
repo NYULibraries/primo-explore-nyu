@@ -15,20 +15,31 @@ angular.module('nyuEshelf', [])
   })
   .factory('nyuEshelfService', ['nyuEshelfConfig', '$http', (config, $http) => {
     return {
+      initialized: false,
       csrfToken: '',
       loggedIn: false,
+      initEshelf: function() {
+        var url = config.eshelfBaseUrl + "/records/from/primo.json?per=all&_=" + Date.now();
+        var svc = this;
+        $http.get(url).then(
+          function(response){
+            svc.csrfToken = response.headers('x-csrf-token');
+            svc.initialized = true;
+          },
+          function(response){
+            console.log("Error in e-Shelf CORS API");
+            console.log("Response: " + response);
+          }
+        );
+      },
       checkEshelf: function(externalId) {
         var url = config.eshelfBaseUrl + "/records/from/primo.json?per=all&external_id[]=" + externalId;
         var svc = this;
-
         $http.get(url).then(
             function(response){
-              svc.csrfToken = response.headers('x-csrf-token');
               if (response.data.length > 0) {
                 if (response.data.filter(item => item["external_id"] == externalId)) {
                   svc[externalId] = true;
-                  console.log("Setting X-CSRF-Token on Init")
-                  console.log(svc.csrfToken)
                 }
               }
             },
@@ -41,8 +52,6 @@ angular.module('nyuEshelf', [])
         if (!/^(DELETE|POST)$/.test(httpMethod.toUpperCase())) {
           return {};
         }
-        console.log("About to send the csrfToken")
-        console.log(this.csrfToken)
         let headers = { 'X-CSRF-Token': this.csrfToken, 'Content-type': 'application/json;charset=utf-8' }
         let request = {
           method: httpMethod.toUpperCase(),
@@ -57,8 +66,6 @@ angular.module('nyuEshelf', [])
       },
       success: function(response, externalId) {
         this.csrfToken = response.headers('x-csrf-token');
-        console.log("Setting X-CSRF-Token on Add")
-        console.log(this.csrfToken)
 
         if (response.status == 201) {
           this[externalId] = true;
@@ -69,7 +76,9 @@ angular.module('nyuEshelf', [])
     };
   }])
   .run(['nyuEshelfService', function(nyuEshelfService){
-    nyuEshelfService.checkEshelf();
+    if (!nyuEshelfService.initialized) {
+      nyuEshelfService.initEshelf();
+    }
   }])
   .constant('nyuEshelfConfig', {
     myEshelf: 'My e-Shelf',
