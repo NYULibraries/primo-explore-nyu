@@ -7,8 +7,8 @@ angular.module('nyuEshelf', [])
     $httpProvider.defaults.useXDomain = true;
     //Enable passing of cookies for CORS calls
     $httpProvider.defaults.withCredentials = true;
-    $httpProvider.defaults.xsrfCookieName = 'X-CSRF-Token';
-    $httpProvider.defaults.xsrfHeaderName = 'X-CSRF-Token';
+    // $httpProvider.defaults.xsrfCookieName = 'X-CSRF-Token';
+    // $httpProvider.defaults.xsrfHeaderName = 'X-CSRF-Token';
 
     //Remove the header containing XMLHttpRequest used to identify ajax call
     //that would prevent CORS from working
@@ -28,6 +28,8 @@ angular.module('nyuEshelf', [])
               if (response.data.length > 0) {
                 if (response.data.filter(item => item["external_id"] == externalId)) {
                   svc[externalId] = true;
+                  console.log("Setting X-CSRF-Token on Init")
+                  console.log(svc[externalId])
                 }
               }
             },
@@ -40,6 +42,8 @@ angular.module('nyuEshelf', [])
         if (!/^(DELETE|POST)$/.test(httpMethod.toUpperCase())) {
           return {};
         }
+        console.log("About to send the csrfToken")
+        console.log(this.csrfToken)
         let headers = { 'X-CSRF-Token': this.csrfToken, 'Content-type': 'application/json;charset=utf-8' }
         let request = {
           method: httpMethod.toUpperCase(),
@@ -54,6 +58,8 @@ angular.module('nyuEshelf', [])
       },
       success: function(response, externalId) {
         this.csrfToken = response.headers('x-csrf-token');
+        console.log("Setting X-CSRF-Token on Add")
+        console.log(this[externalId])
 
         if (response.status == 201) {
           this[externalId] = true;
@@ -79,8 +85,8 @@ angular.module('nyuEshelf', [])
       callingSystem: 'primo',
       institution: 'NYU-NUI'
     },
-    // eshelfBaseUrl: 'https://qa.eshelf.library.nyu.edu'
-    eshelfBaseUrl: 'http://localhost:3000'
+    eshelfBaseUrl: 'https://qa.eshelf.library.nyu.edu'
+    // eshelfBaseUrl: 'http://localhost:3000'
   })
   .controller('nyuEshelfController', ['nyuEshelfService', 'nyuEshelfConfig', '$rootScope', '$scope', '$http', '$location', '$window', function(nyuEshelfService, config, $rootScope, $scope, $http, $location, $window) {
     this.$onInit = function() {
