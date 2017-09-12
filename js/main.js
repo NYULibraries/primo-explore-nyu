@@ -37,3 +37,6 @@ app
   .component('prmOpacAfter', {
     template: '<getit-to-link-resolver-full></getit-to-link-resolver-full>'
   })
+  .component('prmSearchBookmarkFilterAfter', {
+    template: '<nyu-eshelf-toolbar></nyu-eshelf-toolbar>'
+  })

@@ -1,6 +1,5 @@
 // TODO:
 // - Currently doesn't work when a user is logged in to Eshelf
-// - Add "Guest e-Shelf"/"My e-Shelf" language to prmSearchBookmarkFilterAfter
 angular.module('nyuEshelf', [])
   .config(function($httpProvider) {
     //Enable cross domain calls
@@ -29,7 +28,7 @@ angular.module('nyuEshelf', [])
                 if (response.data.filter(item => item["external_id"] == externalId)) {
                   svc[externalId] = true;
                   console.log("Setting X-CSRF-Token on Init")
-                  console.log(svc[externalId])
+                  console.log(svc.csrfToken)
                 }
               }
             },
@@ -59,7 +58,7 @@ angular.module('nyuEshelf', [])
       success: function(response, externalId) {
         this.csrfToken = response.headers('x-csrf-token');
         console.log("Setting X-CSRF-Token on Add")
-        console.log(this[externalId])
+        console.log(this.csrfToken)
 
         if (response.status == 201) {
           this[externalId] = true;
@@ -73,6 +72,8 @@ angular.module('nyuEshelf', [])
     nyuEshelfService.checkEshelf();
   }])
   .constant('nyuEshelfConfig', {
+    myEshelf: 'My e-Shelf',
+    guestEshelf: 'Guest e-Shelf',
     addToEshelf: "Add to e-Shelf",
     inEshelf: "In e-Shelf",
     inGuestEshelf: "In guest e-Shelf",
@@ -146,3 +147,23 @@ angular.module('nyuEshelf', [])
       '<label for="{{ elementId }}"><span ng-bind-html="setElementText()"></span></label>' +
     '</button></div>'
   })
+  .controller('nyuEshelfToolbarController', ['nyuEshelfConfig', '$scope', '$filter', function(config, $scope, $filter) {
+    this.$onInit = function() {
+      $scope.loggedIn = !this.prmExploreMain.skipToService.userSessionManagerService.isGuest();
+    };
+    $scope.openEshelf = function() {
+      window.open($filter('translate')('urls.eshelf'), '_blank');
+    };
+    $scope.elementText = () => ($scope.loggedIn) ? config.myEshelf : config.guestEshelf;
+  }])
+  .component('nyuEshelfToolbar', {
+    controller: 'nyuEshelfToolbarController',
+    require: {
+      prmSearchBookmarkFilter: '^prmSearchBookmarkFilter',
+      prmExploreMain: '^^prmExploreMain'
+    },
+    template: '<button class="button-with-icon button-over-dark zero-margin md-button md-primoExplore-theme md-ink-ripple nyu-eshelf-toolbar" type="button" aria-label="Go to {{elementText()}}" ng-click="openEshelf()">'+
+                '<prm-icon style="z-index:1" icon-type="svg" svg-icon-set="image" icon-definition="ic_collections_bookmark_24px" aria-label="Go to {{elementText()}}"></prm-icon>'+
+                '<span class="hide-xs">{{elementText()}}</span>'+
+              '</button>'
+  });
