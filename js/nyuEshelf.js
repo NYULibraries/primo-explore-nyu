@@ -159,8 +159,7 @@ angular.module('nyuEshelf', [])
   .component('nyuEshelfToolbar', {
     controller: 'nyuEshelfToolbarController',
     require: {
-      prmSearchBookmarkFilter: '^prmSearchBookmarkFilter',
-      prmExploreMain: '^^prmExploreMain'
+      prmExploreMain: '^prmExploreMain'
     },
     template: '<button class="button-with-icon button-over-dark zero-margin md-button md-primoExplore-theme md-ink-ripple nyu-eshelf-toolbar" type="button" aria-label="Go to {{elementText()}}" ng-click="openEshelf()">'+
                 '<prm-icon style="z-index:1" icon-type="svg" svg-icon-set="image" icon-definition="ic_collections_bookmark_24px" aria-label="Go to {{elementText()}}"></prm-icon>'+
