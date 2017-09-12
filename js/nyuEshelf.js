@@ -1,5 +1,6 @@
 // TODO:
 // - Currently doesn't work when a user is logged in to Eshelf
+// - Add "Guest e-Shelf"/"My e-Shelf" language to prmSearchBookmarkFilterAfter
 angular.module('nyuEshelf', [])
   .config(function($httpProvider) {
     //Enable cross domain calls
@@ -98,7 +99,7 @@ angular.module('nyuEshelf', [])
       let headers = { 'X-CSRF-Token': nyuEshelfService.csrfToken, 'Content-type': 'application/json;charset=utf-8' }
       let request = {
         method: httpMethod.toUpperCase(),
-        url: $scope.eshelfBaseUrl+ "/records.json",
+        url: $scope.eshelfBaseUrl + "/records.json",
         headers: headers,
         data: $scope.recordData
       }
@@ -106,7 +107,7 @@ angular.module('nyuEshelf', [])
     };
 
     $scope.checkEshelf = function() {
-      var url = $scope.eshelfBaseUrl+ "/records/from/primo.json?per=all&external_id[]=" + $scope.externalId;
+      var url = $scope.eshelfBaseUrl + "/records/from/primo.json?per=all&external_id[]=" + $scope.externalId;
 
       $http.get(url).then(
           function(response){
