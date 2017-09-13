@@ -19,12 +19,14 @@ angular.module('nyuEshelf', [])
       csrfToken: '',
       loggedIn: false,
       initEshelf: function() {
-        var url = config.eshelfBaseUrl + "/records/from/primo.json?per=all&_=" + Date.now();
-        var svc = this;
+        let url = config.eshelfBaseUrl + "/records/from/primo.json?per=all&_=" + Date.now();
+        let svc = this;
         $http.get(url).then(
           function(response){
-            svc.csrfToken = response.headers('x-csrf-token');
-            svc.initialized = true;
+            if (response.headers('x-csrf-token')) {
+              svc.csrfToken = response.headers('x-csrf-token');
+              svc.initialized = true;
+            }
           },
           function(response){
             console.log("Error in e-Shelf CORS API");
@@ -33,8 +35,8 @@ angular.module('nyuEshelf', [])
         );
       },
       checkEshelf: function(externalId) {
-        var url = config.eshelfBaseUrl + "/records/from/primo.json?per=all&external_id[]=" + externalId;
-        var svc = this;
+        let url = config.eshelfBaseUrl + "/records/from/primo.json?per=all&external_id[]=" + externalId;
+        let svc = this;
         $http.get(url).then(
             function(response){
               if (response.data.length > 0) {
@@ -65,7 +67,9 @@ angular.module('nyuEshelf', [])
         this[externalId+'_error'] = true;
       },
       success: function(response, externalId) {
-        this.csrfToken = response.headers('x-csrf-token');
+        if (response.headers('x-csrf-token')) {
+          this.csrfToken = response.headers('x-csrf-token');
+        }
 
         if (response.status == 201) {
           this[externalId] = true;
