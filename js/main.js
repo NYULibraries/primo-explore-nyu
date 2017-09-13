@@ -11,89 +11,7 @@ import { customLibraryCardMenuItemsConfig } from './customLibraryCardMenu';
 import { clickableLogoLinkConfig } from './clickableLogoToAnyLink';
 import { libraryh3lpWidgetConfig } from './libraryh3lpWidget';
 import { getitToLinkResolverConfig } from './getitToLinkResolver'
-
-  angular.module('nyuEshelf', [])
-    .controller('nyuEshelfController', ['$scope', '$http', function($scope, $http){
-      this.$onInit = function() {
-        $scope.elementText = "Add to e-Shelf";
-
-        $scope.externalId = this.parentCtrl.result.pnx.control.recordid[0];
-        $scope.elementId = "eshelf_" + $scope.externalId;
-
-        $scope.eshelfUrl = 'https://dev.eshelf.library.nyu.edu/records.json';
-        $scope.recordData = { "record": { "external_system": "primo", "external_id": $scope.externalId }};
-        $scope.checkEshelf();
-      }
-
-      $scope.checkEshelf = function() {
-        var url = "https://dev.eshelf.library.nyu.edu/records/from/primo.json?per=all&external_id[]=" + $scope.externalId;
-        var config =
-        {
-          "xsrfCookieName": "X-CSRF-Token",
-          "withCredentials": true,
-          "xsrfHeaderName": "X-CSRF-Token",
-        };
-        $http.get(url, config).then(
-            function(response){
-              console.log("Success");
-              console.log(response.headers());
-              console.log(response);
-            },
-            function(response){
-              console.log("Failure");
-              console.log(response);
-            }
-         );
-      }
-
-      $scope.addToEshelf = function() {
-        $scope.elementText = "Adding to e-Shelf..."
-        $http.post($scope.eshelfUrl , $scope.recordData)
-          .then(
-            function(response){
-              $scope.elementText = "In guest e-Shelf (login to save permanently)";
-            },
-            function(response){
-              $scope.elementText = "Could not connect to e-Shelf";
-            }
-          );
-      }
-
-      $scope.removeFromEshelf = function() {
-        $scope.elementText = "Removing from e-Shelf..."
-        $http.delete($scope.eshelfUrl , $scope.recordData)
-          .then(
-            function(response){
-              $scope.elementText = "Add to e-Shelf";
-            },
-            function(response){
-              $scope.elementText = "Could not connect to e-Shelf";
-            }
-          );
-      }
-
-      $scope.eshelfCheckBoxTrigger = function() {
-        if(document.getElementById($scope.elementId).checked == true){
-          console.log("Clicked when unchecked ");
-          $scope.addToEshelf();
-        } else {
-
-          console.log("Clicked when checked ");
-          $scope.removeFromEshelf();
-        }
-      }
-    }])
-    .component('prmSearchResultAvailabilityLineAfter', {
-      controller: 'nyuEshelfController',
-      bindings: {
-        parentCtrl: '<'
-      },
-      template: '<button class="neutralized-button md-button md-primoExplore-theme" >' +
-        '<input id="{{ elementId }}" type="checkbox" data-eshelf-external-id="{{ externalId }}" ng-click="eshelfCheckBoxTrigger()" >' +
-        '<label for="{{ elementId }}">{{ elementText }}</label>' +
-      '</button>'
-
-    })
+import { nyuEshelf } from './nyuEshelf'
 
 let app = angular.module('viewCustom', [
                                         'angularLoad',
@@ -102,7 +20,7 @@ let app = angular.module('viewCustom', [
                                         'clickableLogoToAnyLink',
                                         'customNoSearchResults',
                                         'libraryh3lpWidget',
-                                        // 'getitToLinkResolver'
+                                        'getitToLinkResolver',
                                         'nyuEshelf'
                                       ]);
 
@@ -113,9 +31,12 @@ app
   .constant(libraryh3lpWidgetConfig.name, libraryh3lpWidgetConfig.config)
   .constant(getitToLinkResolverConfig.name, getitToLinkResolverConfig.config)
   .value('customNoSearchResultsTemplateUrl', 'custom/' + viewName + '/html/noSearchResults.html')
-  // .component('prmSearchResultAvailabilityLineAfter', {
-  //   template: '<getit-to-link-resolver-brief></getit-to-link-resolver-brief>'
-  // })
+  .component('prmSearchResultAvailabilityLineAfter', {
+    template: '<nyu-eshelf></nyu-eshelf>'
+  })
   .component('prmOpacAfter', {
     template: '<getit-to-link-resolver-full></getit-to-link-resolver-full>'
+  })
+  .component('prmSearchBookmarkFilterAfter', {
+    template: '<nyu-eshelf-toolbar></nyu-eshelf-toolbar>'
   })
