@@ -1,0 +1,29 @@
+{
+  "name": "NYU-NUI",
+  "version": "1.0.0",
+  "description": "This the NYU Consortium primo-explore view package.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NYULibraries/primo-explore-nyu.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NYULibraries/primo-explore-nyu/issues"
+  },
+  "homepage": "https://github.com/NYULibraries/primo-explore-nyu#readme",
+  "devDependencies": {
+    "primo-explore-clickable-logo-to-any-link": "^1.0.0",
+    "primo-explore-custom-actions": "^2.0.0",
+    "primo-explore-custom-library-card-menu": "^1.0.0",
+    "primo-explore-custom-no-search-results": "^1.0.0",
+    "primo-explore-getit-to-link-resolver": "^1.0.0",
+    "primo-explore-libraryh3lp-widget": "^1.0.1",
+    "primo-explore-nyu-eshelf": "^1.0.0"
+  }
+}

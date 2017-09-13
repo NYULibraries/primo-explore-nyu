@@ -1,37 +1,7 @@
 /* Top nav */
-prm-topbar {
-  // height: 108px;
-}
-
-.prm-primary-bg.prm-hue1, prm-search-bar.prm-hue1, prm-spinner.prm-hue1.overlay-cover.light-on-dark:after, prm-topbar .top-nav-bar {
+.prm-primary-bg.prm-hue1,
+prm-search-bar.prm-hue1,
+prm-spinner.prm-hue1.overlay-cover.light-on-dark:after,
+prm-topbar .top-nav-bar {
   background-color: $dark-purple;
-}
-
-prm-topbar .product-logo {
-  padding: 0 1em;
-  line-height: 73px;
-}
-
-prm-logo {
-  // height: 120px;
-}
-
-/* Create clickable logo */
-prm-logo div.product-logo {
-  display:none;
-}
-prm-logo div.product-logo-local {
-  display: flex;
-}
-prm-logo .logo-image, prm-logo img {
-  max-height: 35px;
-}
-prm-logo-after div.product-logo-local a {
-  max-width: none;
-  padding: 0;
-  line-height: 1em;
-  &:hover, &:active {
-    box-shadow: none !important;
-    background-color: inherit !important;
-  }
 }
