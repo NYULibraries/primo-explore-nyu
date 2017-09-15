@@ -9,3 +9,7 @@ prm-search-bookmark-filter-after button.search-bookmark-filter-item {
   border-radius: 20px !important;
   min-width: 40px !important;
 }
+// Hide default library card options
+prm-library-card-menu > button {
+  display: none !important;
+}
