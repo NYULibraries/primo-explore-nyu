@@ -1,4 +1,4 @@
-// Hide browse button from main menu
-prm-main-menu[menu-type=menu] a.md-button[aria-label='mainmenu.label.Browse'] {
+a.md-button[aria-label="Browse"],
+a.md-button[aria-label="mainmenu.label.Browse"] {
   display: none;
 }
