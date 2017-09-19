@@ -1,0 +1,4 @@
+// Hide browse button from main menu
+prm-main-menu[menu-type=menu] a.md-button[aria-label='nui.mainmenu.label.Browse'] {
+  display: none;
+}
