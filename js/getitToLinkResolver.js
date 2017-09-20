@@ -1,6 +1,7 @@
 export let getitToLinkResolverConfig = {
   name: 'getitToLinkResolverConfig',
   config: {
+    serviceSectionHeader: '{nui.getit.tab1_check}',
     linkField: 'lln10',
     linkText: 'Check Availability',
     iconBefore: {
