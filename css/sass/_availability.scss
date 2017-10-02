@@ -2,16 +2,3 @@
   color: $getit_green;
   font-size: 18px;
 }
-
-// Hide Get It section on full view
-[aria-label="Get It"],
-&[id^='getit_link1_'] {
-  display: none;
-}
-
-// Hide availability links on brief and full display
-prm-brief-result-container prm-search-result-availability-line > *:not(:last-child),
-prm-full-view prm-search-result-availability-line > *:not(:last-child),
-prm-full-view prm-search-result-availability-line-after a.check-avail-link {
-  display: none;
-}

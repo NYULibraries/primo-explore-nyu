@@ -1,8 +1,0 @@
-// Disable built in e-shelf
-.pin-button,
-prm-favorites-labels,
-prm-search-bookmark-filter a[aria-label='Go to my favorites'],
-prm-search-bookmark-filter a[aria-label="nui.favorites.goFavorites.tooltip"],
-prm-favorites md-tab-item:first-child {
-  display: none !important;
-}

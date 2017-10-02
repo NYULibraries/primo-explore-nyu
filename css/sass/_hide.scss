@@ -1,0 +1,39 @@
+// Disable built in e-shelf
+.pin-button,
+prm-favorites-labels,
+prm-search-bookmark-filter a[aria-label='Go to my favorites'],
+prm-search-bookmark-filter a[aria-label="nui.favorites.goFavorites.tooltip"],
+prm-favorites md-tab-item:first-child {
+  display: none !important;
+}
+
+// Hide default library card options
+prm-library-card-menu > button {
+  display: none !important;
+}
+
+// Hide browse options from mainmenu
+a.md-button[aria-label="Browse"],
+a.md-button[aria-label="mainmenu.label.Browse"] {
+  display: none;
+}
+
+// Hide Tags
+// From: https://knowledge.exlibrisgroup.com/Primo/Knowledge_Articles/How_to_disable_the_tags_in_Primo_classic_and_new_UI
+[aria-label="Tags"],
+#tags {
+  display: none;
+}
+
+// Hide availability links on brief and full display
+prm-brief-result-container prm-search-result-availability-line > *:not(:last-child),
+prm-full-view prm-search-result-availability-line > *:not(:last-child),
+prm-full-view prm-search-result-availability-line-after a.check-avail-link {
+  display: none;
+}
+
+// Hide Get It section on full view
+[aria-label="Get It"],
+&[id^='getit_link1_'] {
+  display: none;
+}
