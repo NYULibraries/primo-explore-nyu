@@ -21,8 +21,8 @@
     "primo-explore-clickable-logo-to-any-link": "^1.0.0",
     "primo-explore-custom-actions": "^2.0.0",
     "primo-explore-custom-library-card-menu": "^1.1.0",
-    "primo-explore-getit-to-link-resolver": "^2.0.1",
+    "primo-explore-getit-to-link-resolver": "^2.0.2",
     "primo-explore-libraryh3lp-widget": "^1.0.1",
-    "primo-explore-nyu-eshelf": "^1.1.1"
+    "primo-explore-nyu-eshelf": "^1.1.3"
   }
 }
