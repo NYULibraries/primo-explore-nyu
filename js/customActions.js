@@ -3,6 +3,15 @@ export let customActionsConfig = {
   name: 'customActions',
   config: [
     {
+      name: "Feedback",
+      type: 'template',
+      icon: {
+          set: 'communication',
+          name: 'ic_forum_24px'
+      },
+      action: "https://nyu.qualtrics.com/jfe/form/SV_blQ3OFOew9vl6Pb?Source=NYU"
+    },
+    {
       name: "EndNote",
       type: 'template',
       icon: {
