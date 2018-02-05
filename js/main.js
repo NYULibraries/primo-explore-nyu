@@ -12,6 +12,7 @@ import { clickableLogoLinkConfig } from './clickableLogoToAnyLink';
 import { libraryh3lpWidgetConfig } from './libraryh3lpWidget';
 import { getitToLinkResolverConfig } from './getitToLinkResolver';
 import { nyuEshelfConfig } from './nyuEshelf';
+import { searchBarSubMenu } from './searchBarSubMenu';
 
 let app = angular.module('viewCustom', [
                                         'angularLoad',
@@ -20,7 +21,8 @@ let app = angular.module('viewCustom', [
                                         'clickableLogoToAnyLink',
                                         'libraryh3lpWidget',
                                         'getitToLinkResolver',
-                                        'nyuEshelf'
+                                        'nyuEshelf',
+                                        'searchBarSubMenu'
                                       ]);
 
 app
@@ -38,4 +40,7 @@ app
   })
   .component('prmSearchBookmarkFilterAfter', {
     template: '<nyu-eshelf-toolbar></nyu-eshelf-toolbar>'
+  })
+  .component('prmSearchBarAfter', {
+    template: '<search-bar-sub-menu></search-bar-sub-menu>'
   })
