@@ -2,22 +2,36 @@
 @import 'availability';
 @import 'chat_widget';
 @import 'hide';
-// search-bar-sub-menu {
-//   ul {
-//     margin: 0;
-//     li {
-//       display: inline;
-//       list-style: none;
-//       padding: 0;
-//     }
-//   }
-//   div.search-bar-sub-menu {
-//     background-color: #e0d5e8;
-//     // position: absolute;
-//     // left: 0;
-//     width: 100%;
-//   }
-// }
-// .md-button.md-small {
-//   font-size: .75em;
-// }
+$search-bar-sub-menu-height: 36px !default;
+$search-bar-sub-menu-bg-color: #ccd0d5 !default;
+prm-search-bar {
+  padding-bottom: 22.5px + $search-bar-sub-menu-height;
+}
+.__sm prm-search-bar {
+  padding-bottom: 13.5px + $search-bar-sub-menu-height;
+}
+.__xs prm-search-bar {
+  padding-bottom: $search-bar-sub-menu-height;
+}
+search-bar-sub-menu {
+  ul {
+    margin: 0;
+    li {
+      display: inline;
+      list-style: none;
+      padding: 0;
+    }
+  }
+  div.search-bar-sub-menu {
+    background-color: $search-bar-sub-menu-bg-color;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: $search-bar-sub-menu-height;
+  }
+  .md-button.md-small {
+    font-size: .75em;
+    min-width: 42px;
+  }
+}
