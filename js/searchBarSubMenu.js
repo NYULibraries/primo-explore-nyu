@@ -2,9 +2,9 @@ export let searchBarSubMenuItemsConfig = {
   name: 'searchBarSubMenuItems',
   config: [
     {
-      name: "Back to Primo Classic",
-      description: "Back to Primo Classic",
-      action: "http://bobcat.library.nyu.edu",
+      name: "Back to BobCat Classic",
+      description: "Back to BobCat Classic",
+      action: "http://bobcat.library.nyu.edu/primo_library/libweb/action/search.do?vid=" + "NYU",
       icon: {
         set: 'navigation',
         icon: 'ic_arrow_back_24px'
