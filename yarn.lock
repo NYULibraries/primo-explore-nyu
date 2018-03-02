@@ -26,9 +26,9 @@ primo-explore-libraryh3lp-widget@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/primo-explore-libraryh3lp-widget/-/primo-explore-libraryh3lp-widget-1.0.2.tgz#3339b9c5f871c13e6fa4159dc879bfacecae7fec"
 
-primo-explore-nyu-eshelf@^1.1.4:
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/primo-explore-nyu-eshelf/-/primo-explore-nyu-eshelf-1.1.4.tgz#aa1b8e0ed9937896be38b8c2538cf9b20dba862f"
+primo-explore-nyu-eshelf@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/primo-explore-nyu-eshelf/-/primo-explore-nyu-eshelf-2.0.1.tgz#bcb0282ac26fb9dcf9cacabbb87ea0a1198545f2"
 
 primo-explore-search-bar-sub-menu@^1.0.1:
   version "1.0.1"
