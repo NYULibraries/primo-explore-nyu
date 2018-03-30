@@ -2,6 +2,18 @@
 # yarn lockfile v1
 
 
+angulartics-google-analytics@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/angulartics-google-analytics/-/angulartics-google-analytics-0.5.0.tgz#29439b60b3bf1bc129d2662049c0c2d0d4c98fab"
+
+angulartics-google-tag-manager@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/angulartics-google-tag-manager/-/angulartics-google-tag-manager-0.0.1.tgz#59e8e4a9db5d85693b7cdec81a215136b04118e9"
+
+angulartics@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/angulartics/-/angulartics-1.6.0.tgz#a89c17ef8ea2334ebced65d6265951846f848172"
+
 primo-explore-clickable-logo-to-any-link@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/primo-explore-clickable-logo-to-any-link/-/primo-explore-clickable-logo-to-any-link-1.0.1.tgz#e6fba4ff4207062a9db90e70fe780e4b30e9738d"

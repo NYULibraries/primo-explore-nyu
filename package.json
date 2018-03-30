@@ -18,6 +18,9 @@
   },
   "homepage": "https://github.com/NYULibraries/primo-explore-nyu#readme",
   "devDependencies": {
+    "angulartics": "^1.6.0",
+    "angulartics-google-analytics": "^0.5.0",
+    "angulartics-google-tag-manager": "^0.0.1",
     "primo-explore-clickable-logo-to-any-link": "^1.0.0",
     "primo-explore-custom-actions": "^3.0.0",
     "primo-explore-custom-library-card-menu": "^1.1.0",
