@@ -7,6 +7,7 @@ import 'primo-explore-nyu-eshelf';
 import 'primo-explore-search-bar-sub-menu';
 import 'angulartics';
 import 'angulartics-google-tag-manager';
+import 'primo-explore-google-analytics';
 
 import { viewName } from './viewName';
 import { customActionsConfig } from './customActions';
@@ -16,6 +17,7 @@ import { libraryh3lpWidgetConfig } from './libraryh3lpWidget';
 import { getitToLinkResolverConfig } from './getitToLinkResolver';
 import { nyuEshelfConfig } from './nyuEshelf';
 import { searchBarSubMenuItemsConfig } from './searchBarSubMenu';
+import { googleAnalyticsConfig } from './googleAnalyticsConfig';
 
 let app = angular.module('viewCustom', [
                                         'angularLoad',
@@ -27,7 +29,8 @@ let app = angular.module('viewCustom', [
                                         'nyuEshelf',
                                         'searchBarSubMenu',
                                         'angulartics',
-                                        'angulartics.google.tagmanager'
+                                        'angulartics.google.tagmanager',
+                                        'googleAnalytics'
                                       ]);
 
 app
@@ -37,6 +40,7 @@ app
   .constant(getitToLinkResolverConfig.name, getitToLinkResolverConfig.config)
   .constant(nyuEshelfConfig.name, nyuEshelfConfig.config)
   .constant(searchBarSubMenuItemsConfig.name, searchBarSubMenuItemsConfig.config)
+  .constant(googleAnalyticsConfig.name, googleAnalyticsConfig.config)
   .component('prmActionListAfter', {
     template: customActionsConfig.template
   })
@@ -51,36 +55,14 @@ app
   })
   .component('prmSearchBarAfter', {
     template: '<search-bar-sub-menu></search-bar-sub-menu>'
-  })
+  });
 
+// GA injection
+app.run(runBlock);
 
+runBlock.$inject = ['gaInjectionService'];
 
-// Google analytics
-const s1 = document.createElement('script');
-s1.src = "https://www.googletagmanager.com/gtag/js?id=UA-55461631-20";
-document.head.appendChild(s1);
-
-const s2 = document.createElement('script');
-s2.type = 'text/javascript';
-const code = `window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'UA-55461631-20');`;
-
-try {
-  s2.appendChild(document.createTextNode(code));
-  document.head.appendChild(s2);
-} catch (e) {
-  s2.text = code;
-  document.body.appendChild(s2);
+function runBlock(gaInjectionService) {
+  // other potential run operations...
+  gaInjectionService.injectGACode();
 }
-
-// <!-- Global site tag (gtag.js) - Google Analytics -->
-// <script async src="https://www.googletagmanager.com/gtag/js?id=UA-55461631-20"></script>
-// <script>
-//   window.dataLayer = window.dataLayer || [];
-//   function gtag(){dataLayer.push(arguments);}
-//   gtag('js', new Date());
-//
-//   gtag('config', 'UA-55461631-20');
-// </script>

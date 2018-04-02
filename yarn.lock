@@ -34,6 +34,10 @@ primo-explore-getit-to-link-resolver@^2.0.2:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/primo-explore-getit-to-link-resolver/-/primo-explore-getit-to-link-resolver-2.0.3.tgz#39ebc61dfc4f17b5fd4e682c346408ec5e52b416"
 
+"primo-explore-google-analytics@https://github.com/NYULibraries/primo-explore-google-analytics#develop":
+  version "0.1.0"
+  resolved "https://github.com/NYULibraries/primo-explore-google-analytics#a1b8d008e547bb93a71d362fdffbf278a8396b21"
+
 primo-explore-libraryh3lp-widget@^1.0.2:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/primo-explore-libraryh3lp-widget/-/primo-explore-libraryh3lp-widget-1.0.3.tgz#4619f45a8c511fe6fb6a8836df3b696d25c68f8c"
