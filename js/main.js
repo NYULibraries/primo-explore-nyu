@@ -5,6 +5,9 @@ import 'primo-explore-libraryh3lp-widget';
 import 'primo-explore-getit-to-link-resolver';
 import 'primo-explore-nyu-eshelf';
 import 'primo-explore-search-bar-sub-menu';
+import 'angulartics';
+import 'angulartics-google-tag-manager';
+import 'primo-explore-google-analytics';
 
 import { viewName } from './viewName';
 import { customActionsConfig } from './customActions';
@@ -14,6 +17,7 @@ import { libraryh3lpWidgetConfig } from './libraryh3lpWidget';
 import { getitToLinkResolverConfig } from './getitToLinkResolver';
 import { nyuEshelfConfig } from './nyuEshelf';
 import { searchBarSubMenuItemsConfig } from './searchBarSubMenu';
+import { googleAnalyticsConfig } from './googleAnalyticsConfig';
 
 let app = angular.module('viewCustom', [
                                         'angularLoad',
@@ -23,7 +27,10 @@ let app = angular.module('viewCustom', [
                                         'libraryh3lpWidget',
                                         'getitToLinkResolver',
                                         'nyuEshelf',
-                                        'searchBarSubMenu'
+                                        'searchBarSubMenu',
+                                        'angulartics',
+                                        'angulartics.google.tagmanager',
+                                        'googleAnalytics'
                                       ]);
 
 app
@@ -33,6 +40,7 @@ app
   .constant(getitToLinkResolverConfig.name, getitToLinkResolverConfig.config)
   .constant(nyuEshelfConfig.name, nyuEshelfConfig.config)
   .constant(searchBarSubMenuItemsConfig.name, searchBarSubMenuItemsConfig.config)
+  .constant(googleAnalyticsConfig.name, googleAnalyticsConfig.config)
   .component('prmActionListAfter', {
     template: customActionsConfig.template
   })
@@ -47,4 +55,14 @@ app
   })
   .component('prmSearchBarAfter', {
     template: '<search-bar-sub-menu></search-bar-sub-menu>'
-  })
+  });
+
+// GA injection
+app.run(runBlock);
+
+runBlock.$inject = ['gaInjectionService'];
+
+function runBlock(gaInjectionService) {
+  // other potential run operations...
+  gaInjectionService.injectGACode();
+}
