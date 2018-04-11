@@ -60,9 +60,9 @@ app
 // GA injection
 app.run(runBlock);
 
-runBlock.$inject = ['gaInjectionService'];
+runBlock.$inject = ['gaInjectionService', 'nyuEshelfService'];
 
-function runBlock(gaInjectionService) {
-  // other potential run operations...
+function runBlock(gaInjectionService, nyuEshelfService) {
   gaInjectionService.injectGACode();
+  nyuEshelfService.initEshelf();
 }
