@@ -30,5 +30,5 @@
     "primo-explore-nyu-eshelf": "^3.0.3",
     "primo-explore-search-bar-sub-menu": "^1.0.1",
     "primo-explore-google-analytics": "https://github.com/NYULibraries/primo-explore-google-analytics#develop"
-  },
+  }
 }
