@@ -57,7 +57,6 @@ app
     template: '<search-bar-sub-menu></search-bar-sub-menu>'
   });
 
-// GA injection
 app.run(runBlock);
 
 runBlock.$inject = ['gaInjectionService', 'nyuEshelfService'];
