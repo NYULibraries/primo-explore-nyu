@@ -42,7 +42,7 @@ primo-explore-libraryh3lp-widget@^1.0.2:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/primo-explore-libraryh3lp-widget/-/primo-explore-libraryh3lp-widget-1.0.3.tgz#4619f45a8c511fe6fb6a8836df3b696d25c68f8c"
 
-primo-explore-nyu-eshelf@^3.0.3:
+primo-explore-nyu-eshelf@^3.1.1:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/primo-explore-nyu-eshelf/-/primo-explore-nyu-eshelf-3.1.1.tgz#8bd6f1ee559518479fea043346b16ac634bd8b94"
 
