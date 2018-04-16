@@ -31,8 +31,11 @@ primo-explore-getit-to-link-resolver@^2.0.2:
   resolved "https://registry.yarnpkg.com/primo-explore-getit-to-link-resolver/-/primo-explore-getit-to-link-resolver-2.0.4.tgz#6800f800ce35a6472e2292242cab9e84667063c8"
 
 primo-explore-google-analytics@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/primo-explore-google-analytics/-/primo-explore-google-analytics-0.1.0.tgz#8426064ef6c9bc5e6a61a67dbff928201deb8079"
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/primo-explore-google-analytics/-/primo-explore-google-analytics-0.1.1.tgz#53a5e47cbc78fbe8a5a5e59a08caf0e2411c65dd"
+  dependencies:
+    angulartics "^1.6.0"
+    angulartics-google-tag-manager "^0.0.1"
 
 primo-explore-libraryh3lp-widget@^1.0.2:
   version "1.0.4"
