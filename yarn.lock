@@ -2,10 +2,6 @@
 # yarn lockfile v1
 
 
-angulartics-google-analytics@^0.5.0:
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/angulartics-google-analytics/-/angulartics-google-analytics-0.5.0.tgz#29439b60b3bf1bc129d2662049c0c2d0d4c98fab"
-
 angulartics-google-tag-manager@^0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/angulartics-google-tag-manager/-/angulartics-google-tag-manager-0.0.1.tgz#59e8e4a9db5d85693b7cdec81a215136b04118e9"
@@ -15,37 +11,37 @@ angulartics@^1.6.0:
   resolved "https://registry.yarnpkg.com/angulartics/-/angulartics-1.6.0.tgz#a89c17ef8ea2334ebced65d6265951846f848172"
 
 primo-explore-clickable-logo-to-any-link@^1.0.0:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/primo-explore-clickable-logo-to-any-link/-/primo-explore-clickable-logo-to-any-link-1.0.1.tgz#e6fba4ff4207062a9db90e70fe780e4b30e9738d"
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/primo-explore-clickable-logo-to-any-link/-/primo-explore-clickable-logo-to-any-link-1.0.2.tgz#0aa260c729d4756ac028d6b33d25d4e4f89a75b4"
 
 primo-explore-custom-actions@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/primo-explore-custom-actions/-/primo-explore-custom-actions-3.0.0.tgz#414b56c583e248b472719a9f1645fb648d85ae27"
 
 primo-explore-custom-library-card-menu@^1.1.0:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/primo-explore-custom-library-card-menu/-/primo-explore-custom-library-card-menu-1.1.1.tgz#7f1d6fd51708451bfdb87c67533ca62f941d593e"
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/primo-explore-custom-library-card-menu/-/primo-explore-custom-library-card-menu-1.1.2.tgz#e2812f6e38cc2275a13f3c8ed4682f30b048baa5"
 
 primo-explore-custom-no-search-results@^1.0.0:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/primo-explore-custom-no-search-results/-/primo-explore-custom-no-search-results-1.0.1.tgz#0dfeca3564048bcb2e9b13b4bb83d14e31bf3bac"
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/primo-explore-custom-no-search-results/-/primo-explore-custom-no-search-results-1.0.2.tgz#2e71b950f4164f293c0e2126b782ad67d48eeb53"
 
 primo-explore-getit-to-link-resolver@^2.0.2:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/primo-explore-getit-to-link-resolver/-/primo-explore-getit-to-link-resolver-2.0.3.tgz#39ebc61dfc4f17b5fd4e682c346408ec5e52b416"
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/primo-explore-getit-to-link-resolver/-/primo-explore-getit-to-link-resolver-2.0.4.tgz#6800f800ce35a6472e2292242cab9e84667063c8"
 
-"primo-explore-google-analytics@https://github.com/NYULibraries/primo-explore-google-analytics#develop":
+primo-explore-google-analytics@^0.1.0:
   version "0.1.0"
-  resolved "https://github.com/NYULibraries/primo-explore-google-analytics#0476125601c75b93ea8cae05eaccac13b42ea6ed"
+  resolved "https://registry.yarnpkg.com/primo-explore-google-analytics/-/primo-explore-google-analytics-0.1.0.tgz#8426064ef6c9bc5e6a61a67dbff928201deb8079"
 
 primo-explore-libraryh3lp-widget@^1.0.2:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/primo-explore-libraryh3lp-widget/-/primo-explore-libraryh3lp-widget-1.0.3.tgz#4619f45a8c511fe6fb6a8836df3b696d25c68f8c"
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/primo-explore-libraryh3lp-widget/-/primo-explore-libraryh3lp-widget-1.0.4.tgz#d542c046fd7366d579f2221eb07b25c8f0e1fde2"
 
-primo-explore-nyu-eshelf@^3.1.1:
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/primo-explore-nyu-eshelf/-/primo-explore-nyu-eshelf-3.1.1.tgz#8bd6f1ee559518479fea043346b16ac634bd8b94"
+primo-explore-nyu-eshelf@^3.1.3:
+  version "3.1.4"
+  resolved "https://registry.yarnpkg.com/primo-explore-nyu-eshelf/-/primo-explore-nyu-eshelf-3.1.4.tgz#ee4ca04698465d1ac3b1c6ca99eaf0360eac29d1"
 
 primo-explore-search-bar-sub-menu@^1.0.1:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/primo-explore-search-bar-sub-menu/-/primo-explore-search-bar-sub-menu-1.0.2.tgz#bbfbb1340795502618be64ef84a655d60a3f2f0b"
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/primo-explore-search-bar-sub-menu/-/primo-explore-search-bar-sub-menu-1.0.6.tgz#81d42155e87e08544d925eafa64dc8e4631f2987"

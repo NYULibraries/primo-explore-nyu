@@ -5,8 +5,6 @@ import 'primo-explore-libraryh3lp-widget';
 import 'primo-explore-getit-to-link-resolver';
 import 'primo-explore-nyu-eshelf';
 import 'primo-explore-search-bar-sub-menu';
-import 'angulartics';
-import 'angulartics-google-tag-manager';
 import 'primo-explore-google-analytics';
 
 import { viewName } from './viewName';
@@ -28,8 +26,6 @@ let app = angular.module('viewCustom', [
                                         'getitToLinkResolver',
                                         'nyuEshelf',
                                         'searchBarSubMenu',
-                                        'angulartics',
-                                        'angulartics.google.tagmanager',
                                         'googleAnalytics'
                                       ]);
 

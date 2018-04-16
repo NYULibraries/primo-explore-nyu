@@ -19,16 +19,15 @@
   "homepage": "https://github.com/NYULibraries/primo-explore-nyu#readme",
   "devDependencies": {
     "angulartics": "^1.6.0",
-    "angulartics-google-analytics": "^0.5.0",
     "angulartics-google-tag-manager": "^0.0.1",
     "primo-explore-clickable-logo-to-any-link": "^1.0.0",
     "primo-explore-custom-actions": "^3.0.0",
     "primo-explore-custom-library-card-menu": "^1.1.0",
     "primo-explore-custom-no-search-results": "^1.0.0",
     "primo-explore-getit-to-link-resolver": "^2.0.2",
-    "primo-explore-google-analytics": "https://github.com/NYULibraries/primo-explore-google-analytics#develop",
+    "primo-explore-google-analytics": "^0.1.0",
     "primo-explore-libraryh3lp-widget": "^1.0.2",
-    "primo-explore-nyu-eshelf": "^3.1.1",
+    "primo-explore-nyu-eshelf": "^3.1.3",
     "primo-explore-search-bar-sub-menu": "^1.0.1"
   }
 }
