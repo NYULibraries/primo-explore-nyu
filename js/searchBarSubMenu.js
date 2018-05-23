@@ -4,7 +4,7 @@ export let searchBarSubMenuItemsConfig = {
     {
       name: "Back to BobCat Classic",
       description: "Back to BobCat Classic",
-      action: "http://bobcat.library.nyu.edu/primo_library/libweb/action/search.do?vid=" + "NYU",
+      action: "http://bobcat.library.nyu.edu/primo_library/libweb/action/search.do?vid=" + "NYU-BKUP",
       icon: {
         set: 'navigation',
         icon: 'ic_arrow_back_24px'
