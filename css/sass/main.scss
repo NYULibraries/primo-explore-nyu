@@ -2,3 +2,8 @@
 @import 'availability';
 @import 'chat_widget';
 @import 'hide';
+
+// Force permalink to Display
+prm-permalink > div {
+  display: block !important;
+}
