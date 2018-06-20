@@ -10,7 +10,7 @@ angulartics@^1.6.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/angulartics/-/angulartics-1.6.0.tgz#a89c17ef8ea2334ebced65d6265951846f848172"
 
-primo-explore-clickable-logo-to-any-link@^1.0.2:
+primo-explore-clickable-logo-to-any-link@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/primo-explore-clickable-logo-to-any-link/-/primo-explore-clickable-logo-to-any-link-1.0.4.tgz#a37316baf2893b83ea96ee0266f9ce3b28f3c23e"
 
@@ -18,11 +18,11 @@ primo-explore-custom-actions@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/primo-explore-custom-actions/-/primo-explore-custom-actions-3.0.0.tgz#414b56c583e248b472719a9f1645fb648d85ae27"
 
-primo-explore-custom-library-card-menu@^1.1.2:
+primo-explore-custom-library-card-menu@^1.1.5:
   version "1.1.5"
   resolved "https://registry.yarnpkg.com/primo-explore-custom-library-card-menu/-/primo-explore-custom-library-card-menu-1.1.5.tgz#f3130316abe4c14e2fcc962f33d80feae36da5b3"
 
-primo-explore-custom-no-search-results@^1.0.2:
+primo-explore-custom-no-search-results@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/primo-explore-custom-no-search-results/-/primo-explore-custom-no-search-results-1.0.4.tgz#358d17e9cc242ca9949bdfb7e14fe3920e83f493"
 
@@ -37,11 +37,11 @@ primo-explore-google-analytics@^0.1.0:
     angulartics "^1.6.0"
     angulartics-google-tag-manager "^0.0.1"
 
-primo-explore-libraryh3lp-widget@^1.0.4:
+primo-explore-libraryh3lp-widget@^1.0.6:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/primo-explore-libraryh3lp-widget/-/primo-explore-libraryh3lp-widget-1.0.6.tgz#af217b39234ed44f651747a3aecb118dcba4baa0"
 
-primo-explore-nyu-eshelf@^3.1.5:
+primo-explore-nyu-eshelf@^3.1.6:
   version "3.1.6"
   resolved "https://registry.yarnpkg.com/primo-explore-nyu-eshelf/-/primo-explore-nyu-eshelf-3.1.6.tgz#a72e868598977f892efb96aeb294e105c5b693b4"
 
