@@ -6,3 +6,11 @@
   color: $text_lavender;
   background: $purple;
 }
+
+.chat-tab, .chat-close {
+  &:focus {
+    -webkit-box-shadow: inset 0 0 0 2px $border_focus;
+    box-shadow: inset 0 0 0 2px $border_focus;
+    overflow: -moz-hidden-unscrollable;
+  }
+}
