@@ -10,9 +10,9 @@ angulartics@^1.6.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/angulartics/-/angulartics-1.6.0.tgz#a89c17ef8ea2334ebced65d6265951846f848172"
 
-primo-explore-clickable-logo-to-any-link@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/primo-explore-clickable-logo-to-any-link/-/primo-explore-clickable-logo-to-any-link-1.0.4.tgz#a37316baf2893b83ea96ee0266f9ce3b28f3c23e"
+primo-explore-clickable-logo-to-any-link@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/primo-explore-clickable-logo-to-any-link/-/primo-explore-clickable-logo-to-any-link-1.1.0.tgz#25a720c0aa924f3f39520e165efc372578737c41"
 
 primo-explore-custom-actions@^3.0.0:
   version "3.0.0"
