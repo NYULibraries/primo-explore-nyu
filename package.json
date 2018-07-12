@@ -20,7 +20,7 @@
   "devDependencies": {
     "angulartics": "^1.6.0",
     "angulartics-google-tag-manager": "^0.0.1",
-    "primo-explore-clickable-logo-to-any-link": "^1.0.4",
+    "primo-explore-clickable-logo-to-any-link": "^1.1.0",
     "primo-explore-custom-actions": "^3.0.0",
     "primo-explore-custom-library-card-menu": "^1.1.5",
     "primo-explore-custom-no-search-results": "^1.0.4",
