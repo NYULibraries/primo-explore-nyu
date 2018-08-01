@@ -10,15 +10,15 @@ angulartics@^1.6.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/angulartics/-/angulartics-1.6.0.tgz#a89c17ef8ea2334ebced65d6265951846f848172"
 
-primo-explore-clickable-logo-to-any-link@^1.1.0:
+primo-explore-clickable-logo-to-any-link@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/primo-explore-clickable-logo-to-any-link/-/primo-explore-clickable-logo-to-any-link-1.1.1.tgz#1e982c5e9b16f6eb99c050f9ccf36a87e2acaaa8"
 
-primo-explore-custom-actions@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/primo-explore-custom-actions/-/primo-explore-custom-actions-3.0.0.tgz#414b56c583e248b472719a9f1645fb648d85ae27"
+primo-explore-custom-actions@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/primo-explore-custom-actions/-/primo-explore-custom-actions-3.1.0.tgz#e9d3f7138040cbf3b8a8a2805cf83c609079de54"
 
-primo-explore-custom-library-card-menu@^1.1.5:
+primo-explore-custom-library-card-menu@^1.1.6:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/primo-explore-custom-library-card-menu/-/primo-explore-custom-library-card-menu-1.1.6.tgz#d8dbda15baa38eaef13339167cc1e9a5d61c8e99"
 
@@ -26,11 +26,11 @@ primo-explore-custom-no-search-results@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/primo-explore-custom-no-search-results/-/primo-explore-custom-no-search-results-1.0.4.tgz#358d17e9cc242ca9949bdfb7e14fe3920e83f493"
 
-primo-explore-getit-to-link-resolver@^2.0.4:
+primo-explore-getit-to-link-resolver@^2.0.5:
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/primo-explore-getit-to-link-resolver/-/primo-explore-getit-to-link-resolver-2.0.5.tgz#ca13837815558839cc72e18dd481b12a9b40c15e"
 
-primo-explore-google-analytics@^0.1.0:
+primo-explore-google-analytics@^0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/primo-explore-google-analytics/-/primo-explore-google-analytics-0.1.2.tgz#d8df9e1c913f15bd9308728cd429e2636b3ca6ae"
   dependencies:
@@ -45,6 +45,6 @@ primo-explore-nyu-eshelf@^3.1.6:
   version "3.1.6"
   resolved "https://registry.yarnpkg.com/primo-explore-nyu-eshelf/-/primo-explore-nyu-eshelf-3.1.6.tgz#a72e868598977f892efb96aeb294e105c5b693b4"
 
-primo-explore-search-bar-sub-menu@^1.0.6:
+primo-explore-search-bar-sub-menu@^1.0.7:
   version "1.0.7"
   resolved "https://registry.yarnpkg.com/primo-explore-search-bar-sub-menu/-/primo-explore-search-bar-sub-menu-1.0.7.tgz#bfabdba488f7116bcf06c2433cf38b2f86bb4434"
