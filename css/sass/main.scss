@@ -3,8 +3,3 @@
 @import 'chat_widget';
 @import 'hide';
 @import 'logo';
-
-// Force permalink to Display
-prm-permalink > div {
-  display: block !important;
-}
