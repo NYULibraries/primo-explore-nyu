@@ -1,7 +1,5 @@
 # NYU Primo-explore package
 
-[![Dependency Status](https://gemnasium.com/badges/github.com/NYULibraries/primo-explore-nyu.svg)](https://gemnasium.com/github.com/NYULibraries/primo-explore-nyu)
-
 This the NYU Libraries primo-explore view package.
 
 For more information about primo-explore views please review the example package that this package was cloned from: https://github.com/ExLibrisGroup/primo-explore-package.
