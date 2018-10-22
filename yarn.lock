@@ -30,16 +30,16 @@ primo-explore-getit-to-link-resolver@^2.0.5:
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/primo-explore-getit-to-link-resolver/-/primo-explore-getit-to-link-resolver-2.0.5.tgz#ca13837815558839cc72e18dd481b12a9b40c15e"
 
-primo-explore-google-analytics@^0.1.2:
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/primo-explore-google-analytics/-/primo-explore-google-analytics-0.1.2.tgz#d8df9e1c913f15bd9308728cd429e2636b3ca6ae"
+primo-explore-google-analytics@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/primo-explore-google-analytics/-/primo-explore-google-analytics-1.0.0.tgz#2ea1ecacb1e1b4de9857d349819654c62d579a82"
   dependencies:
     angulartics "^1.6.0"
     angulartics-google-tag-manager "^0.0.1"
 
-primo-explore-libraryh3lp-widget@^1.0.7:
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/primo-explore-libraryh3lp-widget/-/primo-explore-libraryh3lp-widget-1.0.7.tgz#d8484bf1e23fc07074df69fd59aebd249b034b23"
+primo-explore-libraryh3lp-widget@^1.0.8:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/primo-explore-libraryh3lp-widget/-/primo-explore-libraryh3lp-widget-1.0.8.tgz#3b68da3e5567a97289e7f13a47fd62ebc619f11f"
 
 primo-explore-nyu-eshelf@^3.1.6:
   version "3.1.6"

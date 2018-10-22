@@ -17,16 +17,15 @@
     "url": "https://github.com/NYULibraries/primo-explore-nyu/issues"
   },
   "homepage": "https://github.com/NYULibraries/primo-explore-nyu#readme",
-  "devDependencies": {
-    "angulartics": "^1.6.0",
-    "angulartics-google-tag-manager": "^0.0.1",
+  "devDependencies": {},
+  "dependencies": {
     "primo-explore-clickable-logo-to-any-link": "^1.1.1",
     "primo-explore-custom-actions": "^3.1.0",
     "primo-explore-custom-library-card-menu": "^1.1.6",
     "primo-explore-custom-no-search-results": "^1.0.4",
     "primo-explore-getit-to-link-resolver": "^2.0.5",
-    "primo-explore-google-analytics": "^0.1.2",
-    "primo-explore-libraryh3lp-widget": "^1.0.7",
+    "primo-explore-google-analytics": "^1.0.0",
+    "primo-explore-libraryh3lp-widget": "^1.0.8",
     "primo-explore-nyu-eshelf": "^3.1.6",
     "primo-explore-search-bar-sub-menu": "^1.0.7"
   }
