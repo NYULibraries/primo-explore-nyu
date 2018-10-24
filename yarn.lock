@@ -37,9 +37,9 @@ primo-explore-google-analytics@^1.0.0:
     angulartics "^1.6.0"
     angulartics-google-tag-manager "^0.0.1"
 
-primo-explore-libraryh3lp-widget@^1.0.8:
-  version "1.0.8"
-  resolved "https://registry.yarnpkg.com/primo-explore-libraryh3lp-widget/-/primo-explore-libraryh3lp-widget-1.0.8.tgz#3b68da3e5567a97289e7f13a47fd62ebc619f11f"
+primo-explore-libraryh3lp-widget@^1.0.9:
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/primo-explore-libraryh3lp-widget/-/primo-explore-libraryh3lp-widget-1.0.9.tgz#d0f4fd8096e3ea48d7a362b547f2b02b152eb82e"
 
 primo-explore-nyu-eshelf@^3.1.6:
   version "3.1.6"
