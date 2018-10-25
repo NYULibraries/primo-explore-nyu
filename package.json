@@ -19,8 +19,8 @@
   "homepage": "https://github.com/NYULibraries/primo-explore-nyu#readme",
   "devDependencies": {},
   "dependencies": {
+    "@orbis-cascade/primo-explore-custom-actions": "^3.1.1",
     "primo-explore-clickable-logo-to-any-link": "^1.1.1",
-    "primo-explore-custom-actions": "^3.1.0",
     "primo-explore-custom-library-card-menu": "^1.1.6",
     "primo-explore-custom-no-search-results": "^1.0.4",
     "primo-explore-getit-to-link-resolver": "^2.0.5",
