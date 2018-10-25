@@ -1,3 +1,5 @@
+[![GitHub package version](https://img.shields.io/github/package-json/v/NYULibraries/primo-explore-nyu.svg)](https://github.com/NYULibraries/primo-explore-nyu/releases)
+[![Github commits (since latest release)](https://img.shields.io/github/commits-since/NYULibraries/primo-explore-nyu/latest.svg)](https://github.com/NYULibraries/primo-explore-nyu/releases/latest)
 # NYU Primo-explore package
 
 This the NYU Libraries primo-explore view package.
