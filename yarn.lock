@@ -2,6 +2,10 @@
 # yarn lockfile v1
 
 
+"@orbis-cascade/primo-explore-custom-actions@^3.1.1":
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/@orbis-cascade/primo-explore-custom-actions/-/primo-explore-custom-actions-3.1.1.tgz#7e3cb38ee1534d4da84c9658f1efeb62d5578f3d"
+
 angulartics-google-tag-manager@^0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/angulartics-google-tag-manager/-/angulartics-google-tag-manager-0.0.1.tgz#59e8e4a9db5d85693b7cdec81a215136b04118e9"
@@ -13,10 +17,6 @@ angulartics@^1.6.0:
 primo-explore-clickable-logo-to-any-link@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/primo-explore-clickable-logo-to-any-link/-/primo-explore-clickable-logo-to-any-link-1.1.1.tgz#1e982c5e9b16f6eb99c050f9ccf36a87e2acaaa8"
-
-primo-explore-custom-actions@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/primo-explore-custom-actions/-/primo-explore-custom-actions-3.1.0.tgz#e9d3f7138040cbf3b8a8a2805cf83c609079de54"
 
 primo-explore-custom-library-card-menu@^1.1.6:
   version "1.1.6"
