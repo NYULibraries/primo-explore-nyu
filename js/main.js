@@ -1,4 +1,4 @@
-import 'primo-explore-custom-actions';
+import '@orbis-cascade/primo-explore-custom-actions';
 import 'primo-explore-custom-library-card-menu';
 import 'primo-explore-clickable-logo-to-any-link';
 import 'primo-explore-libraryh3lp-widget';
