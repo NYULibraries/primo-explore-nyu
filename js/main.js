@@ -22,7 +22,7 @@ let app = angular.module('viewCustom', [
                                         'customLibraryCardMenu',
                                         'clickableLogoToAnyLink',
                                         'libraryh3lpWidget',
-                                        'getitToLinkResolver',
+                                        // 'getitToLinkResolver',
                                         'nyuEshelf',
                                         'searchBarSubMenu',
                                         'googleAnalytics'
