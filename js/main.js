@@ -7,7 +7,6 @@ import 'primo-explore-nyu-eshelf';
 import 'primo-explore-search-bar-sub-menu';
 import 'primo-explore-google-analytics';
 
-import { viewName } from './viewName';
 import { customActionsConfig } from './customActions';
 import { customLibraryCardMenuItemsConfig } from './customLibraryCardMenu';
 import { clickableLogoLinkConfig } from './clickableLogoToAnyLink';
@@ -55,7 +54,10 @@ app
 
 app.run(runBlock);
 
-runBlock.$inject = ['gaInjectionService', 'nyuEshelfService'];
+runBlock.$inject = [
+  'gaInjectionService',
+  'nyuEshelfService'
+];
 
 function runBlock(gaInjectionService, nyuEshelfService) {
   gaInjectionService.injectGACode();
