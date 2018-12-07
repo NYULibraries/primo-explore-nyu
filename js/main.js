@@ -2,7 +2,7 @@ import '@orbis-cascade/primo-explore-custom-actions';
 import 'primo-explore-custom-library-card-menu';
 import 'primo-explore-clickable-logo-to-any-link';
 import 'primo-explore-libraryh3lp-widget';
-import 'primo-explore-getit-to-link-resolver';
+// import 'primo-explore-getit-to-link-resolver';
 import 'primo-explore-nyu-eshelf';
 import 'primo-explore-search-bar-sub-menu';
 import 'primo-explore-google-analytics';
