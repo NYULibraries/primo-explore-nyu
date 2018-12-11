@@ -7,11 +7,6 @@ prm-favorites md-tab-item:first-child {
   display: none !important;
 }
 
-// Hide default library card options
-prm-library-card-menu > button {
-  display: none !important;
-}
-
 // Hide browse options from mainmenu
 a.md-button[aria-label="Browse"],
 a.md-button[aria-label="mainmenu.label.Browse"] {
@@ -36,4 +31,32 @@ prm-full-view prm-search-result-availability-line-after a.check-avail-link {
 [aria-label="Get It"],
 [id^='getit_link1_'] {
   display: none;
+}
+
+// Hide menu items we're not yet implementing
+md-menu-content {
+  md-menu-divider,
+  .my-library-card-ctm,
+  .my-loans-ctm,
+  .my-requests-ctm,
+  .my-favorties-ctm {
+    display: none !important;
+  }
+}
+
+// Hide library card items from mobile overlay menu
+prm-library-card-menu {
+  display: none !important;
+
+}
+.overlay-menu-content md-divider.vertical-divider.hide-xs {
+  display: none;
+}
+
+// Fix icon spacing on some browser in menu
+md-menu-content {
+  prm-icon {
+    margin-top: auto !important;
+    margin-bottom: auto !important;
+  }
 }
