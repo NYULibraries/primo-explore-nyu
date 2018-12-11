@@ -1,0 +1,10 @@
+@mixin focusOutline{
+    -webkit-box-shadow: inset 0 0 0 2px $border_focus !important;
+    box-shadow: inset 0 0 0 2px $border_focus  !important;
+    overflow: -moz-hidden-unscrollable  !important;
+}
+
+button:focus,
+a:focus {
+    @include focusOutline;
+}
