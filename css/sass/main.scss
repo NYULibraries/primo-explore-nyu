@@ -3,3 +3,7 @@
 @import 'chat_widget';
 @import 'hide';
 @import 'logo';
+
+prm-location-items .md-list-item-text div:nth-child(3) {
+  display: none;
+}
