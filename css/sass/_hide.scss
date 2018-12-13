@@ -27,12 +27,6 @@ prm-full-view prm-search-result-availability-line-after a.check-avail-link {
   display: none;
 }
 
-// Hide Get It section on full view
-[aria-label="Get It"],
-[id^='getit_link1_'] {
-  display: none;
-}
-
 // Hide menu items we're not yet implementing
 md-menu-content {
   md-menu-divider,
