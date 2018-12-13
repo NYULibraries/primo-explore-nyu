@@ -68,7 +68,7 @@ app
         <span ng-if="$ctrl.unavailable && $ctrl.userFailure">Unable to retrieve request options</span>
         <a ng-if="$ctrl.unavailable && $ctrl.ezBorrowEligible" href="{{ $ctrl.ezBorrowLink }}" target="_blank">Request E-ZBorrow </a>
         <a ng-if="$ctrl.unavailable && !$ctrl.ezBorrowEligible && $ctrl.illEligible" href="{{ $ctrl.illLink }}" target="_blank">Request ILL</a>
-        <a ng-if="$ctrl.loggedIn" ng-click="$ctrl.handleLogin($event)">Login to see request options</a>
+        <a ng-if="!$ctrl.loggedIn" ng-click="$ctrl.handleLogin($event)">Login to see request options</a>
       </div>
     `
   })
