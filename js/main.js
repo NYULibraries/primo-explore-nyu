@@ -65,7 +65,7 @@ app
         const au = encodeURIComponent(`au=${author}`);
         return `${base}?query=${ti}+and+${au}`;
       },
-      ill: ({ base, item }) => `${base}?${encodeURIComponent(item.link.lln10)}`
+      ill: ({ base, item }) => `${base}?${item.delivery.GetIt2.link.match(/resolve?(.*)/)}`
     },
     linkText: {
       ezborrow: 'Request E-ZBorrow',
@@ -100,11 +100,20 @@ app
       parentCtrl: '<',
     },
     template: `
-      <div class="md-list-item-text" ng-if="$ctrl.allUnavailable">
-        <span ng-if="$ctrl.showLoadingText">Retrieving request options...</span>
-        <span ng-if="$ctrl.showFailureText">Unable to retrieve request options</span>
-        <a ng-if="!$ctrl.loggedIn" ng-click="$ctrl.handleLogin($event)">Login to see request options</a>
-        <a ng-repeat="link in $ctrl.links" href="link.href" target="_blank">{{ link.label }}</a>
+      <div class="md-list-item-text layout-wrap layout-row flex">
+        <div
+          class="layout-wrap layout-align-end-center layout-row flex-xs-100 flex-sm-30"
+          ng-if="$ctrl.allUnavailable"
+        >
+          <div layout="row" layout-align="center center" class="layout-align-center-center layout-row" ng-repeat="link in $ctrl.links" >
+            <button class="button-as-link button-external-link md-button md-primoExplore-theme md-ink-ripple" type="button"
+              ng-click="$ctrl.open(link.href)" aria-label="Type"><span>{{ link.label }}</span>
+            </button>
+            <div class="skewed-divider" ng-if="!$last"></div>
+          </div>
+          <span ng-if="$ctrl.loggedIn && !$ctrl.user && !$ctrl.userFailure">Retrieving request options...</span>
+          <span ng-if="$ctrl.userFailure">Unable to retrieve request options</span>
+          <a ng-if="!$ctrl.loggedIn" ng-click="$ctrl.handleLogin($event)">Login to see request options</a>
         </div>
       </div>
     `
@@ -118,12 +127,11 @@ app
       logout: undefined,
     }
 
-
     svc.fetchPDSUser = (store) => {
       store.user = { id: '123456', 'bor-status': '55'};
       const later = (delay, value) => new Promise((resolve) => setTimeout(resolve, delay, value));
       return later(1000, store.user);
-      // return Promise.reject('something went wrong');
+      // return later(1000, Promise.reject('something went wrong'));
       // source: https://gist.github.com/rendro/525bbbf85e84fa9042c2
       const cookies = $window.document.cookie
         .split(';')
@@ -218,8 +226,8 @@ function authenticationController(customLoginService) {
   };
 }
 
-prmLocationItemAfterController.$inject = ['customRequestsService', 'customLoginService', 'availabilityService', '$window', '$element']
-function prmLocationItemAfterController(config, customLoginService, availabilityService, $window, $element) {
+prmLocationItemAfterController.$inject = ['customRequestsService', 'customLoginService', 'availabilityService', '$element', '$rootScope', '$window']
+function prmLocationItemAfterController(config, customLoginService, availabilityService, $element, $rootScope, $window) {
   const ctrl = this;
   const parentCtrl = ctrl.parentCtrl;
 
@@ -229,6 +237,8 @@ function prmLocationItemAfterController(config, customLoginService, availability
     customLoginService.login();
     event.stopPropagation();
   }
+
+  ctrl.open = (href) => $window.open(href)
 
   ctrl.$onInit = () => {
     const availabilities = ctrl.parentCtrl.currLoc.items.map(availabilityService.checkIsAvailable);
@@ -262,16 +272,15 @@ function prmLocationItemAfterController(config, customLoginService, availability
               return arr;
             }
           }, []);
+
         },
         rejectedResponse => {
           console.error(rejectedResponse);
           ctrl.userFailure = true;
         })
+        .then(() => {
+          $rootScope.$digest();
+        })
     }
   }
-
-  ctrl.$doCheck = () => {
-    ctrl.showLoadingText = ctrl.loggedIn && !ctrl.user && !ctrl.userFailure;
-    ctrl.showFailureText = ctrl.userFailure;
-  };
 }
