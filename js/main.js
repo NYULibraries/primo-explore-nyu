@@ -47,9 +47,10 @@ app
     template: '<search-bar-sub-menu></search-bar-sub-menu>'
   })
   .constant('customRequestsConfig', {
+    pdsUrl: "https://pdsdev.library.nyu.edu/pds",
     baseUrls: {
-      ezborrow: 'http://login.library.nyu.edu/ezborrow/nyu',
-      ill: 'http://ill.library.nyu.edu/illiad/illiad.dll/OpenURL',
+      ezborrow: 'http://dev.login.library.nyu.edu/ezborrow/nyu',
+      ill: 'http://dev.ill.library.nyu.edu/illiad/illiad.dll/OpenURL',
     },
     values: {
       authorizedStatuses: {
@@ -119,7 +120,7 @@ app
     `
   })
   // Injects prmAuthentication's handleLogin as a global service
-  .service('customLoginService', ['$window', '$http', function($window, $http) {
+  .service('customLoginService', ['$window', '$http', 'customRequestsService', function ($window, $http, config) {
     const svc = this;
     svc.store = {
       user: undefined,
@@ -128,36 +129,28 @@ app
     }
 
     svc.fetchPDSUser = (store) => {
-      store.user = { id: '123456', 'bor-status': '55'};
-      const later = (delay, value) => new Promise((resolve) => setTimeout(resolve, delay, value));
-      return later(1000, store.user);
+      // store.user = { id: '123456', 'bor-status': '55'};
+      // const later = (delay, value) => new Promise((resolve) => setTimeout(resolve, delay, value));
+      // return later(1000, store.user);
       // return later(1000, Promise.reject('something went wrong'));
       // source: https://gist.github.com/rendro/525bbbf85e84fa9042c2
-      const cookies = $window.document.cookie
-        .split(';')
-        .reduce((res, c) => {
-          const [key, val] = c.trim().split('=').map(decodeURIComponent)
-          const allNumbers = str => /^\d+$/.test(str);
-          try {
-            return Object.assign(res, { [key]: allNumbers(val) ? val : JSON.parse(val) })
-          } catch (e) {
-            return Object.assign(res, { [key]: val })
-          }
-        }, {});
+      const handleMatches = $window.document.cookie.match(/PDS_HANDLE=(.*);?/)
+      const handle = handleMatches ? handleMatches[1] : null;
 
-      return $http.get(`https://pdsdev.library.nyu.edu/pds?func=get-attribute&attribute=bor_info&pds_handle=${cookies.PDS_HANDLE}`, {
+      console.log(`${config.pdsUrl}?func=get-attribute&attribute=bor_info&pds_handle=${handle}`)
+      return $http.get(`${config.pdsUrl}?func=get-attribute&attribute=bor_info&pds_handle=${handle}`, {
         timeout: 6000,
       })
-        .then(response => {
-          const xml = response.data;
-          const getXMLProp = prop => (new $window.DOMParser).parseFromString(xml, 'text/xml').querySelector(prop).textContent
-          const user = ['id', 'bor-status'].reduce((res, prop) => Object.assign(res, {
-            [prop]: getXMLProp(prop)
-          }), {});
+      .then(response => {
+        const xml = response.data;
+        const getXMLProp = prop => (new $window.DOMParser).parseFromString(xml, 'text/xml').querySelector(prop).textContent
+        const user = ['id', 'bor-status'].reduce((res, prop) => Object.assign(res, {
+          [prop]: getXMLProp(prop)
+        }), {});
 
-          store.user = user;
-          return user;
-        })
+        store.user = user;
+        return user;
+      })
     }
 
     return {
@@ -226,8 +219,8 @@ function authenticationController(customLoginService) {
   };
 }
 
-prmLocationItemAfterController.$inject = ['customRequestsService', 'customLoginService', 'availabilityService', '$element', '$rootScope', '$window']
-function prmLocationItemAfterController(config, customLoginService, availabilityService, $element, $rootScope, $window) {
+prmLocationItemAfterController.$inject = ['customRequestsService', 'customLoginService', 'availabilityService', '$element', '$window', '$scope']
+function prmLocationItemAfterController(config, customLoginService, availabilityService, $element, $window, $scope) {
   const ctrl = this;
   const parentCtrl = ctrl.parentCtrl;
 
@@ -249,38 +242,37 @@ function prmLocationItemAfterController(config, customLoginService, availability
 
     if (ctrl.loggedIn) {
       customLoginService.fetchPDSUser()
-        .then(user => {
-          ctrl.user = user;
+        .then(
+          user => {
+            $scope.$apply(() => {
+              ctrl.user = user;
 
-          ctrl.links = config.links.reduce((arr, link) => {
-            const show = link.show({
-              config,
-              user: ctrl.user,
-              item: parentCtrl.item,
-              allUnavailable: ctrl.allUnavailable
-            });
-
-            if (show) {
-              return arr.concat({
-                label: config.linkText[link.type],
-                href: config.linkGenerators[link.type]({
-                  base: config.baseUrls[link.type],
+              ctrl.links = config.links.reduce((arr, link) => {
+                const show = link.show({
+                  config,
+                  user: ctrl.user,
                   item: parentCtrl.item,
-                })
-              });
-            } else {
-              return arr;
-            }
-          }, []);
+                  allUnavailable: ctrl.allUnavailable
+                });
 
+                if (show) {
+                  return arr.concat({
+                    label: config.linkText[link.type],
+                    href: config.linkGenerators[link.type]({
+                      base: config.baseUrls[link.type],
+                      item: parentCtrl.item,
+                    })
+                  });
+                } else {
+                  return arr;
+                }
+              }, []);
+            })
         },
-        rejectedResponse => {
-          console.error(rejectedResponse);
-          ctrl.userFailure = true;
-        })
-        .then(() => {
-          $rootScope.$digest();
-        })
+          rejectedResponse => {
+            console.error(rejectedResponse);
+            ctrl.userFailure = true;
+          })
     }
   }
 }
