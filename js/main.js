@@ -46,6 +46,8 @@ app
   .component('prmSearchBarAfter', {
     template: '<search-bar-sub-menu></search-bar-sub-menu>'
   })
+
+app
   .constant('customRequestsConfig', {
     pdsUrl: "https://pdsdev.library.nyu.edu/pds",
     baseUrls: {
@@ -92,7 +94,7 @@ app
       }
     ]
   })
-  .service('customRequestsService', ['customRequestsConfig', function(config) {
+  .service('customRequestsService', ['customRequestsConfig', function (config) {
     return config ? config : console.warn('the constant customRequestsConfig is not defined');
   }])
   .component('prmLocationItemAfter', {
@@ -141,16 +143,16 @@ app
       return $http.get(`${config.pdsUrl}?func=get-attribute&attribute=bor_info&pds_handle=${handle}`, {
         timeout: 6000,
       })
-      .then(response => {
-        const xml = response.data;
-        const getXMLProp = prop => (new $window.DOMParser).parseFromString(xml, 'text/xml').querySelector(prop).textContent
-        const user = ['id', 'bor-status'].reduce((res, prop) => Object.assign(res, {
-          [prop]: getXMLProp(prop)
-        }), {});
+        .then(response => {
+          const xml = response.data;
+          const getXMLProp = prop => (new $window.DOMParser).parseFromString(xml, 'text/xml').querySelector(prop).textContent
+          const user = ['id', 'bor-status'].reduce((res, prop) => Object.assign(res, {
+            [prop]: getXMLProp(prop)
+          }), {});
 
-        store.user = user;
-        return user;
-      })
+          store.user = user;
+          return user;
+        })
     }
 
     return {
@@ -163,7 +165,7 @@ app
       fetchPDSUser: () => svc.store.user ? Promise.resolve(svc.store.user) : svc.fetchPDSUser(svc.store),
     };
   }])
-  .service('availabilityService', function() {
+  .service('availabilityService', function () {
     const svc = this;
     svc.hasPattern = (patterns, target) => patterns.some(str => target.match(new RegExp(str)));
     svc.checkIsAvailable = item => {
@@ -197,18 +199,6 @@ app
       parentCtrl: '<',
     }
   })
-
-app.run(runBlock);
-
-runBlock.$inject = [
-  'gaInjectionService',
-  'nyuEshelfService'
-];
-
-function runBlock(gaInjectionService, nyuEshelfService) {
-  gaInjectionService.injectGACode();
-  nyuEshelfService.initEshelf();
-}
 
 authenticationController.$inject = ['customLoginService']
 function authenticationController(customLoginService) {
@@ -268,11 +258,23 @@ function prmLocationItemAfterController(config, customLoginService, availability
                 }
               }, []);
             })
-        },
+          },
           rejectedResponse => {
             console.error(rejectedResponse);
             ctrl.userFailure = true;
           })
     }
   }
+}
+
+app.run(runBlock);
+
+runBlock.$inject = [
+  'gaInjectionService',
+  'nyuEshelfService'
+];
+
+function runBlock(gaInjectionService, nyuEshelfService) {
+  gaInjectionService.injectGACode();
+  nyuEshelfService.initEshelf();
 }
