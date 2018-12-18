@@ -25,8 +25,6 @@ let app = angular.module('viewCustom', [
                                         'googleAnalytics'
                                       ]);
 
-prmLocationItemAfterController.$inject = [];
-
 app
   .constant(customLibraryCardMenuItemsConfig.name, customLibraryCardMenuItemsConfig.config)
   .constant(clickableLogoLinkConfig.name, clickableLogoLinkConfig.config)

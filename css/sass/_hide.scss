@@ -7,11 +7,6 @@ prm-favorites md-tab-item:first-child {
   display: none !important;
 }
 
-// Hide default library card options
-prm-library-card-menu > button {
-  display: none !important;
-}
-
 // Hide browse options from mainmenu
 a.md-button[aria-label="Browse"],
 a.md-button[aria-label="mainmenu.label.Browse"] {
