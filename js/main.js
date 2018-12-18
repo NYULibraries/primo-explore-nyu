@@ -46,6 +46,17 @@ app
   })
 
 app
+  .config(['$httpProvider', function ($httpProvider) {
+    //Enable cross domain calls
+    $httpProvider.defaults.useXDomain = true;
+    //Enable passing of cookies for CORS calls
+    //Note: CORS will absolutely not work without this
+    $httpProvider.defaults.withCredentials = true;
+
+    //Remove the header containing XMLHttpRequest used to identify ajax call
+    //that would prevent CORS from working
+    delete $httpProvider.defaults.headers.common['X-Requested-With'];
+  }])
   .constant('customRequestsConfig', {
     pdsUrl: "https://pdsdev.library.nyu.edu/pds",
     baseUrls: {
