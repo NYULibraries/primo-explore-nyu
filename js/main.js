@@ -225,7 +225,7 @@ function prmLocationItemAfterController(config, customLoginService, availability
 
     ctrl.loggedIn = !parentCtrl.userSessionManagerService.isGuest();
 
-    if (ctrl.loggedIn) {
+    if (ctrl.loggedIn && ctrl.allUnavailable) {
       customLoginService.fetchPDSUser()
         .then(
           user => {
