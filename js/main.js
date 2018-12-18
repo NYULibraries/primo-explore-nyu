@@ -52,7 +52,6 @@ app
     //Enable passing of cookies for CORS calls
     //Note: CORS will absolutely not work without this
     $httpProvider.defaults.withCredentials = true;
-
     //Remove the header containing XMLHttpRequest used to identify ajax call
     //that would prevent CORS from working
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
@@ -86,19 +85,19 @@ app
     links: [
       {
         type: 'ezborrow',
-        show: ({ user, item, config, allUnavailable }) => {
+        show: ({ user, item, config, unavailable }) => {
           const isBook = ['BOOK', 'BOOKS'].some(type => item.pnx.addata.ristype.indexOf(type) > -1);
           const borStatus = user && user['bor-status'];
-          return isBook && allUnavailable && config.values.authorizedStatuses.ezborrow.indexOf(borStatus) > -1;
+          return isBook && unavailable && config.values.authorizedStatuses.ezborrow.indexOf(borStatus) > -1;
         },
       },
       {
         type: 'ill',
-        show: ({ user, item, config, allUnavailable }) => {
+        show: ({ user, item, config, unavailable }) => {
           const isBook = ['BOOK', 'BOOKS'].some(type => item.pnx.addata.ristype.indexOf(type) > -1);
           const borStatus = user && user['bor-status'];
-          const ezborrow = isBook && allUnavailable && config.values.authorizedStatuses.ezborrow.indexOf(borStatus) > -1;
-          return !ezborrow && allUnavailable && config.values.authorizedStatuses.ill.indexOf(borStatus) > -1
+          const ezborrow = isBook && unavailable && config.values.authorizedStatuses.ezborrow.indexOf(borStatus) > -1;
+          return !ezborrow && unavailable && config.values.authorizedStatuses.ill.indexOf(borStatus) > -1
         },
       }
     ]
@@ -112,10 +111,10 @@ app
       parentCtrl: '<',
     },
     template: `
-      <div class="md-list-item-text layout-wrap layout-row flex">
+      <div class="md-list-item-text layout-wrap layout-row flex custom-request">
         <div
           class="layout-wrap layout-align-end-center layout-row flex-xs-100 flex-sm-30"
-          ng-if="$ctrl.allUnavailable"
+          ng-if="$ctrl.unavailable"
         >
           <div layout="row" layout-align="center center" class="layout-align-center-center layout-row" ng-repeat="link in $ctrl.links" >
             <button class="button-as-link button-external-link md-button md-primoExplore-theme md-ink-ripple" type="button"
@@ -142,12 +141,13 @@ app
     svc.fetchPDSUser = (store) => {
       // source: https://stackoverflow.com/a/21125098/8603212
       const getCookie = function (name) {
-        var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+        var match = $window.document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
         if (match) return match[2];
       }
 
-      return $http.get(`${config.pdsUrl}?func=get-attribute&attribute=bor_info&pds_handle=${getCookie('PDS_HANDLE')}`, {
+      return $http.get(`${config.pdsUrl}?func=get-attribute&attribute=bor_info&pds_handle=${getCookie('PDS_HANDLE') || '181220181411494818556536290688424'}`, {
         timeout: 6000,
+        withCredentials: false,
       })
         .then(response => {
           const xml = response.data;
@@ -189,11 +189,13 @@ app
         'On Order',
       ], circulationStatus);
     };
+    svc.itemsAreUnique = items => items.some((item, _i, items) => item._additionalData.itemdescription !== items[0]._additionalData.itemdescription);
 
     svc.state = {};
     svc.setState = newState => Object.assign(svc.state, newState);
 
     return {
+      itemsAreUnique: svc.itemsAreUnique,
       checkIsAvailable: svc.checkIsAvailable,
       getState: () => svc.state,
       setState: svc.setState,
@@ -220,7 +222,21 @@ function prmLocationItemAfterController(config, customLoginService, availability
   const ctrl = this;
   const parentCtrl = ctrl.parentCtrl;
 
-  ctrl.revealRequest = (idx) => $element.parent().parent().queryAll('.md-list-item-text')[idx].children().eq(2).css({ display: 'block' });
+  ctrl.hideRequest = (idx) => {
+    const $el = $element.parent().parent().queryAll('.md-list-item-text')[idx];
+    // for cases where all requests links are not yet on DOM
+    if ($el === undefined) return;
+    // shouldn't affect my own custom additions to the DOM
+    $el.hasClass('custom-request') ? null : $el.children().eq(2).css({ display: 'none' });
+  }
+
+  ctrl.hideCustomRequests = (idx) => {
+    const $el = $element.parent().parent().queryAll('.custom-request')[idx];
+    // for cases where all requests links are not yet on DOM
+    if ($el === undefined) return;
+    // should target only my custom requests
+    $el.css({ display: 'none' });
+  }
 
   ctrl.handleLogin = function (event) {
     customLoginService.login();
@@ -231,16 +247,20 @@ function prmLocationItemAfterController(config, customLoginService, availability
 
   ctrl.$onInit = () => {
     const availabilities = ctrl.parentCtrl.currLoc.items.map(availabilityService.checkIsAvailable);
-    availabilities.forEach((isAvailable, idx) => isAvailable ? ctrl.revealRequest(idx) : null);
-    ctrl.allUnavailable = availabilities.every(status => status === false);
+    availabilities.forEach((isAvailable, idx) => !isAvailable ? ctrl.hideRequest(idx) : null);
+
+    const itemsAreUnique = availabilityService.itemsAreUnique(parentCtrl.currLoc.items);
+    const anyUnavailable = availabilities.some(status => status === false);
+    const allUnavailable = availabilities.every(status => status === false);
+    ctrl.unavailable = allUnavailable || (itemsAreUnique && anyUnavailable);
 
     ctrl.loggedIn = !parentCtrl.userSessionManagerService.isGuest();
 
-    if (ctrl.loggedIn && ctrl.allUnavailable) {
+    if (ctrl.loggedIn && ctrl.unavailable) {
       customLoginService.fetchPDSUser()
         .then(
           user => {
-            $scope.$apply(() => {
+            $scope.$applyAsync(() => {
               ctrl.user = user;
 
               ctrl.links = config.links.reduce((arr, link) => {
@@ -248,7 +268,7 @@ function prmLocationItemAfterController(config, customLoginService, availability
                   config,
                   user: ctrl.user,
                   item: parentCtrl.item,
-                  allUnavailable: ctrl.allUnavailable
+                  unavailable: ctrl.unavailable
                 });
 
                 if (show) {
@@ -268,6 +288,10 @@ function prmLocationItemAfterController(config, customLoginService, availability
           rejectedResponse => {
             console.error(rejectedResponse);
             ctrl.userFailure = true;
+          })
+          .then(() => {
+            // follow-up with hiding any custom requests for things that are actually available
+            availabilities.forEach((isAvailable, idx) => isAvailable ? ctrl.hideCustomRequests(idx) : null)
           })
     }
   }
