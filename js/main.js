@@ -25,7 +25,7 @@ let app = angular.module('viewCustom', [
                                         'googleAnalytics'
                                       ]);
 
-requestUnavailableController.$inject = [];
+prmLocationItemAfterController.$inject = [];
 
 app
   .constant(customLibraryCardMenuItemsConfig.name, customLibraryCardMenuItemsConfig.config)
@@ -46,16 +46,56 @@ app
   .component('prmSearchBarAfter', {
     template: '<search-bar-sub-menu></search-bar-sub-menu>'
   })
-  .constant('customRequests', {
-    ezBorrowUrl: 'http://login.library.nyu.edu/ezborrow/nyu',
-    illiadUrl: 'http://ill.library.nyu.edu',
-    authorizedStatuses: {
-      ezBorrow: ["50", "51", "52", "53", "54", "55", "56", "57", "58", "60", "61", "62", "63", "65", "66", "80", "81", "82", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41"],
-      ill: ["30", "31", "32", "34", "35", "37", "50", "51", "52", "53", "54", "55", "56", "57", "58", "60", "61", "62", "63", "65", "66", "80", "81", "82"]
-    }
+  .constant('customRequestsConfig', {
+    baseUrls: {
+      ezborrow: 'http://login.library.nyu.edu/ezborrow/nyu',
+      ill: 'http://ill.library.nyu.edu/illiad/illiad.dll/OpenURL',
+    },
+    values: {
+      authorizedStatuses: {
+        ezborrow: ["50", "51", "52", "53", "54", "55", "56", "57", "58", "60", "61", "62", "63", "65", "66", "80", "81", "82", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41"],
+        ill: ["30", "31", "32", "34", "35", "37", "50", "51", "52", "53", "54", "55", "56", "57", "58", "60", "61", "62", "63", "65", "66", "80", "81", "82"]
+      }
+    },
+    linkGenerators: {
+      ezborrow: ({ base, item }) => {
+        const title = item.pnx.addata.btitle ? item.pnx.addata.btitle[0] : '';
+        const author = item.pnx.addata.au ? item.pnx.addata.au[0] : '';
+        const ti = encodeURIComponent(`ti=${title}`);
+        const au = encodeURIComponent(`au=${author}`);
+        return `${base}?query=${ti}+and+${au}`;
+      },
+      ill: ({ base, item }) => `${base}?${encodeURIComponent(item.link.lln10)}`
+    },
+    linkText: {
+      ezborrow: 'Request E-ZBorrow',
+      ill: 'Request ILL',
+    },
+    links: [
+      {
+        type: 'ezborrow',
+        show: ({ user, item, config, allUnavailable }) => {
+          const isBook = ['BOOK', 'BOOKS'].some(type => item.pnx.addata.ristype.indexOf(type) > -1);
+          const borStatus = user && user['bor-status'];
+          return isBook && allUnavailable && config.values.authorizedStatuses.ezborrow.indexOf(borStatus) > -1;
+        },
+      },
+      {
+        type: 'ill',
+        show: ({ user, item, config, allUnavailable }) => {
+          const isBook = ['BOOK', 'BOOKS'].some(type => item.pnx.addata.ristype.indexOf(type) > -1);
+          const borStatus = user && user['bor-status'];
+          const ezborrow = isBook && allUnavailable && config.values.authorizedStatuses.ezborrow.indexOf(borStatus) > -1;
+          return !ezborrow && allUnavailable && config.values.authorizedStatuses.ill.indexOf(borStatus) > -1
+        },
+      }
+    ]
   })
+  .service('customRequestsService', ['customRequestsConfig', function(config) {
+    return config ? config : console.warn('the constant customRequestsConfig is not defined');
+  }])
   .component('prmLocationItemAfter', {
-    controller: requestUnavailableController,
+    controller: prmLocationItemAfterController,
     bindings: {
       parentCtrl: '<',
     },
@@ -63,9 +103,9 @@ app
       <div class="md-list-item-text" ng-if="$ctrl.allUnavailable">
         <span ng-if="$ctrl.showLoadingText">Retrieving request options...</span>
         <span ng-if="$ctrl.showFailureText">Unable to retrieve request options</span>
-        <a ng-if="$ctrl.showEZBorrowLink" href="{{ $ctrl.ezBorrowLink }}" target="_blank">Request E-ZBorrow </a>
-        <a ng-if="$ctrl.showIllLink" href="{{ $ctrl.illLink }}" target="_blank">Request ILL</a>
         <a ng-if="!$ctrl.loggedIn" ng-click="$ctrl.handleLogin($event)">Login to see request options</a>
+        <a ng-repeat="link in $ctrl.links" href="link.href" target="_blank">{{ link.label }}</a>
+        </div>
       </div>
     `
   })
@@ -178,32 +218,12 @@ function authenticationController(customLoginService) {
   };
 }
 
-requestUnavailableController.$inject = ['customRequests', 'customLoginService', 'availabilityService', '$window', '$element']
-function requestUnavailableController(config, customLoginService, availabilityService, $window, $element) {
+prmLocationItemAfterController.$inject = ['customRequestsService', 'customLoginService', 'availabilityService', '$window', '$element']
+function prmLocationItemAfterController(config, customLoginService, availabilityService, $window, $element) {
   const ctrl = this;
   const parentCtrl = ctrl.parentCtrl;
 
-  ctrl.EZBorrowLinkGenerator = (base, title, author) => {
-    const ti = $window.encodeURIComponent(`ti=${title}`);
-    const au = $window.encodeURIComponent(`au=${author}`);
-    return `${base}?query=${ti}+and+${au}`;
-  }
-
-  ctrl.illLinkGenerator = (base, openurl) => `${base}/illiad/illiad.dll/OpenURL?${$window.encodeURIComponent(openurl)}`
-
   ctrl.revealRequest = (idx) => $element.parent().parent().queryAll('.md-list-item-text')[idx].children().eq(2).css({ display: 'block' });
-
-  ctrl.showLinks = ({ user, currLocItems, pnx, allUnavailable }) => {
-    const isBook = ['BOOK', 'BOOKS'].some(type => pnx.addata.ristype.indexOf(type) > -1);
-    const borStatus = user && user['bor-status'];
-    const ezborrow = isBook && allUnavailable && config.authorizedStatuses.ezBorrow.indexOf(borStatus) > -1;
-    const ill = !ezborrow && allUnavailable && config.authorizedStatuses.ill.indexOf(borStatus) > -1;
-
-    return {
-      ezborrow,
-      ill
-    };
-  }
 
   ctrl.handleLogin = function (event) {
     customLoginService.login();
@@ -211,10 +231,6 @@ function requestUnavailableController(config, customLoginService, availabilitySe
   }
 
   ctrl.$onInit = () => {
-    ctrl.title = parentCtrl.item.pnx.addata.btitle ? parentCtrl.item.pnx.addata.btitle[0] : '';
-    ctrl.author = parentCtrl.item.pnx.addata.au ? parentCtrl.item.pnx.addata.au[0] : '';
-    ctrl.ezBorrowLink = ctrl.EZBorrowLinkGenerator(config.ezBorrowUrl, ctrl.title, ctrl.author);
-
     const availabilities = ctrl.parentCtrl.currLoc.items.map(availabilityService.checkIsAvailable);
     availabilities.forEach((isAvailable, idx) => isAvailable ? ctrl.revealRequest(idx) : null);
     ctrl.allUnavailable = availabilities.every(status => status === false);
@@ -226,15 +242,26 @@ function requestUnavailableController(config, customLoginService, availabilitySe
         .then(user => {
           ctrl.user = user;
 
-          const { ezborrow, ill } = ctrl.showLinks({
-            user: ctrl.user,
-            pnx: parentCtrl.item.pnx,
-            currLocItems: parentCtrl.currLoc.items,
-            allUnavailable: ctrl.allUnavailable,
-          });
+          ctrl.links = config.links.reduce((arr, link) => {
+            const show = link.show({
+              config,
+              user: ctrl.user,
+              item: parentCtrl.item,
+              allUnavailable: ctrl.allUnavailable
+            });
 
-          ctrl.showEZBorrowLink = ezborrow;
-          ctrl.showIllLink = ill;
+            if (show) {
+              return arr.concat({
+                label: config.linkText[link.type],
+                href: config.linkGenerators[link.type]({
+                  base: config.baseUrls[link.type],
+                  item: parentCtrl.item,
+                })
+              });
+            } else {
+              return arr;
+            }
+          }, []);
         },
         rejectedResponse => {
           console.error(rejectedResponse);
