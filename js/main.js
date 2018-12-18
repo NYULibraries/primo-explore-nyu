@@ -131,16 +131,13 @@ app
     }
 
     svc.fetchPDSUser = (store) => {
-      // store.user = { id: '123456', 'bor-status': '55'};
-      // const later = (delay, value) => new Promise((resolve) => setTimeout(resolve, delay, value));
-      // return later(1000, store.user);
-      // return later(1000, Promise.reject('something went wrong'));
-      // source: https://gist.github.com/rendro/525bbbf85e84fa9042c2
-      const handleMatches = $window.document.cookie.match(/PDS_HANDLE=(.*);?/)
-      const handle = handleMatches ? handleMatches[1] : null;
+      // source: https://stackoverflow.com/a/21125098/8603212
+      const getCookie = function (name) {
+        var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+        if (match) return match[2];
+      }
 
-      console.log(`${config.pdsUrl}?func=get-attribute&attribute=bor_info&pds_handle=${handle}`)
-      return $http.get(`${config.pdsUrl}?func=get-attribute&attribute=bor_info&pds_handle=${handle}`, {
+      return $http.get(`${config.pdsUrl}?func=get-attribute&attribute=bor_info&pds_handle=${getCookie('PDS_HANDLE')}`, {
         timeout: 6000,
       })
         .then(response => {
