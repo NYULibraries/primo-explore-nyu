@@ -143,15 +143,13 @@ app
         if (match) return match[2];
       }
 
-      return $http.get(`${config.pdsUrl}?func=get-attribute&attribute=bor_info&pds_handle=${getCookie('PDS_HANDLE') || '181220181411494818556536290688424'}`, {
+      return $http.get(`${config.pdsUrl}?func=get-attribute&attribute=bor_info&pds_handle=${getCookie('PDS_HANDLE')}`, {
         timeout: 6000
       }).then(
         response => {
           const xml = response.data;
           const getXMLProp = prop => (new $window.DOMParser).parseFromString(xml, 'text/xml').querySelector(prop).textContent
-          const user = ['id', 'bor-status'].reduce((res, prop) => Object.assign(res, {
-            [prop]: getXMLProp(prop)
-          }), {});
+          const user = ['id', 'bor-status'].reduce((res, prop) => Object.assign(res, { [prop]: getXMLProp(prop) }), {});
 
           store.user = user;
           return user;
