@@ -110,7 +110,7 @@ app
       parentCtrl: '<',
     },
     template: `
-      <div layout="row" layout-align="center center" ng-if="$ctrl.unavailable" class="custom-request">
+      <div layout="row" layout-align="center center" ng-if="$ctrl.unavailable">
         <div layout="row" layout-align="center center" ng-repeat="link in $ctrl.links">
           <button class="button-as-link md-button md-primoExplore-theme md-ink-ripple" type="button" ng-click="$ctrl.open(link.href)"
             aria-label="Type"><span>{{ link.label }}</span>
@@ -222,18 +222,13 @@ function prmLocationItemAfterController(config, customLoginService, availability
 
   ctrl.hideRequest = (idx) => {
     const $el = $element.parent().parent().queryAll('.md-list-item-text')[idx];
-    // for cases where all requests links are not yet on DOM
-    if ($el === undefined) return;
-    // shouldn't affect my own custom additions to the DOM
-    $el.hasClass('custom-request') ? null : $el.children().eq(2).css({ display: 'none' });
+    $el ? $el.children().eq(2).css({ display: 'none' }) : null;
   }
 
   ctrl.hideCustomRequests = (idx) => {
-    const $el = $element.parent().parent().queryAll('.custom-request')[idx];
-    // for cases where all requests links are not yet on DOM
-    if ($el === undefined) return;
-    // should target only my custom requests
-    $el.css({ display: 'none' });
+    console.log('hide!');
+    const $el = $element.parent().parent().parent().parent().queryAll('prm-location-item-after')[idx]
+    $el ? $el.css({ display: 'none' }) : null;
   }
 
   ctrl.handleLogin = function (event) {
@@ -285,11 +280,17 @@ function prmLocationItemAfterController(config, customLoginService, availability
         console.error(err);
         ctrl.userFailure = true;
       })
-      .then(() => {
-        // follow-up with hiding any custom requests for things that are actually available
-        availabilities.forEach((isAvailable, idx) => isAvailable ? ctrl.hideCustomRequests(idx) : null)
-      })
     }
+
+    // follow-up with hiding any custom requests for things that are actually available
+    availabilities.forEach((isAvailable, idx) => isAvailable ? ctrl.hideCustomRequests(idx) : null)
+
+    // manually move the $element
+    const $target = $element.parent().query('div.md-list-item-text');
+    const $el = $element.detach();
+    $target.append($el)
+    // and add classes
+    $element.addClass('layout-align-center-center layout-row')
   }
 
   ctrl.$doCheck = () => {
@@ -298,12 +299,19 @@ function prmLocationItemAfterController(config, customLoginService, availability
     ctrl.trackedItems = parentCtrl.currLoc.items;
 
     // manually move the $element
-    if(!ctrl.ranElementMove) {
-      const $target = $element.parent().query('div.md-list-item-text');
-      const $el = $element.detach();
-      $target.append($el)
-      ctrl.ranElementMove = true;
-    }
+    // if(!ctrl.ranElementMove) {
+    //   const $target = $element.parent().query('div.md-list-item-text');
+    //   const $el = $element.detach();
+    //   $target.append($el)
+    //   ctrl.ranElementMove = true;
+    // }
+
+    // if(!ctrl.ranHideCustomRequests) {
+    //   // follow-up with hiding any custom requests for things that are actually available
+    //   const availabilities = ctrl.parentCtrl.currLoc.items.map(availabilityService.checkIsAvailable);
+    //   availabilities.forEach((isAvailable, idx) => isAvailable ? ctrl.hideCustomRequests(idx) : null)
+    //   ctrl.ranHideCustomRequests = true;
+    // }
   };
 }
 
