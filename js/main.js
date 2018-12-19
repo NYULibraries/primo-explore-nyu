@@ -238,18 +238,18 @@ function prmLocationItemAfterController(config, customLoginService, availability
   ctrl.open = (href) => $window.open(href)
 
   ctrl.runAvailabilityCheck = () => {
-    const availabilities = ctrl.parentCtrl.currLoc.items.map(availabilityService.checkIsAvailable);
-    availabilities.forEach((isAvailable, idx) => !isAvailable ? ctrl.hideRequest(idx) : null);
+    ctrl.availabilityStatuses = ctrl.parentCtrl.currLoc.items.map(availabilityService.checkIsAvailable);
+    ctrl.availabilityStatuses.forEach((isAvailable, idx) => !isAvailable ? ctrl.hideRequest(idx) : null);
 
     const itemsAreUnique = availabilityService.itemsAreUnique(parentCtrl.currLoc.items);
-    const anyUnavailable = availabilities.some(status => status === false);
-    const allUnavailable = availabilities.every(status => status === false);
+    const anyUnavailable = ctrl.availabilityStatuses.some(status => status === false);
+    const allUnavailable = ctrl.availabilityStatuses.every(status => status === false);
     ctrl.unavailable = allUnavailable || (itemsAreUnique && anyUnavailable);
 
     ctrl.loggedIn = !parentCtrl.userSessionManagerService.isGuest();
 
     if (ctrl.loggedIn && ctrl.unavailable) {
-      customLoginService.fetchPDSUser().then(user => {
+      return customLoginService.fetchPDSUser().then(user => {
         $scope.$applyAsync(() => {
           ctrl.user = user;
 
@@ -278,21 +278,28 @@ function prmLocationItemAfterController(config, customLoginService, availability
       .catch(err => {
         console.error(err);
         ctrl.userFailure = true;
-      }).then(() => {
-        availabilities.forEach((isAvailable, idx) => isAvailable ? ctrl.hideCustomRequests(idx) : null)
-      })
+      });
+    } else {
+      return Promise.resolve(undefined)
     }
   }
 
   ctrl.$postLink = () => {
     const $target = $element.parent().query('div.md-list-item-text');
     const $el = $element.detach();
-    $target.append($el)
+    $target.append($el);
+    $element.addClass('layout-align-center-center layout-row');
+
+    // ctrl.availabilityStatuses.forEach((isAvailable, idx) => isAvailable ? ctrl.hideCustomRequests(idx) : null)
   };
 
   ctrl.$doCheck = () => {
     // manual check to see if items have changed
-    parentCtrl.currLoc.items !== ctrl.trackedItems ? ctrl.runAvailabilityCheck() : null;
+    if (parentCtrl.currLoc.items !== ctrl.trackedItems) {
+      ctrl.runAvailabilityCheck().then(() => {
+        ctrl.availabilityStatuses.forEach((isAvailable, idx) => isAvailable ? ctrl.hideCustomRequests(idx) : null)
+      });
+    }
     ctrl.trackedItems = parentCtrl.currLoc.items;
   };
 }
