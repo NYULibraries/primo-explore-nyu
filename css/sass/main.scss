@@ -4,10 +4,6 @@
 @import 'hide';
 @import 'logo';
 
-// prm-location-items .md-list-item-text div:nth-child(3) {
-//   display: none;
-// }
-
 // Total hack to make the homepage center correctly under the search bar for "large" screens
 // essentially makes MD's lg-10 think it's an lg-20, ugh!
 // Relies on this string of classes being static, which it won't be

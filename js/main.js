@@ -110,24 +110,23 @@ app
       parentCtrl: '<',
     },
     template: `
-      <div class="md-list-item-text layout-wrap layout-row flex custom-request">
-        <div class="layout-wrap layout-align-end-center layout-row flex-xs-100 flex-sm-30" ng-if="$ctrl.unavailable">
-          <div layout="row" layout-align="center center" class="layout-align-center-center layout-row" ng-repeat="link in $ctrl.links">
-            <button class="button-as-link button-external-link md-button md-primoExplore-theme md-ink-ripple" type="button"
-              ng-click="$ctrl.open(link.href)" aria-label="Type"><span>{{ link.label }}</span>
-            </button>
-            <div class="skewed-divider" ng-if="!$last"></div>
-          </div>
-
-          <div layout="row" layout-align="center center" class="layout-align-center-center layout-row" ng-if="!$ctrl.loggedIn">
-            <button class="button-as-link button-external-link md-button md-primoExplore-theme md-ink-ripple" type="button"
-              ng-click="$ctrl.handleLogin($event)" aria-label="Type"><span>Login to see request options</span>
-            </button>
-          </div>
-
-          <span ng-if="$ctrl.loggedIn && !$ctrl.user && !$ctrl.userFailure">Retrieving request options...</span>
-          <span ng-if="$ctrl.userFailure">Unable to retrieve request options</span>
+      <div layout="row" layout-align="center center" ng-if="$ctrl.unavailable" class="custom-request">
+        <div layout="row" layout-align="center center" ng-repeat="link in $ctrl.links">
+          <button class="button-as-link md-button md-primoExplore-theme md-ink-ripple" type="button" ng-click="$ctrl.open(link.href)"
+            aria-label="Type"><span>{{ link.label }}</span>
+          </button>
+          <div class="skewed-divider" ng-if="!$last"></div>
         </div>
+        <div layout="row" layout-align="center center" ng-if="!$ctrl.loggedIn">
+          <div>
+            <button class="button-as-link md-button md-primoExplore-theme md-ink-ripple" type="button" ng-click="$ctrl.handleLogin($event)"
+              aria-label="Type"><span>Login to see request options</span>
+            </button>
+          </div>
+        </div>
+
+        <span ng-if="$ctrl.loggedIn && !$ctrl.user && !$ctrl.userFailure">Retrieving request options...</span>
+        <span ng-if="$ctrl.userFailure">Unable to retrieve request options</span>
       </div>
     `
   })
@@ -293,10 +292,18 @@ function prmLocationItemAfterController(config, customLoginService, availability
     }
   }
 
-  // manual check to see if items have changed
   ctrl.$doCheck = () => {
+    // manual check to see if items have changed
     parentCtrl.currLoc.items !== ctrl.trackedItems ? ctrl.runAvailabilityCheck() : null;
     ctrl.trackedItems = parentCtrl.currLoc.items;
+
+    // manually move the $element
+    if(!ctrl.ranElementMove) {
+      const $target = $element.parent().query('div.md-list-item-text');
+      const $el = $element.detach();
+      $target.append($el)
+      ctrl.ranElementMove = true;
+    }
   };
 }
 
