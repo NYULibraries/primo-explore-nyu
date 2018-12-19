@@ -146,8 +146,7 @@ app
       }
 
       return $http.get(`${config.pdsUrl}?func=get-attribute&attribute=bor_info&pds_handle=${getCookie('PDS_HANDLE') || '181220181411494818556536290688424'}`, {
-        timeout: 6000,
-        withCredentials: false,
+        timeout: 6000
       })
         .then(response => {
           const xml = response.data;
