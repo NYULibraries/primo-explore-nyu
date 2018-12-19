@@ -107,19 +107,22 @@ app
     },
     template: `
       <div class="md-list-item-text layout-wrap layout-row flex custom-request">
-        <div
-          class="layout-wrap layout-align-end-center layout-row flex-xs-100 flex-sm-30"
-          ng-if="$ctrl.unavailable"
-        >
-          <div layout="row" layout-align="center center" class="layout-align-center-center layout-row" ng-repeat="link in $ctrl.links" >
+        <div class="layout-wrap layout-align-end-center layout-row flex-xs-100 flex-sm-30" ng-if="$ctrl.unavailable">
+          <div layout="row" layout-align="center center" class="layout-align-center-center layout-row" ng-repeat="link in $ctrl.links">
             <button class="button-as-link button-external-link md-button md-primoExplore-theme md-ink-ripple" type="button"
               ng-click="$ctrl.open(link.href)" aria-label="Type"><span>{{ link.label }}</span>
             </button>
             <div class="skewed-divider" ng-if="!$last"></div>
           </div>
+
+          <div layout="row" layout-align="center center" class="layout-align-center-center layout-row" ng-if="!$ctrl.loggedIn">
+            <button class="button-as-link button-external-link md-button md-primoExplore-theme md-ink-ripple" type="button"
+              ng-click="$ctrl.handleLogin($event)" aria-label="Type"><span>Login to see request options</span>
+            </button>
+          </div>
+
           <span ng-if="$ctrl.loggedIn && !$ctrl.user && !$ctrl.userFailure">Retrieving request options...</span>
           <span ng-if="$ctrl.userFailure">Unable to retrieve request options</span>
-          <a ng-if="!$ctrl.loggedIn" ng-click="$ctrl.handleLogin($event)">Login to see request options</a>
         </div>
       </div>
     `
