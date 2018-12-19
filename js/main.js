@@ -266,9 +266,9 @@ function prmLocationItemAfterController(config, customLoginService, availability
 
             if (show) {
               return arr.concat({
-                label: config.linkText[link.type],
-                href: config.linkGenerators[link.type]({
-                  base: config.baseUrls[link.type],
+                label: config.linkText[link],
+                href: config.linkGenerators[link]({
+                  base: config.baseUrls[link],
                   item: parentCtrl.item,
                 })
               });
