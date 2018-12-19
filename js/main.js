@@ -146,7 +146,7 @@ app
         if (match) return match[2];
       }
 
-      return $http.get(`${config.pdsUrl}?${config.pdsUserInfo.queryString}&pds_handle=${getCookie('PDS_HANDLE')}`, {
+      store.user = $http.get(`${config.pdsUrl}?${config.pdsUserInfo.queryString}&pds_handle=${getCookie('PDS_HANDLE')}`, {
         timeout: 6000
       })
       .then(response => {
@@ -157,6 +157,8 @@ app
         store.user = user;
         return user;
       })
+
+      return store.user;
     }
 
     return {
