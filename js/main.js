@@ -82,25 +82,20 @@ app
       ezborrow: 'Request E-ZBorrow',
       ill: 'Request ILL',
     },
-    links: [
-      {
-        type: 'ezborrow',
-        show: ({ user, item, config, unavailable }) => {
-          const isBook = ['BOOK', 'BOOKS'].some(type => item.pnx.addata.ristype.indexOf(type) > -1);
-          const borStatus = user && user['bor-status'];
-          return isBook && unavailable && config.values.authorizedStatuses.ezborrow.indexOf(borStatus) > -1;
-        },
+    showLinks: {
+      ezborrow: ({ user, item, config, unavailable }) => {
+        const isBook = ['BOOK', 'BOOKS'].some(type => item.pnx.addata.ristype.indexOf(type) > -1);
+        const borStatus = user && user['bor-status'];
+        return isBook && unavailable && config.values.authorizedStatuses.ezborrow.indexOf(borStatus) > -1;
       },
-      {
-        type: 'ill',
-        show: ({ user, item, config, unavailable }) => {
-          const isBook = ['BOOK', 'BOOKS'].some(type => item.pnx.addata.ristype.indexOf(type) > -1);
-          const borStatus = user && user['bor-status'];
-          const ezborrow = isBook && unavailable && config.values.authorizedStatuses.ezborrow.indexOf(borStatus) > -1;
-          return !ezborrow && unavailable && config.values.authorizedStatuses.ill.indexOf(borStatus) > -1
-        },
-      }
-    ]
+      ill: ({ user, item, config, unavailable }) => {
+        const isBook = ['BOOK', 'BOOKS'].some(type => item.pnx.addata.ristype.indexOf(type) > -1);
+        const borStatus = user && user['bor-status'];
+        const ezborrow = isBook && unavailable && config.values.authorizedStatuses.ezborrow.indexOf(borStatus) > -1;
+        return !ezborrow && unavailable && config.values.authorizedStatuses.ill.indexOf(borStatus) > -1
+      },
+    },
+    links: ['ezborrow', 'ill']
   })
   .service('customRequestsService', ['customRequestsConfig', function (config) {
     return config ? config : console.warn('the constant customRequestsConfig is not defined');
@@ -147,8 +142,8 @@ app
 
       return $http.get(`${config.pdsUrl}?func=get-attribute&attribute=bor_info&pds_handle=${getCookie('PDS_HANDLE') || '181220181411494818556536290688424'}`, {
         timeout: 6000
-      })
-        .then(response => {
+      }).then(
+        response => {
           const xml = response.data;
           const getXMLProp = prop => (new $window.DOMParser).parseFromString(xml, 'text/xml').querySelector(prop).textContent
           const user = ['id', 'bor-status'].reduce((res, prop) => Object.assign(res, {
@@ -244,7 +239,7 @@ function prmLocationItemAfterController(config, customLoginService, availability
 
   ctrl.open = (href) => $window.open(href)
 
-  ctrl.$onInit = () => {
+  ctrl.runAvailabilityCheck = () => {
     const availabilities = ctrl.parentCtrl.currLoc.items.map(availabilityService.checkIsAvailable);
     availabilities.forEach((isAvailable, idx) => !isAvailable ? ctrl.hideRequest(idx) : null);
 
@@ -256,44 +251,48 @@ function prmLocationItemAfterController(config, customLoginService, availability
     ctrl.loggedIn = !parentCtrl.userSessionManagerService.isGuest();
 
     if (ctrl.loggedIn && ctrl.unavailable) {
-      customLoginService.fetchPDSUser()
-        .then(
-          user => {
-            $scope.$applyAsync(() => {
-              ctrl.user = user;
+      customLoginService.fetchPDSUser().then(user => {
+        $scope.$applyAsync(() => {
+          ctrl.user = user;
 
-              ctrl.links = config.links.reduce((arr, link) => {
-                const show = link.show({
-                  config,
-                  user: ctrl.user,
+          ctrl.links = config.links.reduce((arr, link) => {
+            const show = config.showLinks[link]({
+              config,
+              user: ctrl.user,
+              item: parentCtrl.item,
+              unavailable: ctrl.unavailable
+            });
+
+            if (show) {
+              return arr.concat({
+                label: config.linkText[link.type],
+                href: config.linkGenerators[link.type]({
+                  base: config.baseUrls[link.type],
                   item: parentCtrl.item,
-                  unavailable: ctrl.unavailable
-                });
-
-                if (show) {
-                  return arr.concat({
-                    label: config.linkText[link.type],
-                    href: config.linkGenerators[link.type]({
-                      base: config.baseUrls[link.type],
-                      item: parentCtrl.item,
-                    })
-                  });
-                } else {
-                  return arr;
-                }
-              }, []);
-            })
-          },
-          rejectedResponse => {
-            console.error(rejectedResponse);
-            ctrl.userFailure = true;
-          })
-          .then(() => {
-            // follow-up with hiding any custom requests for things that are actually available
-            availabilities.forEach((isAvailable, idx) => isAvailable ? ctrl.hideCustomRequests(idx) : null)
-          })
+                })
+              });
+            } else {
+              return arr;
+            }
+          }, []);
+        })
+      })
+      .catch(err => {
+        console.error(err);
+        ctrl.userFailure = true;
+      })
+      .then(() => {
+        // follow-up with hiding any custom requests for things that are actually available
+        availabilities.forEach((isAvailable, idx) => isAvailable ? ctrl.hideCustomRequests(idx) : null)
+      })
     }
   }
+
+  // manual check to see if items have changed
+  ctrl.$doCheck = () => {
+    parentCtrl.currLoc.items !== ctrl.trackedItems ? ctrl.runAvailabilityCheck() : null;
+    ctrl.trackedItems = parentCtrl.currLoc.items;
+  };
 }
 
 app.run(runBlock);
