@@ -58,6 +58,10 @@ app
   }])
   .constant('customRequestsConfig', {
     pdsUrl: "https://pdsdev.library.nyu.edu/pds",
+    pdsUserInfo: {
+      queryString: 'func=get-attribute&attribute=bor_info',
+      selectors: ['id', 'bor-status'],
+    },
     baseUrls: {
       ezborrow: 'http://dev.login.library.nyu.edu/ezborrow/nyu',
       ill: 'http://dev.ill.library.nyu.edu/illiad/illiad.dll/OpenURL',
@@ -143,17 +147,17 @@ app
         if (match) return match[2];
       }
 
-      return $http.get(`${config.pdsUrl}?func=get-attribute&attribute=bor_info&pds_handle=${getCookie('PDS_HANDLE')}`, {
+      return $http.get(`${config.pdsUrl}?${config.pdsUserInfo.queryString}&pds_handle=${getCookie('PDS_HANDLE')}`, {
         timeout: 6000
-      }).then(
-        response => {
-          const xml = response.data;
-          const getXMLProp = prop => (new $window.DOMParser).parseFromString(xml, 'text/xml').querySelector(prop).textContent
-          const user = ['id', 'bor-status'].reduce((res, prop) => Object.assign(res, { [prop]: getXMLProp(prop) }), {});
+      })
+      .then(response => {
+        const xml = response.data;
+        const getXMLProp = prop => (new $window.DOMParser).parseFromString(xml, 'text/xml').querySelector(prop).textContent
+        const user = config.pdsUserInfo.selectors.reduce((res, prop) => Object.assign(res, { [prop]: getXMLProp(prop) }), {});
 
-          store.user = user;
-          return user;
-        })
+        store.user = user;
+        return user;
+      })
     }
 
     return {
