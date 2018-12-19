@@ -226,7 +226,6 @@ function prmLocationItemAfterController(config, customLoginService, availability
   }
 
   ctrl.hideCustomRequests = (idx) => {
-    console.log('hide!');
     const $el = $element.parent().parent().parent().parent().queryAll('prm-location-item-after')[idx]
     $el ? $el.css({ display: 'none' }) : null;
   }
@@ -279,39 +278,22 @@ function prmLocationItemAfterController(config, customLoginService, availability
       .catch(err => {
         console.error(err);
         ctrl.userFailure = true;
+      }).then(() => {
+        availabilities.forEach((isAvailable, idx) => isAvailable ? ctrl.hideCustomRequests(idx) : null)
       })
     }
+  }
 
-    // follow-up with hiding any custom requests for things that are actually available
-    availabilities.forEach((isAvailable, idx) => isAvailable ? ctrl.hideCustomRequests(idx) : null)
-
-    // manually move the $element
+  ctrl.$postLink = () => {
     const $target = $element.parent().query('div.md-list-item-text');
     const $el = $element.detach();
     $target.append($el)
-    // and add classes
-    $element.addClass('layout-align-center-center layout-row')
-  }
+  };
 
   ctrl.$doCheck = () => {
     // manual check to see if items have changed
     parentCtrl.currLoc.items !== ctrl.trackedItems ? ctrl.runAvailabilityCheck() : null;
     ctrl.trackedItems = parentCtrl.currLoc.items;
-
-    // manually move the $element
-    // if(!ctrl.ranElementMove) {
-    //   const $target = $element.parent().query('div.md-list-item-text');
-    //   const $el = $element.detach();
-    //   $target.append($el)
-    //   ctrl.ranElementMove = true;
-    // }
-
-    // if(!ctrl.ranHideCustomRequests) {
-    //   // follow-up with hiding any custom requests for things that are actually available
-    //   const availabilities = ctrl.parentCtrl.currLoc.items.map(availabilityService.checkIsAvailable);
-    //   availabilities.forEach((isAvailable, idx) => isAvailable ? ctrl.hideCustomRequests(idx) : null)
-    //   ctrl.ranHideCustomRequests = true;
-    // }
   };
 }
 
