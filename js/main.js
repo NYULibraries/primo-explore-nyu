@@ -227,7 +227,7 @@ function prmLocationItemAfterController(config, customLoginService, availability
     $el ? $el.children().eq(2).css(css) : null;
   }
   ctrl.hideRequest = ctrl.cssRequest({ display: 'none' });
-  ctrl.revealRequest = ctrl.cssRequest({ display: 'block' });
+  ctrl.revealRequest = ctrl.cssRequest({ display: 'flex' });
 
   ctrl.hideCustomRequest = idx => {
     const $el = $element.parent().parent().parent().parent().queryAll('prm-location-item-after')[idx]
