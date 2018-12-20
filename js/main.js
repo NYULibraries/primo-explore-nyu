@@ -193,13 +193,12 @@ app
     svc.itemsAreUnique = items => items.some((item, _i, items) => item._additionalData.itemdescription !== items[0]._additionalData.itemdescription);
 
     svc.state = {};
-    svc.setState = newState => angular.merge(svc.state, newState);
 
     return {
       itemsAreUnique: svc.itemsAreUnique,
       checkIsAvailable: svc.checkIsAvailable,
       getState: () => angular.copy(svc.state),
-      setState: svc.setState,
+      setState: newState => angular.merge(svc.state, newState),
     }
   })
   .component('prmAuthenticationAfter', {
@@ -217,22 +216,23 @@ app
   .service('customRequestService', function () {
     const svc = this;
 
-    svc.state = {
-      loggedIn: undefined,
-      unavailable: undefined,
-      user: undefined,
-      userFailure: undefined,
-      links: undefined,
-      stateId: 0,
-    };
+    svc.state = Object.create({}, {
+      _$stateId: {
+        value: 0,
+        enumerable: false,
+        writable: true
+      }
+    });
 
-    return {
+    return ({
       setState: newState => {
-        svc.state.changeId += 1;
+        svc.state._$stateId += 1;
+        console.log(angular.merge(svc.state, newState));
         return angular.merge(svc.state, newState);
       },
       getState: () => angular.copy(svc.state),
-    }
+      getStateId: () => svc.state._$stateId,
+    });
   });
 
 prmLocationItemsAfterController.$inject = ['customRequestsConfigService', '$element', 'customLoginService', 'availabilityService', 'customRequestService'];
@@ -240,12 +240,10 @@ function prmLocationItemsAfterController(config, $element, customLoginService, a
   const ctrl = this;
   const parentCtrl = ctrl.parentCtrl;
 
-  ctrl.cssRequest = css => idx => {
+  ctrl.hideRequest = idx => {
     const $el = $element.parent().queryAll('.md-list-item-text')[idx];
-    $el ? $el.children().eq(2).css(css) : null;
+    $el ? $el.children().eq(2).css({ display: 'none' }) : null;
   }
-  ctrl.hideRequest = ctrl.cssRequest({ display: 'none' });
-  ctrl.revealRequest = ctrl.cssRequest({ display: 'flex' });
 
   ctrl.hideCustomRequest = idx => {
     const $el = $element.parent().queryAll('prm-location-item-after')[idx]
@@ -309,12 +307,6 @@ function prmLocationItemsAfterController(config, $element, customLoginService, a
       });
     }
     ctrl.trackedItems = parentCtrl.currLoc.items;
-
-    // double-check reveal status, since loading more items will inadvertently hide some availables
-    if (!ctrl.hasCheckedReveal) {
-      ctrl.availabilityStatuses.forEach((isAvailable, idx) => isAvailable ? ctrl.revealRequest(idx) : null)
-      ctrl.hasCheckedReveal = true;
-    }
   };
 }
 
@@ -327,21 +319,9 @@ function authenticationController(customLoginService) {
   };
 }
 
-prmLocationItemAfterController.$inject = ['customRequestsConfigService', 'customLoginService', 'availabilityService', '$element', '$window', '$scope', 'customRequestService']
-function prmLocationItemAfterController(config, customLoginService, availabilityService, $element, $window, $scope, customRequestService) {
+prmLocationItemAfterController.$inject = ['$element', '$window', '$scope', 'customRequestService', 'customLoginService']
+function prmLocationItemAfterController($element, $window, $scope, customRequestService, customLoginService) {
   const ctrl = this;
-
-  ctrl.cssRequest = css => idx => {
-    const $el = $element.parent().parent().queryAll('.md-list-item-text')[idx];
-    $el ? $el.children().eq(2).css(css) : null;
-  }
-  ctrl.hideRequest = ctrl.cssRequest({ display: 'none' });
-  ctrl.revealRequest = ctrl.cssRequest({ display: 'block' });
-
-  ctrl.hideCustomRequest = idx => {
-    const $el = $element.parent().parent().parent().parent().queryAll('prm-location-item-after')[idx]
-    $el ? $el.css({ display: 'none' }) : null;
-  }
 
   ctrl.handleLogin = function (event) {
     customLoginService.login();
@@ -370,9 +350,9 @@ function prmLocationItemAfterController(config, customLoginService, availability
   };
 
   ctrl.$doCheck = () => {
-    if (ctrl.stateId !== customRequestService.getState().stateId) {
+    if (ctrl.stateId !== customRequestService.getStateId()) {
       ctrl.refreshAvailability();
-      ctrl.stateId = customRequestService.getState().stateId;
+      ctrl.stateId = customRequestService.getStateId();
     }
   }
 }
