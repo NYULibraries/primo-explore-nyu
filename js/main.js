@@ -100,7 +100,21 @@ app
       },
     },
     links: ['ezborrow', 'ill'],
-    prmLocationItemsAfterTemplate: `<div>Hello world</div>`
+    prmLocationItemsAfterTemplate: `
+    <div>
+      <p>
+        <prm-icon style="z-index:1" icon-type="svg" svg-icon-set="action" icon-definition="ic_help_24px"></prm-icon>
+        <span>Request E-ZBorrow: Get item from one of our partner libraries in 3-6 days. Checkout period is 12 weeks, with no renewals.</span>
+      </p>
+      <p>
+        <prm-icon style="z-index:1" icon-type="svg" svg-icon-set="action" icon-definition="ic_help_24px"></prm-icon>
+        <span>Request ILL: Request a loan of this item via Interlibrary
+          Loan. Most requests arrive within two weeks. Due dates and renewals are determined by the lending library.
+          Article/chapter requests are typically delivered electronically in 3-5 days.
+        </span>
+      </p>
+    </div>
+    `
   })
   .service('customRequestsConfigService', ['customRequestsConfig', function (config) {
     return config ? config : console.warn('the constant customRequestsConfig is not defined');
@@ -121,7 +135,7 @@ app
         <div layout="row" layout-align="center center" ng-if="!$ctrl.loggedIn">
           <div>
             <button class="button-as-link md-button md-primoExplore-theme md-ink-ripple" type="button" ng-click="$ctrl.handleLogin($event)"
-              aria-label="Type"><span>Login to see request options</span>
+              aria-label="Type"><span>Login for request options</span>
             </button>
           </div>
         </div>
@@ -212,7 +226,7 @@ app
     controller: prmLocationItemsAfterController,
     bindings: {
       parentCtrl: '<'
-    },
+    }
   })
   .service('customRequestService', function () {
     const svc = this;
@@ -235,9 +249,9 @@ app
     });
   });
 
-prmLocationItemsAfterController.$inject = ['customRequestsConfigService', '$element', 'customLoginService', 'availabilityService', 'customRequestService'];
-function prmLocationItemsAfterController(config, $element, customLoginService, availabilityService, customRequestService) {
-  const ctrl = this;
+prmLocationItemsAfterController.$inject = ['customRequestsConfigService', '$element', 'customLoginService', 'availabilityService', 'customRequestService', '$compile', '$scope'];
+function prmLocationItemsAfterController(config, $element, customLoginService, availabilityService, customRequestService, $compile, $scope) {
+const ctrl = this;
   const parentCtrl = ctrl.parentCtrl;
 
   ctrl.hideRequest = idx => {
@@ -296,10 +310,6 @@ function prmLocationItemsAfterController(config, $element, customLoginService, a
     }
   }
 
-  ctrl.$onInit = () => {
-    $element.append(config.prmLocationItemsAfterTemplate);
-  };
-
   ctrl.$doCheck = () => {
     if (parentCtrl.currLoc === undefined) return;
     // manual check to see if items have changed
@@ -312,6 +322,10 @@ function prmLocationItemsAfterController(config, $element, customLoginService, a
     }
     ctrl.trackedItems = parentCtrl.currLoc.items;
   };
+
+  ctrl.$onInit = () => {
+    $element.append($compile(config.prmLocationItemsAfterTemplate)($scope));
+  }
 }
 
 authenticationController.$inject = ['customLoginService']
