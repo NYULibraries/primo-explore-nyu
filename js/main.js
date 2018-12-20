@@ -101,7 +101,7 @@ app
     },
     links: ['ezborrow', 'ill']
   })
-  .service('customRequestsService', ['customRequestsConfig', function (config) {
+  .service('customRequestsConfigService', ['customRequestsConfig', function (config) {
     return config ? config : console.warn('the constant customRequestsConfig is not defined');
   }])
   .component('prmLocationItemAfter', {
@@ -131,7 +131,7 @@ app
     `
   })
   // Injects prmAuthentication's handleLogin as a global service
-  .service('customLoginService', ['$window', '$http', 'customRequestsService', function ($window, $http, config) {
+  .service('customLoginService', ['$window', '$http', 'customRequestsConfigService', function ($window, $http, config) {
     const svc = this;
     svc.store = {
       user: undefined,
@@ -192,12 +192,12 @@ app
     svc.itemsAreUnique = items => items.some((item, _i, items) => item._additionalData.itemdescription !== items[0]._additionalData.itemdescription);
 
     svc.state = {};
-    svc.setState = newState => Object.assign(svc.state, newState);
+    svc.setState = newState => angular.merge(svc.state, newState);
 
     return {
       itemsAreUnique: svc.itemsAreUnique,
       checkIsAvailable: svc.checkIsAvailable,
-      getState: () => svc.state,
+      getState: () => angular.copy(svc.state),
       setState: svc.setState,
     }
   })
@@ -207,6 +207,114 @@ app
       parentCtrl: '<',
     }
   })
+  .component('prmLocationItemsAfter', {
+    controller: prmLocationItemsAfterController,
+    bindings: {
+      parentCtrl: '<'
+    }
+  })
+  .service('customRequestService', function () {
+    const svc = this;
+
+    svc.state = {
+      loggedIn: undefined,
+      unavailable: undefined,
+      user: undefined,
+      userFailure: undefined,
+      links: undefined,
+    };
+
+    return {
+      setState: newState => angular.merge(svc.state, newState),
+      getState: () => angular.copy(svc.state),
+    }
+  });
+
+prmLocationItemsAfterController.$inject = ['customRequestsConfigService', '$element', 'customLoginService', 'availabilityService', 'customRequestService'];
+function prmLocationItemsAfterController(config, $element, customLoginService, availabilityService, customRequestService) {
+  const ctrl = this;
+  const parentCtrl = ctrl.parentCtrl;
+
+  ctrl.cssRequest = css => idx => {
+    const $el = $element.parent().queryAll('.md-list-item-text')[idx];
+    $el ? $el.children().eq(2).css(css) : null;
+  }
+  ctrl.hideRequest = ctrl.cssRequest({ display: 'none' });
+  ctrl.revealRequest = ctrl.cssRequest({ display: 'block' });
+
+  ctrl.hideCustomRequest = idx => {
+    const $el = $element.parent().queryAll('prm-location-item-after')[idx]
+    $el ? $el.css({ display: 'none' }) : null;
+  }
+
+  ctrl.runAvailabilityCheck = () => {
+    ctrl.availabilityStatuses = ctrl.parentCtrl.currLoc.items.map(availabilityService.checkIsAvailable);
+
+    const itemsAreUnique = availabilityService.itemsAreUnique(parentCtrl.currLoc.items);
+    const anyUnavailable = ctrl.availabilityStatuses.some(status => status === false);
+    const allUnavailable = ctrl.availabilityStatuses.every(status => status === false);
+
+    const unavailable = allUnavailable || (itemsAreUnique && anyUnavailable);
+    const loggedIn = !parentCtrl.userSessionManagerService.isGuest();
+    customRequestService.setState({
+      loggedIn,
+      unavailable
+    });
+
+    if (loggedIn && unavailable) {
+      return customLoginService.fetchPDSUser().then(user => {
+        customRequestService.setState({ user });
+        const links = config.links.reduce((arr, link) => {
+          const show = config.showLinks[link]({
+            config,
+            user: ctrl.user,
+            item: parentCtrl.item,
+            unavailable: ctrl.unavailable
+          });
+
+          if (show) {
+            return arr.concat({
+              label: config.linkText[link],
+              href: config.linkGenerators[link]({
+                base: config.baseUrls[link],
+                item: parentCtrl.item,
+              })
+            });
+          } else {
+            return arr;
+          }
+        }, []);
+
+        customRequestService.setState({ links });
+      })
+      .catch(err => {
+        console.error(err);
+        customRequestService.setState({ userFailure: true })
+      });
+    } else {
+      return Promise.resolve(undefined)
+    }
+  }
+
+  ctrl.$doCheck = () => {
+    if (parentCtrl.currLoc === undefined) return;
+    // manual check to see if items have changed
+    if (parentCtrl.currLoc.items !== ctrl.trackedItems) {
+      ctrl.runAvailabilityCheck().then(() => {
+        ctrl.availabilityStatuses.forEach((isAvailable, idx) => !isAvailable ? ctrl.hideRequest(idx) : null);
+        ctrl.availabilityStatuses.forEach((isAvailable, idx) => isAvailable ? ctrl.hideCustomRequest(idx) : null)
+        ctrl.hasCheckedReveal = false;
+      });
+    }
+    ctrl.trackedItems = parentCtrl.currLoc.items;
+
+    // double-check reveal status, since loading more items will inadvertently hide some availables
+    if (!ctrl.hasCheckedReveal) {
+      ctrl.availabilityStatuses.forEach((isAvailable, idx) => isAvailable ? ctrl.revealRequest(idx) : null)
+      ctrl.hasCheckedReveal = true;
+    }
+  };
+}
 
 authenticationController.$inject = ['customLoginService']
 function authenticationController(customLoginService) {
@@ -217,8 +325,8 @@ function authenticationController(customLoginService) {
   };
 }
 
-prmLocationItemAfterController.$inject = ['customRequestsService', 'customLoginService', 'availabilityService', '$element', '$window', '$scope']
-function prmLocationItemAfterController(config, customLoginService, availabilityService, $element, $window, $scope) {
+prmLocationItemAfterController.$inject = ['customRequestsConfigService', 'customLoginService', 'availabilityService', '$element', '$window', '$scope', 'customRequestService']
+function prmLocationItemAfterController(config, customLoginService, availabilityService, $element, $window, $scope, customRequestService) {
   const ctrl = this;
   const parentCtrl = ctrl.parentCtrl;
 
@@ -241,50 +349,55 @@ function prmLocationItemAfterController(config, customLoginService, availability
 
   ctrl.open = (href) => $window.open(href)
 
-  ctrl.runAvailabilityCheck = () => {
-    ctrl.availabilityStatuses = ctrl.parentCtrl.currLoc.items.map(availabilityService.checkIsAvailable);
-    ctrl.availabilityStatuses.forEach((isAvailable, idx) => !isAvailable ? ctrl.hideRequest(idx) : null);
+  ctrl.refreshAvailability = () => {
+    // ctrl.availabilityStatuses = ctrl.parentCtrl.currLoc.items.map(availabilityService.checkIsAvailable);
+    // ctrl.availabilityStatuses.forEach((isAvailable, idx) => !isAvailable ? ctrl.hideRequest(idx) : null);
 
-    const itemsAreUnique = availabilityService.itemsAreUnique(parentCtrl.currLoc.items);
-    const anyUnavailable = ctrl.availabilityStatuses.some(status => status === false);
-    const allUnavailable = ctrl.availabilityStatuses.every(status => status === false);
-    ctrl.unavailable = allUnavailable || (itemsAreUnique && anyUnavailable);
+    // const itemsAreUnique = availabilityService.itemsAreUnique(parentCtrl.currLoc.items);
+    // const anyUnavailable = ctrl.availabilityStatuses.some(status => status === false);
+    // const allUnavailable = ctrl.availabilityStatuses.every(status => status === false);
+    // ctrl.unavailable = allUnavailable || (itemsAreUnique && anyUnavailable);
 
-    ctrl.loggedIn = !parentCtrl.userSessionManagerService.isGuest();
+    ctrl.loggedIn = customRequestService.getState().loggedIn;
+    ctrl.unavailable = customRequestService.getState().unavailable;
 
     if (ctrl.loggedIn && ctrl.unavailable) {
-      return customLoginService.fetchPDSUser().then(user => {
-        $scope.$applyAsync(() => {
-          ctrl.user = user;
-
-          ctrl.links = config.links.reduce((arr, link) => {
-            const show = config.showLinks[link]({
-              config,
-              user: ctrl.user,
-              item: parentCtrl.item,
-              unavailable: ctrl.unavailable
-            });
-
-            if (show) {
-              return arr.concat({
-                label: config.linkText[link],
-                href: config.linkGenerators[link]({
-                  base: config.baseUrls[link],
-                  item: parentCtrl.item,
-                })
-              });
-            } else {
-              return arr;
-            }
-          }, []);
-        })
-      })
-      .catch(err => {
-        console.error(err);
-        ctrl.userFailure = true;
+      $scope.$applyAsync(() => {
+        const { user, userFailure, links } = customRequestService.getState();
+        Object.assign(ctrl, { user, userFailure, links });
       });
-    } else {
-      return Promise.resolve(undefined)
+      // return customLoginService.fetchPDSUser().then(user => {
+      //   $scope.$applyAsync(() => {
+      //     ctrl.user = user;
+
+      //     ctrl.links = config.links.reduce((arr, link) => {
+      //       const show = config.showLinks[link]({
+      //         config,
+      //         user: ctrl.user,
+      //         item: parentCtrl.item,
+      //         unavailable: ctrl.unavailable
+      //       });
+
+      //       if (show) {
+      //         return arr.concat({
+      //           label: config.linkText[link],
+      //           href: config.linkGenerators[link]({
+      //             base: config.baseUrls[link],
+      //             item: parentCtrl.item,
+      //           })
+      //         });
+      //       } else {
+      //         return arr;
+      //       }
+      //     }, []);
+      //   })
+      // })
+      // .catch(err => {
+      //   console.error(err);
+      //   ctrl.userFailure = true;
+      // });
+    // } else {
+    //   return Promise.resolve(undefined)
     }
   }
 
@@ -295,22 +408,32 @@ function prmLocationItemAfterController(config, customLoginService, availability
     $element.addClass('layout-align-center-center layout-row');
   };
 
-  ctrl.$doCheck = () => {
-    // manual check to see if items have changed
-    if (parentCtrl.currLoc.items !== ctrl.trackedItems) {
-      ctrl.runAvailabilityCheck().then(() => {
-        ctrl.availabilityStatuses.forEach((isAvailable, idx) => isAvailable ? ctrl.hideCustomRequest(idx) : null)
-        ctrl.hasCheckedReveal = false;
-      });
-    }
-    ctrl.trackedItems = parentCtrl.currLoc.items;
+  // ctrl.$doCheck = () => {
+  //   // manual check to see if items have changed
+  //   if (parentCtrl.currLoc.items !== ctrl.trackedItems) {
+  //     ctrl.runAvailabilityCheck()
+  //     .then(() => {
+  //       ctrl.availabilityStatuses.forEach((isAvailable, idx) => isAvailable ? ctrl.hideCustomRequest(idx) : null)
+  //       ctrl.hasCheckedReveal = false;
+  //     });
+  //   }
+  //   ctrl.trackedItems = parentCtrl.currLoc.items;
 
-    // double-check reveal status, since loading more items will inadvertently hide some availables
-    if (!ctrl.hasCheckedReveal) {
-      ctrl.availabilityStatuses.forEach((isAvailable, idx) => isAvailable ? ctrl.revealRequest(idx) : null)
-      ctrl.hasCheckedReveal = true;
+  //   // double-check reveal status, since loading more items will inadvertently hide some availables
+  //   if (!ctrl.hasCheckedReveal) {
+  //     ctrl.availabilityStatuses.forEach((isAvailable, idx) => isAvailable ? ctrl.revealRequest(idx) : null)
+  //     ctrl.hasCheckedReveal = true;
+  //   }
+  // };
+
+  ctrl.$doCheck = () => {
+    if (parentCtrl.currLoc.items !== ctrl.trackedItems) {
+      ctrl.refreshAvailability();
+      ctrl.trackedItems = parentCtrl.currLoc.items;
+    } else if (customRequestService.getState().links !== ctrl.link) {
+      ctrl.refreshAvailability();
     }
-  };
+  }
 }
 
 app.run(runBlock);
