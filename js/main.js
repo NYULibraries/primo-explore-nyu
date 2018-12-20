@@ -222,10 +222,14 @@ app
       user: undefined,
       userFailure: undefined,
       links: undefined,
+      changeId: 0,
     };
 
     return {
-      setState: newState => angular.merge(svc.state, newState),
+      setState: newState => {
+        svc.state.changeId += 1;
+        return angular.merge(svc.state, newState);
+      },
       getState: () => angular.copy(svc.state),
     }
   });
@@ -350,15 +354,6 @@ function prmLocationItemAfterController(config, customLoginService, availability
   ctrl.open = (href) => $window.open(href)
 
   ctrl.refreshAvailability = () => {
-    // ctrl.availabilityStatuses = ctrl.parentCtrl.currLoc.items.map(availabilityService.checkIsAvailable);
-    // ctrl.availabilityStatuses.forEach((isAvailable, idx) => !isAvailable ? ctrl.hideRequest(idx) : null);
-
-    // const itemsAreUnique = availabilityService.itemsAreUnique(parentCtrl.currLoc.items);
-    // const anyUnavailable = ctrl.availabilityStatuses.some(status => status === false);
-    // const allUnavailable = ctrl.availabilityStatuses.every(status => status === false);
-    // ctrl.unavailable = allUnavailable || (itemsAreUnique && anyUnavailable);
-
-    ctrl.loggedIn = customRequestService.getState().loggedIn;
     ctrl.unavailable = customRequestService.getState().unavailable;
 
     if (ctrl.loggedIn && ctrl.unavailable) {
@@ -366,39 +361,11 @@ function prmLocationItemAfterController(config, customLoginService, availability
         const { user, userFailure, links } = customRequestService.getState();
         Object.assign(ctrl, { user, userFailure, links });
       });
-      // return customLoginService.fetchPDSUser().then(user => {
-      //   $scope.$applyAsync(() => {
-      //     ctrl.user = user;
-
-      //     ctrl.links = config.links.reduce((arr, link) => {
-      //       const show = config.showLinks[link]({
-      //         config,
-      //         user: ctrl.user,
-      //         item: parentCtrl.item,
-      //         unavailable: ctrl.unavailable
-      //       });
-
-      //       if (show) {
-      //         return arr.concat({
-      //           label: config.linkText[link],
-      //           href: config.linkGenerators[link]({
-      //             base: config.baseUrls[link],
-      //             item: parentCtrl.item,
-      //           })
-      //         });
-      //       } else {
-      //         return arr;
-      //       }
-      //     }, []);
-      //   })
-      // })
-      // .catch(err => {
-      //   console.error(err);
-      //   ctrl.userFailure = true;
-      // });
-    // } else {
-    //   return Promise.resolve(undefined)
     }
+  }
+
+  ctrl.$onInit = () => {
+    ctrl.loggedIn = customRequestService.getState().loggedIn;
   }
 
   ctrl.$postLink = () => {
@@ -408,30 +375,10 @@ function prmLocationItemAfterController(config, customLoginService, availability
     $element.addClass('layout-align-center-center layout-row');
   };
 
-  // ctrl.$doCheck = () => {
-  //   // manual check to see if items have changed
-  //   if (parentCtrl.currLoc.items !== ctrl.trackedItems) {
-  //     ctrl.runAvailabilityCheck()
-  //     .then(() => {
-  //       ctrl.availabilityStatuses.forEach((isAvailable, idx) => isAvailable ? ctrl.hideCustomRequest(idx) : null)
-  //       ctrl.hasCheckedReveal = false;
-  //     });
-  //   }
-  //   ctrl.trackedItems = parentCtrl.currLoc.items;
-
-  //   // double-check reveal status, since loading more items will inadvertently hide some availables
-  //   if (!ctrl.hasCheckedReveal) {
-  //     ctrl.availabilityStatuses.forEach((isAvailable, idx) => isAvailable ? ctrl.revealRequest(idx) : null)
-  //     ctrl.hasCheckedReveal = true;
-  //   }
-  // };
-
   ctrl.$doCheck = () => {
-    if (parentCtrl.currLoc.items !== ctrl.trackedItems) {
+    if (ctrl.stateId !== customRequestService.getState().changeId) {
       ctrl.refreshAvailability();
-      ctrl.trackedItems = parentCtrl.currLoc.items;
-    } else if (customRequestService.getState().links !== ctrl.link) {
-      ctrl.refreshAvailability();
+      ctrl.stateId = customRequestService.getState().changeId;
     }
   }
 }
