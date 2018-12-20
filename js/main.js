@@ -127,6 +127,7 @@ app
 
         <span ng-if="$ctrl.loggedIn && !$ctrl.user && !$ctrl.userFailure">Retrieving request options...</span>
         <span ng-if="$ctrl.userFailure">Unable to retrieve request options</span>
+        <span ng-if="$ctrl.user && $ctrl.links && $ctrl.links.length === 0">Request not available</span>
       </div>
     `
   })
@@ -222,7 +223,7 @@ app
       user: undefined,
       userFailure: undefined,
       links: undefined,
-      changeId: 0,
+      stateId: 0,
     };
 
     return {
@@ -260,10 +261,7 @@ function prmLocationItemsAfterController(config, $element, customLoginService, a
 
     const unavailable = allUnavailable || (itemsAreUnique && anyUnavailable);
     const loggedIn = !parentCtrl.userSessionManagerService.isGuest();
-    customRequestService.setState({
-      loggedIn,
-      unavailable
-    });
+    customRequestService.setState({ loggedIn, unavailable });
 
     if (loggedIn && unavailable) {
       return customLoginService.fetchPDSUser().then(user => {
@@ -332,7 +330,6 @@ function authenticationController(customLoginService) {
 prmLocationItemAfterController.$inject = ['customRequestsConfigService', 'customLoginService', 'availabilityService', '$element', '$window', '$scope', 'customRequestService']
 function prmLocationItemAfterController(config, customLoginService, availabilityService, $element, $window, $scope, customRequestService) {
   const ctrl = this;
-  const parentCtrl = ctrl.parentCtrl;
 
   ctrl.cssRequest = css => idx => {
     const $el = $element.parent().parent().queryAll('.md-list-item-text')[idx];
@@ -354,7 +351,8 @@ function prmLocationItemAfterController(config, customLoginService, availability
   ctrl.open = (href) => $window.open(href)
 
   ctrl.refreshAvailability = () => {
-    ctrl.unavailable = customRequestService.getState().unavailable;
+    const { loggedIn, unavailable } = customRequestService.getState();
+    Object.assign(ctrl, { loggedIn, unavailable });
 
     if (ctrl.loggedIn && ctrl.unavailable) {
       $scope.$applyAsync(() => {
@@ -362,10 +360,6 @@ function prmLocationItemAfterController(config, customLoginService, availability
         Object.assign(ctrl, { user, userFailure, links });
       });
     }
-  }
-
-  ctrl.$onInit = () => {
-    ctrl.loggedIn = customRequestService.getState().loggedIn;
   }
 
   ctrl.$postLink = () => {
@@ -376,9 +370,9 @@ function prmLocationItemAfterController(config, customLoginService, availability
   };
 
   ctrl.$doCheck = () => {
-    if (ctrl.stateId !== customRequestService.getState().changeId) {
+    if (ctrl.stateId !== customRequestService.getState().stateId) {
       ctrl.refreshAvailability();
-      ctrl.stateId = customRequestService.getState().changeId;
+      ctrl.stateId = customRequestService.getState().stateId;
     }
   }
 }
