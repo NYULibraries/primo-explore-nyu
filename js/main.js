@@ -99,7 +99,8 @@ app
         return !ezborrow && unavailable && config.values.authorizedStatuses.ill.indexOf(borStatus) > -1
       },
     },
-    links: ['ezborrow', 'ill']
+    links: ['ezborrow', 'ill'],
+    prmLocationItemsAfterTemplate: `<div>Hello world</div>`
   })
   .service('customRequestsConfigService', ['customRequestsConfig', function (config) {
     return config ? config : console.warn('the constant customRequestsConfig is not defined');
@@ -211,7 +212,7 @@ app
     controller: prmLocationItemsAfterController,
     bindings: {
       parentCtrl: '<'
-    }
+    },
   })
   .service('customRequestService', function () {
     const svc = this;
@@ -227,7 +228,6 @@ app
     return ({
       setState: newState => {
         svc.state._$stateId += 1;
-        console.log(angular.merge(svc.state, newState));
         return angular.merge(svc.state, newState);
       },
       getState: () => angular.copy(svc.state),
@@ -295,6 +295,10 @@ function prmLocationItemsAfterController(config, $element, customLoginService, a
       return Promise.resolve(undefined)
     }
   }
+
+  ctrl.$onInit = () => {
+    $element.append(config.prmLocationItemsAfterTemplate);
+  };
 
   ctrl.$doCheck = () => {
     if (parentCtrl.currLoc === undefined) return;
