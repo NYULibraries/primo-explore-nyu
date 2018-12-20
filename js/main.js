@@ -222,12 +222,14 @@ function prmLocationItemAfterController(config, customLoginService, availability
   const ctrl = this;
   const parentCtrl = ctrl.parentCtrl;
 
-  ctrl.hideRequest = (idx) => {
+  ctrl.cssRequest = css => idx => {
     const $el = $element.parent().parent().queryAll('.md-list-item-text')[idx];
-    $el ? $el.children().eq(2).css({ display: 'none' }) : null;
+    $el ? $el.children().eq(2).css(css) : null;
   }
+  ctrl.hideRequest = ctrl.cssRequest({ display: 'none' });
+  ctrl.revealRequest = ctrl.cssRequest({ display: 'block' });
 
-  ctrl.hideCustomRequests = (idx) => {
+  ctrl.hideCustomRequest = idx => {
     const $el = $element.parent().parent().parent().parent().queryAll('prm-location-item-after')[idx]
     $el ? $el.css({ display: 'none' }) : null;
   }
@@ -291,18 +293,23 @@ function prmLocationItemAfterController(config, customLoginService, availability
     const $el = $element.detach();
     $target.append($el);
     $element.addClass('layout-align-center-center layout-row');
-
-    // ctrl.availabilityStatuses.forEach((isAvailable, idx) => isAvailable ? ctrl.hideCustomRequests(idx) : null)
   };
 
   ctrl.$doCheck = () => {
     // manual check to see if items have changed
     if (parentCtrl.currLoc.items !== ctrl.trackedItems) {
       ctrl.runAvailabilityCheck().then(() => {
-        ctrl.availabilityStatuses.forEach((isAvailable, idx) => isAvailable ? ctrl.hideCustomRequests(idx) : null)
+        ctrl.availabilityStatuses.forEach((isAvailable, idx) => isAvailable ? ctrl.hideCustomRequest(idx) : null)
+        ctrl.hasCheckedReveal = false;
       });
     }
     ctrl.trackedItems = parentCtrl.currLoc.items;
+
+    // double-check reveal status, since loading more items will inadvertently hide some availables
+    if (!ctrl.hasCheckedReveal) {
+      ctrl.availabilityStatuses.forEach((isAvailable, idx) => isAvailable ? ctrl.revealRequest(idx) : null)
+      ctrl.hasCheckedReveal = true;
+    }
   };
 }
 
