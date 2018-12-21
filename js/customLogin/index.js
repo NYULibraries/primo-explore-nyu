@@ -7,11 +7,9 @@ angular
       selectors: ['id', 'bor-status'],
     },
   })
-  .component('prmAuthenticationAfter', {
-    controller: authenticationController,
-    bindings: {
-      parentCtrl: '<',
-    }
+  .component('customLogin', {
+    controller: customLoginController,
+    require: { parentCtrl: '^prmAuthentication' }
   })
   // Injects prmAuthentication's handleLogin as a global service
   .service('customLoginService', ['$window', '$http', 'customLoginConfig', function ($window, $http, config) {
@@ -64,10 +62,11 @@ angular
   }])
 
 
-authenticationController.$inject = ['customLoginService']
-function authenticationController(customLoginService) {
+customLoginController.$inject = ['customLoginService']
+function customLoginController(customLoginService) {
   const ctrl = this;
   ctrl.$onInit = function () {
+    console.log(ctrl);
     customLoginService.setLogin(ctrl.parentCtrl.handleLogin.bind(ctrl.parentCtrl));
     customLoginService.setLogout(ctrl.parentCtrl.handleLogout.bind(ctrl.parentCtrl));
   };

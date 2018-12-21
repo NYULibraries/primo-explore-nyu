@@ -46,6 +46,9 @@ app
   .component('prmSearchBarAfter', {
     template: '<search-bar-sub-menu></search-bar-sub-menu>'
   })
+  .component('prmAuthenticationAfter', {
+    template: `<custom-login></custom-login>`
+  })
 
 app
   .config(['$httpProvider', function ($httpProvider) {
