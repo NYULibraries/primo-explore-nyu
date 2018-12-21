@@ -56,12 +56,14 @@ app
     //that would prevent CORS from working
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
   }])
-  .constant('customRequestsConfig', {
+  .constant('customLoginConfig', {
     pdsUrl: "https://pdsdev.library.nyu.edu/pds",
-    pdsUserInfo: {
-      queryString: 'func=get-attribute&attribute=bor_info',
-      selectors: ['id', 'bor-status'],
-    },
+      pdsUserInfo: {
+        queryString: 'func=get-attribute&attribute=bor_info',
+        selectors: ['id', 'bor-status'],
+      },
+  })
+  .constant('customRequestsConfig', {
     baseUrls: {
       ezborrow: 'http://dev.login.library.nyu.edu/ezborrow/nyu',
       ill: 'http://dev.ill.library.nyu.edu/illiad/illiad.dll/OpenURL',
@@ -70,7 +72,19 @@ app
       authorizedStatuses: {
         ezborrow: ["50", "51", "52", "53", "54", "55", "56", "57", "58", "60", "61", "62", "63", "65", "66", "80", "81", "82", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41"],
         ill: ["30", "31", "32", "34", "35", "37", "50", "51", "52", "53", "54", "55", "56", "57", "58", "60", "61", "62", "63", "65", "66", "80", "81", "82"]
-      }
+      },
+      unavailablePatterns: [
+        /Requested/g,
+        /^\d{2}\/\d{2}\/\d{2}/g, // starts with dd/dd/dd
+        'Requested',
+        'Billed as Lost',
+        'Claimed Returned',
+        'In Processing',
+        'In Transit',
+        'On Hold',
+        'Request ILL',
+        'On Order',
+      ]
     },
     linkGenerators: {
       ezborrow: ({ base, item }) => {
@@ -87,7 +101,7 @@ app
       ill: 'Request ILL',
     },
     showLinks: {
-      ezborrow: ({ user, item, config }) => {
+      ezborrow: ({ user, config, item }) => {
         const isBook = ['BOOK', 'BOOKS'].some(type => item.pnx.addata.ristype.indexOf(type) > -1);
         const borStatus = user && user['bor-status'];
         return isBook && config.values.authorizedStatuses.ezborrow.indexOf(borStatus) > -1;
@@ -99,22 +113,11 @@ app
         return !ezborrow && config.values.authorizedStatuses.ill.indexOf(borStatus) > -1
       },
     },
-    hideDefault: items => {
+    hideDefault: ({ items, config }) => {
       const hasPattern = (patterns, target) => patterns.some(str => target.match(new RegExp(str)));
       const checkIsAvailable = item => {
         const [circulationStatus, ...otherStatusFields] = item.itemFields;
-        return !hasPattern([
-          /Requested/g,
-          /^\d{2}\/\d{2}\/\d{2}/g, // starts with dd/dd/dd
-          'Requested',
-          'Billed as Lost',
-          'Claimed Returned',
-          'In Processing',
-          'In Transit',
-          'On Hold',
-          'Request ILL',
-          'On Order',
-        ], circulationStatus);
+        return !hasPattern(config.values.unavailablePatterns, circulationStatus);
       };
       const checkAreItemsUnique = items => items.some((item, _i, items) => item._additionalData.itemdescription !== items[0]._additionalData.itemdescription);
 
@@ -124,40 +127,7 @@ app
 
       return availabilityStatuses.map(isAvailable => allUnavailable || (itemsAreUnique && !isAvailable));
     },
-    hideCustom: items => {
-      const hasPattern = (patterns, target) => patterns.some(str => target.match(new RegExp(str)));
-      const checkIsAvailable = item => {
-        const [circulationStatus, ...otherStatusFields] = item.itemFields;
-        return !hasPattern([
-          /Requested/g,
-          /^\d{2}\/\d{2}\/\d{2}/g, // starts with dd/dd/dd
-          'Requested',
-          'Billed as Lost',
-          'Claimed Returned',
-          'In Processing',
-          'In Transit',
-          'On Hold',
-          'Request ILL',
-          'On Order',
-        ], circulationStatus);
-      };
-      const checkAreItemsUnique = items => items.some((item, _i, items) => item._additionalData.itemdescription !== items[0]._additionalData.itemdescription);
-
-      const availabilityStatuses = items.map(checkIsAvailable);
-      const itemsAreUnique = checkAreItemsUnique(items);
-      const allUnavailable = availabilityStatuses.every(status => status === false);
-
-      // clean this up
-      return availabilityStatuses.map(isAvailable => {
-        if (itemsAreUnique && !isAvailable) {
-          return false;
-        } else if (allUnavailable) {
-          return false;
-        } else {
-          return true;
-        }
-      });
-    },
+    hideCustom: ({ items, config }) => config.hideDefault({ items, config }).map(boolean => !boolean),
     links: ['ezborrow', 'ill'],
     prmLocationItemsAfterTemplate: `
     <div>
@@ -206,7 +176,7 @@ app
     `
   })
   // Injects prmAuthentication's handleLogin as a global service
-  .service('customLoginService', ['$window', '$http', 'customRequestsConfigService', function ($window, $http, config) {
+  .service('customLoginService', ['$window', '$http', 'customLoginConfig', function ($window, $http, config) {
     const svc = this;
     svc.store = {
       user: undefined,
@@ -260,22 +230,13 @@ app
   })
   .service('customRequestService', function () {
     const svc = this;
-
-    svc.state = Object.create({}, {
-      _$stateId: {
-        value: 0,
-        enumerable: false,
-        writable: true
-      }
-    });
-
+    svc.state = {}
     return ({
       setState: newState => {
-        svc.state._$stateId += 1;
-        return angular.merge(svc.state, newState);
+        svc.state = angular.merge({}, svc.state, newState);
+        return svc.state;
       },
-      getState: () => angular.copy(svc.state),
-      getStateId: () => svc.state._$stateId,
+      getState: () => svc.state,
     });
   });
 
@@ -295,14 +256,6 @@ const ctrl = this;
   }
 
   ctrl.runAvailabilityCheck = () => {
-    // ctrl.availabilityStatuses = ctrl.parentCtrl.currLoc.items.map(availabilityService.checkIsAvailable);
-
-    // const itemsAreUnique = availabilityService.itemsAreUnique(parentCtrl.currLoc.items);
-    // const anyUnavailable = ctrl.availabilityStatuses.some(status => status === false);
-    // const allUnavailable = ctrl.availabilityStatuses.every(status => status === false);
-
-    // const unavailable = allUnavailable || (itemsAreUnique && anyUnavailable);
-
     const loggedIn = !parentCtrl.userSessionManagerService.isGuest();
     customRequestService.setState({ loggedIn });
 
@@ -346,8 +299,8 @@ const ctrl = this;
     if (parentCtrl.currLoc.items !== ctrl.trackedItems) {
       ctrl.trackedItems = parentCtrl.currLoc.items;
       ctrl.runAvailabilityCheck().then(() => {
-        config.hideDefault(ctrl.trackedItems).forEach((toHide, idx) => toHide ? ctrl.hideRequest(idx) : null);
-        config.hideCustom(ctrl.trackedItems).forEach((toHide, idx) => toHide ? ctrl.hideCustomRequest(idx) : null)
+        config.hideDefault({ items: ctrl.trackedItems, config }).forEach((toHide, idx) => toHide ? ctrl.hideRequest(idx) : null);
+        config.hideCustom({ items: ctrl.trackedItems, config }).forEach((toHide, idx) => toHide ? ctrl.hideCustomRequest(idx) : null)
         ctrl.hasCheckedReveal = false;
       });
     }
@@ -398,9 +351,9 @@ function prmLocationItemAfterController($element, $window, $scope, customRequest
   };
 
   ctrl.$doCheck = () => {
-    if (ctrl.stateId !== customRequestService.getStateId()) {
+    if (ctrl.serviceState !== customRequestService.getState()) {
       ctrl.refreshAvailability();
-      ctrl.stateId = customRequestService.getStateId();
+      ctrl.serviceState = customRequestService.getState();
     }
   }
 }
