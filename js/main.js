@@ -14,6 +14,7 @@ import { libraryh3lpWidgetConfig } from './libraryh3lpWidget';
 import { nyuEshelfConfig } from './nyuEshelf';
 import { searchBarSubMenuItemsConfig } from './searchBarSubMenu';
 import { googleAnalyticsConfig } from './googleAnalyticsConfig';
+import { customLoginConfig } from './customLoginConfig';
 
 let app = angular.module('viewCustom', [
                                         'angularLoad',
@@ -34,6 +35,7 @@ app
   .constant(nyuEshelfConfig.name, nyuEshelfConfig.config)
   .constant(searchBarSubMenuItemsConfig.name, searchBarSubMenuItemsConfig.config)
   .constant(googleAnalyticsConfig.name, googleAnalyticsConfig.config)
+  .constant(customLoginConfig.name, customLoginConfig.config)
   .component('prmActionListAfter', {
     template: customActionsConfig.template
   })
