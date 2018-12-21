@@ -87,17 +87,76 @@ app
       ill: 'Request ILL',
     },
     showLinks: {
-      ezborrow: ({ user, item, config, unavailable }) => {
+      ezborrow: ({ user, item, config }) => {
         const isBook = ['BOOK', 'BOOKS'].some(type => item.pnx.addata.ristype.indexOf(type) > -1);
         const borStatus = user && user['bor-status'];
-        return isBook && unavailable && config.values.authorizedStatuses.ezborrow.indexOf(borStatus) > -1;
+        return isBook && config.values.authorizedStatuses.ezborrow.indexOf(borStatus) > -1;
       },
-      ill: ({ user, item, config, unavailable }) => {
+      ill: ({ user, item, config }) => {
         const isBook = ['BOOK', 'BOOKS'].some(type => item.pnx.addata.ristype.indexOf(type) > -1);
         const borStatus = user && user['bor-status'];
-        const ezborrow = isBook && unavailable && config.values.authorizedStatuses.ezborrow.indexOf(borStatus) > -1;
-        return !ezborrow && unavailable && config.values.authorizedStatuses.ill.indexOf(borStatus) > -1
+        const ezborrow = isBook && config.values.authorizedStatuses.ezborrow.indexOf(borStatus) > -1;
+        return !ezborrow && config.values.authorizedStatuses.ill.indexOf(borStatus) > -1
       },
+    },
+    hideDefault: items => {
+      const hasPattern = (patterns, target) => patterns.some(str => target.match(new RegExp(str)));
+      const checkIsAvailable = item => {
+        const [circulationStatus, ...otherStatusFields] = item.itemFields;
+        return !hasPattern([
+          /Requested/g,
+          /^\d{2}\/\d{2}\/\d{2}/g, // starts with dd/dd/dd
+          'Requested',
+          'Billed as Lost',
+          'Claimed Returned',
+          'In Processing',
+          'In Transit',
+          'On Hold',
+          'Request ILL',
+          'On Order',
+        ], circulationStatus);
+      };
+      const checkAreItemsUnique = items => items.some((item, _i, items) => item._additionalData.itemdescription !== items[0]._additionalData.itemdescription);
+
+      const availabilityStatuses = items.map(checkIsAvailable);
+      const itemsAreUnique = checkAreItemsUnique(items);
+      const allUnavailable = availabilityStatuses.every(status => status === false);
+
+      return availabilityStatuses.map(isAvailable => allUnavailable || (itemsAreUnique && !isAvailable));
+    },
+    hideCustom: items => {
+      const hasPattern = (patterns, target) => patterns.some(str => target.match(new RegExp(str)));
+      const checkIsAvailable = item => {
+        const [circulationStatus, ...otherStatusFields] = item.itemFields;
+        return !hasPattern([
+          /Requested/g,
+          /^\d{2}\/\d{2}\/\d{2}/g, // starts with dd/dd/dd
+          'Requested',
+          'Billed as Lost',
+          'Claimed Returned',
+          'In Processing',
+          'In Transit',
+          'On Hold',
+          'Request ILL',
+          'On Order',
+        ], circulationStatus);
+      };
+      const checkAreItemsUnique = items => items.some((item, _i, items) => item._additionalData.itemdescription !== items[0]._additionalData.itemdescription);
+
+      const availabilityStatuses = items.map(checkIsAvailable);
+      const itemsAreUnique = checkAreItemsUnique(items);
+      const allUnavailable = availabilityStatuses.every(status => status === false);
+
+      // clean this up
+      return availabilityStatuses.map(isAvailable => {
+        if (itemsAreUnique && !isAvailable) {
+          return false;
+        } else if (allUnavailable) {
+          return false;
+        } else {
+          return true;
+        }
+      });
     },
     links: ['ezborrow', 'ill'],
     prmLocationItemsAfterTemplate: `
@@ -125,7 +184,7 @@ app
       parentCtrl: '<',
     },
     template: `
-      <div layout="row" layout-align="center center" ng-if="$ctrl.unavailable">
+      <div layout="row" layout-align="center center">
         <div layout="row" layout-align="center center" ng-repeat="link in $ctrl.links">
           <button class="button-as-link md-button md-primoExplore-theme md-ink-ripple" type="button" ng-click="$ctrl.open(link.href)"
             aria-label="Type"><span>{{ link.label }}</span>
@@ -187,35 +246,6 @@ app
       fetchPDSUser: () => svc.store.user ? Promise.resolve(svc.store.user) : svc.fetchPDSUser(svc.store),
     };
   }])
-  .service('availabilityService', function () {
-    const svc = this;
-    svc.hasPattern = (patterns, target) => patterns.some(str => target.match(new RegExp(str)));
-    svc.checkIsAvailable = item => {
-      const [circulationStatus, ...otherStatusFields] = item.itemFields;
-      return !svc.hasPattern([
-        /Requested/g,
-        /^\d{2}\/\d{2}\/\d{2}/g, // starts with dd/dd/dd
-        'Requested',
-        'Billed as Lost',
-        'Claimed Returned',
-        'In Processing',
-        'In Transit',
-        'On Hold',
-        'Request ILL',
-        'On Order',
-      ], circulationStatus);
-    };
-    svc.itemsAreUnique = items => items.some((item, _i, items) => item._additionalData.itemdescription !== items[0]._additionalData.itemdescription);
-
-    svc.state = {};
-
-    return {
-      itemsAreUnique: svc.itemsAreUnique,
-      checkIsAvailable: svc.checkIsAvailable,
-      getState: () => angular.copy(svc.state),
-      setState: newState => angular.merge(svc.state, newState),
-    }
-  })
   .component('prmAuthenticationAfter', {
     controller: authenticationController,
     bindings: {
@@ -249,8 +279,8 @@ app
     });
   });
 
-prmLocationItemsAfterController.$inject = ['customRequestsConfigService', '$element', 'customLoginService', 'availabilityService', 'customRequestService', '$compile', '$scope'];
-function prmLocationItemsAfterController(config, $element, customLoginService, availabilityService, customRequestService, $compile, $scope) {
+prmLocationItemsAfterController.$inject = ['customRequestsConfigService', '$element', 'customLoginService', 'customRequestService', '$compile', '$scope'];
+function prmLocationItemsAfterController(config, $element, customLoginService, customRequestService, $compile, $scope) {
 const ctrl = this;
   const parentCtrl = ctrl.parentCtrl;
 
@@ -265,25 +295,25 @@ const ctrl = this;
   }
 
   ctrl.runAvailabilityCheck = () => {
-    ctrl.availabilityStatuses = ctrl.parentCtrl.currLoc.items.map(availabilityService.checkIsAvailable);
+    // ctrl.availabilityStatuses = ctrl.parentCtrl.currLoc.items.map(availabilityService.checkIsAvailable);
 
-    const itemsAreUnique = availabilityService.itemsAreUnique(parentCtrl.currLoc.items);
-    const anyUnavailable = ctrl.availabilityStatuses.some(status => status === false);
-    const allUnavailable = ctrl.availabilityStatuses.every(status => status === false);
+    // const itemsAreUnique = availabilityService.itemsAreUnique(parentCtrl.currLoc.items);
+    // const anyUnavailable = ctrl.availabilityStatuses.some(status => status === false);
+    // const allUnavailable = ctrl.availabilityStatuses.every(status => status === false);
 
-    const unavailable = allUnavailable || (itemsAreUnique && anyUnavailable);
+    // const unavailable = allUnavailable || (itemsAreUnique && anyUnavailable);
+
     const loggedIn = !parentCtrl.userSessionManagerService.isGuest();
-    customRequestService.setState({ loggedIn, unavailable });
+    customRequestService.setState({ loggedIn });
 
-    if (loggedIn && unavailable) {
+    if (loggedIn) {
       return customLoginService.fetchPDSUser().then(user => {
         customRequestService.setState({ user });
         const links = config.links.reduce((arr, link) => {
           const show = config.showLinks[link]({
             config,
             user: ctrl.user,
-            item: parentCtrl.item,
-            unavailable: ctrl.unavailable
+            item: parentCtrl.item
           });
 
           if (show) {
@@ -314,13 +344,13 @@ const ctrl = this;
     if (parentCtrl.currLoc === undefined) return;
     // manual check to see if items have changed
     if (parentCtrl.currLoc.items !== ctrl.trackedItems) {
+      ctrl.trackedItems = parentCtrl.currLoc.items;
       ctrl.runAvailabilityCheck().then(() => {
-        ctrl.availabilityStatuses.forEach((isAvailable, idx) => !isAvailable ? ctrl.hideRequest(idx) : null);
-        ctrl.availabilityStatuses.forEach((isAvailable, idx) => isAvailable ? ctrl.hideCustomRequest(idx) : null)
+        config.hideDefault(ctrl.trackedItems).forEach((toHide, idx) => toHide ? ctrl.hideRequest(idx) : null);
+        config.hideCustom(ctrl.trackedItems).forEach((toHide, idx) => toHide ? ctrl.hideCustomRequest(idx) : null)
         ctrl.hasCheckedReveal = false;
       });
     }
-    ctrl.trackedItems = parentCtrl.currLoc.items;
   };
 
   ctrl.$onInit = () => {
@@ -349,10 +379,10 @@ function prmLocationItemAfterController($element, $window, $scope, customRequest
   ctrl.open = (href) => $window.open(href)
 
   ctrl.refreshAvailability = () => {
-    const { loggedIn, unavailable } = customRequestService.getState();
-    Object.assign(ctrl, { loggedIn, unavailable });
+    const { loggedIn } = customRequestService.getState();
+    Object.assign(ctrl, { loggedIn });
 
-    if (ctrl.loggedIn && ctrl.unavailable) {
+    if (ctrl.loggedIn) {
       $scope.$applyAsync(() => {
         const { user, userFailure, links } = customRequestService.getState();
         Object.assign(ctrl, { user, userFailure, links });
