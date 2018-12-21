@@ -35,10 +35,9 @@ export default function prmLocationItemsAfterController(config, $element, custom
         const links = config.links.reduce((arr, link) => {
           const show = config.showLinks[link]({
             config,
-            user: ctrl.user,
+            user,
             item: ctrl.parentCtrl.item
           });
-
           if (show) {
             return arr.concat({
               label: config.linkText[link],

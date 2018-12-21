@@ -24,20 +24,14 @@ export const customRequestsConfig = {
       ]
     },
     linkGenerators: {
-      ezborrow: ({
-        base,
-        item
-      }) => {
+      ezborrow: ({ base, item }) => {
         const title = item.pnx.addata.btitle ? item.pnx.addata.btitle[0] : '';
         const author = item.pnx.addata.au ? item.pnx.addata.au[0] : '';
         const ti = encodeURIComponent(`ti=${title}`);
         const au = encodeURIComponent(`au=${author}`);
         return `${base}?query=${ti}+and+${au}`;
       },
-      ill: ({
-        base,
-        item
-      }) => `${base}?${item.delivery.GetIt2.link.match(/resolve?(.*)/)}`
+      ill: ({ base, item }) => `${base}?${item.delivery.GetIt2.link.match(/resolve?(.*)/)}`
     },
     linkText: {
       ezborrow: 'Request E-ZBorrow',
