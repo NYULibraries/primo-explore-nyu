@@ -1,5 +1,5 @@
-import prmLocationItemAfterController from './controllers/prmLocationItemAfterController'
-import prmLocationItemsAfterController from './controllers/prmLocationItemsAfterController'
+import customRequestsController from './controllers/customRequestsController'
+import customRequestsHandlerController from './controllers/customRequestHandlerController'
 
 angular
   .module('customRequests', [])
@@ -17,7 +17,7 @@ angular
     return config ? config : console.warn('the constant customRequestsConfig is not defined');
   }])
   .component('customRequests', {
-    controller: prmLocationItemAfterController,
+    controller: customRequestsController,
     require: {
       parentCtrl: '^prmLocationItemAfter'
     },
@@ -43,10 +43,10 @@ angular
       </div>
     `
   })
-  .component('prmLocationItemsAfter', {
-    controller: prmLocationItemsAfterController,
-    bindings: {
-      parentCtrl: '<'
+  .component('customRequestsHandler', {
+    controller: customRequestsHandlerController,
+    require: {
+      parentCtrl: '^prmLocationItems'
     }
   })
   .service('customRequestService', function () {
