@@ -55,6 +55,18 @@ app
   .component('prmAuthenticationAfter', {
     template: `<custom-login></custom-login>`
   })
+  .component('prmLocationItemAfter', {
+    template: `<custom-requests></custom-requests>`,
+    controller: ['$element', function($element) {
+      const ctrl = this;
+      ctrl.$postLink = () => {
+        const $target = $element.parent().query('div.md-list-item-text');
+        const $el = $element.detach();
+        $target.append($el);
+        $element.addClass('layout-align-center-center layout-row');
+      };
+    }]
+  })
 
 app.run(runBlock);
 
