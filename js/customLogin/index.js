@@ -4,8 +4,11 @@ angular
     controller: customLoginController,
     require: { parentCtrl: '^prmAuthentication' }
   })
+  .service('customLoginConfigService', ['customLoginConfig', function (config) {
+    return config ? config : console.warn('the constant customLoginConfig is not defined');
+  }])
   // Injects prmAuthentication's handleLogin as a global service
-  .service('customLoginService', ['$window', '$http', 'customLoginConfig', function ($window, $http, config) {
+  .service('customLoginService', ['$window', '$http', 'customLoginConfigService', function ($window, $http, config) {
     const svc = this;
     svc.store = {
       user: undefined,
@@ -59,7 +62,6 @@ customLoginController.$inject = ['customLoginService']
 function customLoginController(customLoginService) {
   const ctrl = this;
   ctrl.$onInit = function () {
-    console.log(ctrl);
     customLoginService.setLogin(ctrl.parentCtrl.handleLogin.bind(ctrl.parentCtrl));
     customLoginService.setLogout(ctrl.parentCtrl.handleLogout.bind(ctrl.parentCtrl));
   };
