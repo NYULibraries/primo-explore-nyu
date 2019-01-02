@@ -20,7 +20,7 @@ angular
       // source: https://stackoverflow.com/a/21125098/8603212
       const getCookie = function (name) {
         var match = $window.document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
-        if (match) return match[2];
+        return match ? match[2] : undefined;
       }
 
       store.user = $http.get(`${config.pdsUrl}?${config.pdsUserInfo.queryString}&pds_handle=${getCookie('PDS_HANDLE')}`, {

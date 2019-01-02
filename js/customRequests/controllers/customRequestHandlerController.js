@@ -1,26 +1,21 @@
-prmLocationItemsAfterController.$inject = ['customRequestsConfigService', '$element', 'customLoginService', 'customRequestService', '$compile', '$scope'];
-export default function prmLocationItemsAfterController(config, $element, customLoginService, customRequestService, $compile, $scope) {
+prmLocationItemsAfterController.$inject = ['customRequestsConfigService', '$element', 'customLoginService', 'customRequestService'];
+export default function prmLocationItemsAfterController(config, $element, customLoginService, customRequestService) {
   const ctrl = this;
 
-  ctrl.hideRequest = idx => {
-    const $el = $element.parent().parent().queryAll('.md-list-item-text')[idx];
-    $el ? $el.children().eq(2).css({ display: 'none' }) : null;
-  }
-
-  ctrl.hideCustomRequest = idx => {
+  ctrl.cssCustomRequest = css => idx => {
     const $el = $element.parent().parent().queryAll('prm-location-item-after')[idx]
-    $el ? $el.css({ display: 'none' }) : null;
+    $el ? $el.css(css) : null;
   }
 
-  ctrl.revealRequest = idx => {
+  ctrl.cssRequest = css => idx => {
     const $el = $element.parent().parent().queryAll('.md-list-item-text')[idx];
-    $el ? $el.children().eq(2).css({ display: 'flex' }) : null;
+    $el ? $el.children().eq(2).css(css) : null;
   }
 
-  ctrl.revealCustomRequest = idx => {
-    const $el = $element.parent().parent().queryAll('prm-location-item-after')[idx]
-    $el ? $el.css({ display: 'flex' }) : null;
-  }
+  ctrl.hideRequest = ctrl.cssRequest({ display: 'none' });
+  ctrl.hideCustomRequest = ctrl.cssCustomRequest({ display: 'none' });
+  ctrl.revealRequest = ctrl.cssRequest({ display: 'flex' });
+  ctrl.revealCustomRequest = ctrl.cssCustomRequest({ display: 'flex' });
 
   ctrl.runAvailabilityCheck = () => {
     const loggedIn = !ctrl.parentCtrl.userSessionManagerService.isGuest();
@@ -32,23 +27,15 @@ export default function prmLocationItemsAfterController(config, $element, custom
 
     return customLoginService.fetchPDSUser()
       .then(user => {
+        const item = ctrl.parentCtrl.item;
         const links = config.links.reduce((arr, link) => {
-          const show = config.showLinks[link]({
-            config,
-            user,
-            item: ctrl.parentCtrl.item
+          const show = config.showLinks[link]({ config, user, item  });
+          const makeLink = () => ({
+            label: config.linkText[link],
+            href: config.linkGenerators[link]({ base: config.baseUrls[link], item, config })
           });
-          if (show) {
-            return arr.concat({
-              label: config.linkText[link],
-              href: config.linkGenerators[link]({
-                base: config.baseUrls[link],
-                item: ctrl.parentCtrl.item,
-              })
-            });
-          } else {
-            return arr;
-          }
+
+          return arr.concat(show ? [ makeLink() ] : [])
         }, []);
 
         customRequestService.setState({ links, user });

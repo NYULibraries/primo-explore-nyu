@@ -18,6 +18,8 @@ import { googleAnalyticsConfig } from './googleAnalyticsConfig';
 import { customLoginConfig } from './customLoginConfig';
 import { customRequestsConfig } from './customRequestsConfig';
 
+import prmLocationItemAfterPartial from '../html/prm_location_items_after_partial.html';
+
 let app = angular.module('viewCustom', [
                                         'angularLoad',
                                         'customActions',
@@ -70,19 +72,7 @@ app
   .component('prmLocationItemsAfter', {
     template: `
     <custom-requests-handler></custom-requests-handler>
-    <div>
-      <p>
-        <prm-icon style="z-index:1" icon-type="svg" svg-icon-set="action" icon-definition="ic_help_24px"></prm-icon>
-        <span>Request E-ZBorrow: Get item from one of our partner libraries in 3-6 days. Checkout period is 12 weeks, with no renewals.</span>
-      </p>
-      <p>
-        <prm-icon style="z-index:1" icon-type="svg" svg-icon-set="action" icon-definition="ic_help_24px"></prm-icon>
-        <span>Request ILL: Request a loan of this item via Interlibrary
-          Loan. Most requests arrive within two weeks. Due dates and renewals are determined by the lending library.
-          Article/chapter requests are typically delivered electronically in 3-5 days.
-        </span>
-      </p>
-    </div>
+    ${prmLocationItemAfterPartial}
     `
   })
 
