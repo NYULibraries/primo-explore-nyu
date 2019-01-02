@@ -21,17 +21,17 @@ import { customRequestsConfig } from './customRequestsConfig';
 import prmLocationItemAfterPartial from '../html/prm_location_items_after_partial.html';
 
 let app = angular.module('viewCustom', [
-                                        'angularLoad',
-                                        'customActions',
-                                        'customLibraryCardMenu',
-                                        'clickableLogoToAnyLink',
-                                        'libraryh3lpWidget',
-                                        'nyuEshelf',
-                                        'searchBarSubMenu',
-                                        'googleAnalytics',
-                                        'customLoginService',
-                                        'customRequests',
-                                      ]);
+  'angularLoad',
+  'customActions',
+  'customLibraryCardMenu',
+  'clickableLogoToAnyLink',
+  'libraryh3lpWidget',
+  'nyuEshelf',
+  'searchBarSubMenu',
+  'googleAnalytics',
+  'customLoginService',
+  'customRequests',
+]);
 
 app
   .constant(customLibraryCardMenuItemsConfig.name, customLibraryCardMenuItemsConfig.config)
