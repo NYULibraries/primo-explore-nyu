@@ -5,8 +5,7 @@ import 'primo-explore-libraryh3lp-widget';
 import 'primo-explore-nyu-eshelf';
 import 'primo-explore-search-bar-sub-menu';
 import 'primo-explore-google-analytics';
-import './customLogin';
-import './customRequests';
+import 'primo-explore-custom-requests';
 
 import { customActionsConfig } from './customActions';
 import { customLibraryCardMenuItemsConfig } from './customLibraryCardMenu';
@@ -15,7 +14,6 @@ import { libraryh3lpWidgetConfig } from './libraryh3lpWidget';
 import { nyuEshelfConfig } from './nyuEshelf';
 import { searchBarSubMenuItemsConfig } from './searchBarSubMenu';
 import { googleAnalyticsConfig } from './googleAnalyticsConfig';
-import { customLoginConfig } from './customLoginConfig';
 import { customRequestsConfig } from './customRequestsConfig';
 
 import prmLocationItemAfterPartial from '../html/prm_location_items_after_partial.html';
@@ -29,8 +27,7 @@ let app = angular.module('viewCustom', [
   'nyuEshelf',
   'searchBarSubMenu',
   'googleAnalytics',
-  'customLoginService',
-  'customRequests',
+  'primoExploreCustomRequests',
 ]);
 
 app
@@ -40,7 +37,6 @@ app
   .constant(nyuEshelfConfig.name, nyuEshelfConfig.config)
   .constant(searchBarSubMenuItemsConfig.name, searchBarSubMenuItemsConfig.config)
   .constant(googleAnalyticsConfig.name, googleAnalyticsConfig.config)
-  .constant(customLoginConfig.name, customLoginConfig.config)
   .constant(customRequestsConfig.name, customRequestsConfig.config)
   .component('prmActionListAfter', {
     template: customActionsConfig.template
@@ -55,10 +51,10 @@ app
     template: '<search-bar-sub-menu></search-bar-sub-menu>'
   })
   .component('prmAuthenticationAfter', {
-    template: `<custom-login></custom-login>`
+    template: `<primo-explore-custom-login></primo-explore-custom-login>`
   })
   .component('prmLocationItemAfter', {
-    template: `<custom-requests></custom-requests>`,
+    template: `<primo-explore-custom-requests></primo-explore-custom-requests>`,
     controller: ['$element', function($element) {
       const ctrl = this;
       ctrl.$postLink = () => {
@@ -71,10 +67,10 @@ app
   })
   .component('prmLocationItemsAfter', {
     template: `
-    <custom-requests-handler></custom-requests-handler>
+    <primo-explore-custom-requests-handler></primo-explore-custom-requests-handler>
     ${prmLocationItemAfterPartial}
     `
-  })
+  });
 
 app.run(runBlock);
 
