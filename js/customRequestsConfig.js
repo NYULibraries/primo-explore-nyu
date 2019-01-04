@@ -16,15 +16,15 @@ export const customRequestsConfig = {
       ezborrow: 'Request E-ZBorrow',
       ill: 'Request ILL',
     },
+    noLinksText: '{item.request.blocked}',
     showLinks: {
       ezborrow: ({ user, item, config }) => {
         const isBook = ['BOOK', 'BOOKS'].some(type => item.pnx.addata.ristype.indexOf(type) > -1);
-        const borStatus = user && user['bor-status'];
-        return isBook && config.values.authorizedStatuses.ezborrow.indexOf(borStatus) > -1;
+        return isBook && config.values.authorizedStatuses.ezborrow.indexOf(user['bor-status']) > -1;
       },
       ill: ({ user, item, config }) => {
         const ezborrow = config.showLinks.ezborrow({ user, item, config });
-        return !ezborrow && config.valuaes.authorizedStatuses.ill.indexOf(borStatus) > -1
+        return !ezborrow && config.values.authorizedStatuses.ill.indexOf(user['bor-status']) > -1;
       },
     },
     hideDefault: ({ items, config }) => {
