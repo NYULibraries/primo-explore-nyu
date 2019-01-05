@@ -596,7 +596,7 @@ primo-explore-custom-no-search-results@^1.0.4:
 
 "primo-explore-custom-requests@https://github.com/NYULibraries/primo-explore-custom-requests#alpha/for-deployment":
   version "0.0.1"
-  resolved "https://github.com/NYULibraries/primo-explore-custom-requests#ed852ce2bf73740ef4af894af878367322d1cafc"
+  resolved "https://github.com/NYULibraries/primo-explore-custom-requests#03e72ca7f9c0627b9d453af7f6911cc5bd15aa3c"
 
 primo-explore-getit-to-link-resolver@^2.0.5:
   version "2.0.5"
