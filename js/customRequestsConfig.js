@@ -1,42 +1,49 @@
 export const customRequestsConfig = {
   name: 'primoExploreCustomRequestsConfig',
   config: {
-    links: ['ezborrow', 'ill'],
-    linkGenerators: {
+    buttonIds: ['login', 'ezborrow', 'ill'],
+    buttonGenerators: {
       ezborrow: ({ item, config }) => {
         const title = item.pnx.addata.btitle ? item.pnx.addata.btitle[0] : '';
         const author = item.pnx.addata.au ? item.pnx.addata.au[0] : '';
         const ti = encodeURIComponent(`ti=${title}`);
         const au = encodeURIComponent(`au=${author}`);
-        return `${config.values.baseUrls.ezborrow}?query=${ti}+and+${au}`;
+        return {
+          href: `${config.values.baseUrls.ezborrow}?query=${ti}+and+${au}`,
+          label: 'Request E-ZBorrow',
+        };
       },
-      ill: ({ item, config }) => `${config.values.baseUrls.ill}?${item.delivery.GetIt2.link.match(/resolve?(.*)/)}`
+      ill: ({ item, config }) => ({
+        href: `${config.values.baseUrls.ill}?${item.delivery.GetIt2.link.match(/resolve?(.*)/)}`,
+        label: 'Request ILL',
+      }),
+      login: () => ({
+        label: 'Login to see request options',
+        action: ($injector) => $injector.get('customLoginService').login(),
+      }),
     },
-    linkText: {
-      ezborrow: 'Request E-ZBorrow',
-      ill: 'Request ILL',
-    },
-    noLinksText: '{item.request.blocked}',
-    showLinks: {
-      ezborrow: ({ user, item, config }) => {
+    noButtonsText: '{item.request.blocked}',
+    showButtons: {
+      ezborrow: ({ user = {}, item, config }) => {
         const isBook = ['BOOK', 'BOOKS'].some(type => item.pnx.addata.ristype.indexOf(type) > -1);
         return isBook && config.values.authorizedStatuses.ezborrow.indexOf(user['bor-status']) > -1;
       },
-      ill: ({ user, item, config }) => {
-        const ezborrow = config.showLinks.ezborrow({ user, item, config });
+      ill: ({ user = {}, item, config }) => {
+        const ezborrow = config.showButtons.ezborrow({ user, item, config });
         return !ezborrow && config.values.authorizedStatuses.ill.indexOf(user['bor-status']) > -1;
       },
+      login: ({ loggedIn }) => !loggedIn,
     },
-    hideDefault: ({ items, config }) => {
+    hideDefault: ({ items, config, loggedIn }) => {
       const { checkAreItemsUnique, checkIsAvailable } = config.values.functions;
 
       const availabilityStatuses = items.map(checkIsAvailable);
       const itemsAreUnique = checkAreItemsUnique(items);
       const allUnavailable = availabilityStatuses.every(status => status === false);
 
-      return availabilityStatuses.map(isAvailable => allUnavailable || (itemsAreUnique && !isAvailable));
+      return loggedIn ? availabilityStatuses.map(isAvailable => allUnavailable || (itemsAreUnique && !isAvailable)) : items.map(() => true);
     },
-    hideCustom: ({ items, config }) => config.hideDefault({ items, config }).map(boolean => !boolean),
+    hideCustom: ({ items, config, loggedIn }) => config.hideDefault({ items, config, loggedIn }).map(boolean => !boolean),
     values: {
       baseUrls: {
         ezborrow: 'http://dev.login.library.nyu.edu/ezborrow/nyu',
