@@ -7,14 +7,15 @@ import 'primo-explore-search-bar-sub-menu';
 import 'primo-explore-google-analytics';
 import 'primo-explore-custom-requests';
 
-import { customActionsConfig } from './customActions';
-import { customLibraryCardMenuItemsConfig } from './customLibraryCardMenu';
-import { clickableLogoLinkConfig } from './clickableLogoToAnyLink';
-import { libraryh3lpWidgetConfig } from './libraryh3lpWidget';
-import { nyuEshelfConfig } from './nyuEshelf';
-import { searchBarSubMenuItemsConfig } from './searchBarSubMenu';
-import { googleAnalyticsConfig } from './googleAnalyticsConfig';
-import { customRequestsConfig } from './customRequestsConfig';
+import customActionsConfig from './customActions';
+import customLibraryCardMenuItemsConfig from './customLibraryCardMenu';
+import clickableLogoLinkConfig from './clickableLogoToAnyLink';
+import libraryh3lpWidgetConfig from './libraryh3lpWidget';
+import nyuEshelfConfig from './nyuEshelf';
+import searchBarSubMenuItemsConfig from './searchBarSubMenu';
+import googleAnalyticsConfig from './googleAnalyticsConfig';
+import customRequestsConfig from './customRequestsConfig';
+import customLoginConfig from './customLoginConfig';
 
 import prmLocationItemAfterPartial from '../html/prm_location_items_after_partial.html';
 
@@ -38,6 +39,7 @@ app
   .constant(searchBarSubMenuItemsConfig.name, searchBarSubMenuItemsConfig.config)
   .constant(googleAnalyticsConfig.name, googleAnalyticsConfig.config)
   .constant(customRequestsConfig.name, customRequestsConfig.config)
+  .constant(customLoginConfig.name, customLoginConfig.config)
   .component('prmActionListAfter', {
     template: customActionsConfig.template
   })

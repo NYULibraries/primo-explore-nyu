@@ -1,4 +1,4 @@
-export const customRequestsConfig = {
+export default {
   name: 'primoExploreCustomRequestsConfig',
   config: {
     buttonIds: ['login', 'ezborrow', 'ill'],

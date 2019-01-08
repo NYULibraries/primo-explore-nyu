@@ -1,4 +1,4 @@
-export let customLibraryCardMenuItemsConfig = {
+export default {
   name: 'customLibraryCardMenuItems',
   config: [
     {

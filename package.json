@@ -25,7 +25,7 @@
     "primo-explore-clickable-logo-to-any-link": "^1.1.1",
     "primo-explore-custom-library-card-menu": "^1.1.6",
     "primo-explore-custom-no-search-results": "^1.0.4",
-    "primo-explore-custom-requests": "https://github.com/NYULibraries/primo-explore-custom-requests#alpha/for-deployment",
+    "primo-explore-custom-requests": "https://github.com/NYULibraries/primo-explore-custom-requests",
     "primo-explore-getit-to-link-resolver": "^2.0.5",
     "primo-explore-google-analytics": "^1.0.0",
     "primo-explore-libraryh3lp-widget": "^1.0.9",

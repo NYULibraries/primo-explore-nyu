@@ -1,4 +1,4 @@
-export let clickableLogoLinkConfig = {
+export default {
   name: 'clickableLogoLinkConfig',
   config: {
     url: '{urls.library}',
