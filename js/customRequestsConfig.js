@@ -34,16 +34,20 @@ export const customRequestsConfig = {
       },
       login: ({ loggedIn }) => !loggedIn,
     },
-    hideDefault: ({ items, config, loggedIn }) => {
+    hideDefaultRequest: ({ items, config, loggedIn }) => {
+      if (!loggedIn) {
+        return items.map(() => true);
+      }
+
       const { checkAreItemsUnique, checkIsAvailable } = config.values.functions;
 
       const availabilityStatuses = items.map(checkIsAvailable);
       const itemsAreUnique = checkAreItemsUnique(items);
       const allUnavailable = availabilityStatuses.every(status => status === false);
 
-      return loggedIn ? availabilityStatuses.map(isAvailable => allUnavailable || (itemsAreUnique && !isAvailable)) : items.map(() => true);
+      return availabilityStatuses.map(isAvailable => allUnavailable || (itemsAreUnique && !isAvailable));
     },
-    hideCustom: ({ items, config, loggedIn }) => config.hideDefault({ items, config, loggedIn }).map(boolean => !boolean),
+    hideCustomRequest: props => props.config.hideDefaultRequest(props).map(boolean => !boolean),
     values: {
       baseUrls: {
         ezborrow: 'http://dev.login.library.nyu.edu/ezborrow/nyu',
