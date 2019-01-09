@@ -590,13 +590,17 @@ primo-explore-custom-library-card-menu@^1.1.6:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/primo-explore-custom-library-card-menu/-/primo-explore-custom-library-card-menu-1.1.6.tgz#d8dbda15baa38eaef13339167cc1e9a5d61c8e99"
 
+"primo-explore-custom-login@https://github.com/NYULibraries/primo-explore-custom-login":
+  version "0.0.2"
+  resolved "https://github.com/NYULibraries/primo-explore-custom-login#f2a6035ffa5256bc90f6d0e2a510869a5b095b5f"
+
 primo-explore-custom-no-search-results@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/primo-explore-custom-no-search-results/-/primo-explore-custom-no-search-results-1.0.4.tgz#358d17e9cc242ca9949bdfb7e14fe3920e83f493"
 
 "primo-explore-custom-requests@https://github.com/NYULibraries/primo-explore-custom-requests":
-  version "0.0.2"
-  resolved "https://github.com/NYULibraries/primo-explore-custom-requests#011a766ca42019e4896937462667c3bf3182272d"
+  version "0.0.3"
+  resolved "https://github.com/NYULibraries/primo-explore-custom-requests#d3486f3fc10b69c1ec003f63170283913363a6d2"
 
 primo-explore-getit-to-link-resolver@^2.0.5:
   version "2.0.5"

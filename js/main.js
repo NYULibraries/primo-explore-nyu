@@ -6,6 +6,7 @@ import 'primo-explore-nyu-eshelf';
 import 'primo-explore-search-bar-sub-menu';
 import 'primo-explore-google-analytics';
 import 'primo-explore-custom-requests';
+import 'primo-explore-custom-login';
 
 import customActionsConfig from './customActions';
 import customLibraryCardMenuItemsConfig from './customLibraryCardMenu';
@@ -28,6 +29,7 @@ let app = angular.module('viewCustom', [
   'nyuEshelf',
   'searchBarSubMenu',
   'googleAnalytics',
+  'primoExploreCustomLogin',
   'primoExploreCustomRequests',
 ]);
 
@@ -68,10 +70,7 @@ app
     }]
   })
   .component('prmLocationItemsAfter', {
-    template: `
-    <primo-explore-custom-requests-handler></primo-explore-custom-requests-handler>
-    ${prmLocationItemAfterPartial}
-    `
+    template: `${prmLocationItemAfterPartial}`
   });
 
 app.run(runBlock);

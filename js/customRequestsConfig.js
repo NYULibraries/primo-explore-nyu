@@ -19,23 +19,25 @@ export default {
       }),
       login: () => ({
         label: 'Login to see request options',
-        action: ($injector) => $injector.get('customLoginService').login(),
+        action: ($injector) => $injector.get('primoExploreCustomLoginService').login(),
       }),
     },
     noButtonsText: '{item.request.blocked}',
     showButtons: {
-      ezborrow: ({ user = {}, item, config }) => {
+      ezborrow: ({ user, item, config }) => {
+        if (!user) return false;
         const isBook = ['BOOK', 'BOOKS'].some(type => item.pnx.addata.ristype.indexOf(type) > -1);
         return isBook && config.values.authorizedStatuses.ezborrow.indexOf(user['bor-status']) > -1;
       },
-      ill: ({ user = {}, item, config }) => {
+      ill: ({ user, item, config }) => {
+        if (!user) return false;
         const ezborrow = config.showButtons.ezborrow({ user, item, config });
         return !ezborrow && config.values.authorizedStatuses.ill.indexOf(user['bor-status']) > -1;
       },
-      login: ({ loggedIn }) => !loggedIn,
+      login: ({ user }) => user === undefined,
     },
-    hideDefaultRequest: ({ items, config, loggedIn }) => {
-      if (!loggedIn) {
+    hideDefaultRequest: ({ items, config, user }) => {
+      if (user === undefined) {
         return items.map(() => true);
       }
 
