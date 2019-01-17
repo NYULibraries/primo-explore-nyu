@@ -12,5 +12,9 @@
   },
   "globals": {
     "angular": false
+  },
+  "env": {
+    "node": true,
+    "browser": true,
   }
 }
