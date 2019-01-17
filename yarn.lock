@@ -591,8 +591,8 @@ primo-explore-custom-library-card-menu@^1.1.6:
   resolved "https://registry.yarnpkg.com/primo-explore-custom-library-card-menu/-/primo-explore-custom-library-card-menu-1.1.6.tgz#d8dbda15baa38eaef13339167cc1e9a5d61c8e99"
 
 "primo-explore-custom-login@https://github.com/NYULibraries/primo-explore-custom-login":
-  version "0.0.2"
-  resolved "https://github.com/NYULibraries/primo-explore-custom-login#f2a6035ffa5256bc90f6d0e2a510869a5b095b5f"
+  version "0.0.3"
+  resolved "https://github.com/NYULibraries/primo-explore-custom-login#39f85cf1d82f83c9f72d7c9af7035b32728c52fa"
 
 primo-explore-custom-no-search-results@^1.0.4:
   version "1.0.4"
