@@ -30,7 +30,11 @@ export default {
     showCustomRequests: ({ item, items, config, user}) => {
       const { showIll, showEzborrow, showLogin, showAfc } = config.values.functions;
 
-      const [ill, ezborrow, login, afc] = [showIll, showEzborrow, showLogin, showAfc].map(fxn => fxn({ user, item, config }));
+      const showArgs = { user, item, config };
+      const ill = showIll(showArgs);
+      const ezborrow = showEzborrow(showArgs);
+      const login = showLogin(showArgs);
+      const afc = showAfc(showArgs);
       const hideDefaultRequests = config.hideDefaultRequests({ user, items, config });
 
       return ({
