@@ -27,22 +27,33 @@ export default {
       })
     },
     noButtonsText: '{item.request.blocked}',
-    showCustomRequests: ({ item, items, config, user}) => {
-      const { showIll, showEzborrow, showLogin, showAfc } = config.values.functions;
+    showCustomRequests: {
+      ill: ({ item, items, config, user}) => {
+        if (!user) return items.map(() => false);
+        const showEzborrowArr = config.showCustomRequests.ezborrow({ user, item, items, config });
+        const showIll = config.values.authorizedStatuses.ill.indexOf(user['bor-status']) > -1;
 
-      const showArgs = { user, item, config };
-      const ill = showIll(showArgs);
-      const ezborrow = showEzborrow(showArgs);
-      const login = showLogin(showArgs);
-      const afc = showAfc(showArgs);
-      const hideDefaultRequests = config.hideDefaultRequests({ user, items, config });
+        const hideDefaultRequests = config.hideDefaultRequests({ user, items, config });
+        return items.map((_e, idx) => !showEzborrowArr[idx] && hideDefaultRequests[idx] && showIll);
+      },
+      ezborrow: ({ item, items, config, user}) => {
+        if (!user) return items.map(() => false);
+        const isBook = ['BOOK', 'BOOKS'].some(type => item.pnx.addata.ristype.indexOf(type) > -1);
+        const showEzborrow = isBook && config.values.authorizedStatuses.ezborrow.indexOf(user['bor-status']) > -1;
 
-      return ({
-        ill: items.map((_e, idx) => hideDefaultRequests[idx] && ill),
-        ezborrow: items.map((_e, idx) => hideDefaultRequests[idx] && ezborrow),
-        login: items.map(() => login),
-        afc: items.map(() => afc),
-      });
+        const hideDefaultRequests = config.hideDefaultRequests({ user, items, config });
+        return items.map((_e, idx) => hideDefaultRequests[idx] && showEzborrow);
+      },
+      login: ({ user, items }) => items.map(() => user === undefined),
+      afc: ({ item, items, config, user}) => {
+        if (!user) return items.map(() => false);
+        const afcEligible = config.values.authorizedStatuses.afc.indexOf(user['bor-status']) > -1;
+        const isBAFCMainCollection = item.delivery.holding.some(({ subLocation, libraryCode}) => {
+          return libraryCode === "BAFC" && subLocation === "Main Collection";
+        });
+
+        return items.map(() => afcEligible && isBAFCMainCollection);
+      }
     },
     hideDefaultRequests: ({ items, config, user }) => {
       if (user === undefined) {
@@ -87,28 +98,6 @@ export default {
           const [circulationStatus, ...otherStatusFields] = item.itemFields;
           return !hasPattern(unavailablePatterns, circulationStatus);
         },
-        showEzborrow: ({ user, item, config }) => {
-          if (!user) return false;
-          const isBook = ['BOOK', 'BOOKS'].some(type => item.pnx.addata.ristype.indexOf(type) > -1);
-          return isBook && config.values.authorizedStatuses.ezborrow.indexOf(user['bor-status']) > -1;
-        },
-        showIll: ({ user, item, config }) => {
-          if (!user) return false;
-          const ezborrow = config.values.functions.showEzborrow({ user, item, config });
-          return !ezborrow && config.values.authorizedStatuses.ill.indexOf(user['bor-status']) > -1;
-        },
-        showLogin: ({ user }) => user === undefined,
-        showAfc: ({ user, item, config }) => {
-          if (!user) return false;
-
-          const afcEligible = config.values.authorizedStatuses.afc.indexOf(user['bor-status']) > -1;
-
-          const isBAFCMainCollection = item.delivery.holding.some(({ subLocation, libraryCode}) => {
-            return libraryCode === "BAFC" && subLocation === "Main Collection";
-          });
-
-          return afcEligible && isBAFCMainCollection;
-        }
       }
     },
   }
