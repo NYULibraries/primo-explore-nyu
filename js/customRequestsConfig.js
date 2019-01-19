@@ -27,31 +27,20 @@ export default {
       })
     },
     noButtonsText: '{item.request.blocked}',
-    showButtons: {
-      ezborrow: ({ user, item, config }) => {
-        if (!user) return false;
-        const isBook = ['BOOK', 'BOOKS'].some(type => item.pnx.addata.ristype.indexOf(type) > -1);
-        return isBook && config.values.authorizedStatuses.ezborrow.indexOf(user['bor-status']) > -1;
-      },
-      ill: ({ user, item, config }) => {
-        if (!user) return false;
-        const ezborrow = config.showButtons.ezborrow({ user, item, config });
-        return !ezborrow && config.values.authorizedStatuses.ill.indexOf(user['bor-status']) > -1;
-      },
-      login: ({ user }) => user === undefined,
-      afc: ({ item, user, config }) => {
-        if (!user) return false;
+    showCustomRequests: ({ item, items, config, user}) => {
+      const { showIll, showEzborrow, showLogin, showAfc } = config.values.functions;
 
-        const afcEligible = config.values.authorizedStatuses.afc.indexOf(user['bor-status']) > -1;
+      const [ill, ezborrow, login, afc] = [showIll, showEzborrow, showLogin, showAfc].map(fxn => fxn({ user, item, config }));
+      const hideDefaultRequests = config.hideDefaultRequests({ user, items, config });
 
-        const isBAFCMainCollection = item.delivery.holding.some(({ subLocation, libraryCode}) => {
-          return libraryCode === "BAFC" && subLocation === "Main Collection";
-        });
-
-        return afcEligible && isBAFCMainCollection;
-      }
+      return ({
+        ill: items.map((_e, idx) => hideDefaultRequests[idx] && ill),
+        ezborrow: items.map((_e, idx) => hideDefaultRequests[idx] && ezborrow),
+        login: items.map(() => login),
+        afc: items.map(() => afc),
+      });
     },
-    hideAllDefaultRequests: ({ items, config, user }) => {
+    hideDefaultRequests: ({ items, config, user }) => {
       if (user === undefined) {
         return items.map(() => true);
       }
@@ -63,18 +52,6 @@ export default {
       const allUnavailable = availabilityStatuses.every(status => status === false);
 
       return availabilityStatuses.map(isAvailable => allUnavailable || (itemsAreUnique && !isAvailable));
-    },
-    hideCustomRequests: ({ item, items, config, user}) => {
-      const hideExternalRequest = config.hideAllDefaultRequests({ items, config, user }).map(boolean => !boolean);
-      const hideAFC = !config.showButtons.afc({ item, user, config });
-      const loggedIn = user !== undefined;
-
-      return ({
-        ill: hideExternalRequest,
-        ezborrow: hideExternalRequest,
-        login: items.map(() => loggedIn),
-        afc: items.map(() => hideAFC),
-      });
     },
     values: {
       baseUrls: {
@@ -105,6 +82,28 @@ export default {
           const hasPattern = (patterns, target) => patterns.some(str => target.match(new RegExp(str)));
           const [circulationStatus, ...otherStatusFields] = item.itemFields;
           return !hasPattern(unavailablePatterns, circulationStatus);
+        },
+        showEzborrow: ({ user, item, config }) => {
+          if (!user) return false;
+          const isBook = ['BOOK', 'BOOKS'].some(type => item.pnx.addata.ristype.indexOf(type) > -1);
+          return isBook && config.values.authorizedStatuses.ezborrow.indexOf(user['bor-status']) > -1;
+        },
+        showIll: ({ user, item, config }) => {
+          if (!user) return false;
+          const ezborrow = config.values.functions.showEzborrow({ user, item, config });
+          return !ezborrow && config.values.authorizedStatuses.ill.indexOf(user['bor-status']) > -1;
+        },
+        showLogin: ({ user }) => user === undefined,
+        showAfc: ({ user, item, config }) => {
+          if (!user) return false;
+
+          const afcEligible = config.values.authorizedStatuses.afc.indexOf(user['bor-status']) > -1;
+
+          const isBAFCMainCollection = item.delivery.holding.some(({ subLocation, libraryCode}) => {
+            return libraryCode === "BAFC" && subLocation === "Main Collection";
+          });
+
+          return afcEligible && isBAFCMainCollection;
         }
       }
     },
