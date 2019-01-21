@@ -26,7 +26,7 @@
     "primo-explore-custom-library-card-menu": "^1.1.6",
     "primo-explore-custom-login": "https://github.com/NYULibraries/primo-explore-custom-login",
     "primo-explore-custom-no-search-results": "^1.0.4",
-    "primo-explore-custom-requests": "https://github.com/NYULibraries/primo-explore-custom-requests",
+    "primo-explore-custom-requests": "http://github.com/nyulibraries/primo-explore-custom-requests#feature/custom-action-per-holding",
     "primo-explore-getit-to-link-resolver": "^2.0.5",
     "primo-explore-google-analytics": "^1.0.0",
     "primo-explore-libraryh3lp-widget": "^1.0.9",
