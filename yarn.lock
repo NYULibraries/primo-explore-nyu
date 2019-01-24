@@ -2201,8 +2201,8 @@ primo-explore-custom-no-search-results@^1.0.4:
   resolved "https://registry.yarnpkg.com/primo-explore-custom-no-search-results/-/primo-explore-custom-no-search-results-1.0.4.tgz#358d17e9cc242ca9949bdfb7e14fe3920e83f493"
 
 "primo-explore-custom-requests@https://github.com/NYULibraries/primo-explore-custom-requests":
-  version "0.0.9"
-  resolved "https://github.com/NYULibraries/primo-explore-custom-requests#3db04533aafb74d0a5368d17099c29a2c92c191b"
+  version "0.0.10"
+  resolved "https://github.com/NYULibraries/primo-explore-custom-requests#2b0060b688b893ea94502e8e7adc5b3e6e20991b"
   dependencies:
     webpack "^4.28.4"
 
