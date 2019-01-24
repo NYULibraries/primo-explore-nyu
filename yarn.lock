@@ -2193,16 +2193,16 @@ primo-explore-custom-library-card-menu@^1.1.6:
   resolved "https://registry.yarnpkg.com/primo-explore-custom-library-card-menu/-/primo-explore-custom-library-card-menu-1.1.6.tgz#d8dbda15baa38eaef13339167cc1e9a5d61c8e99"
 
 "primo-explore-custom-login@https://github.com/NYULibraries/primo-explore-custom-login":
-  version "0.0.4"
-  resolved "https://github.com/NYULibraries/primo-explore-custom-login#6fbc1d74d0a1a2765ed7699bdb50f9b32a758e55"
+  version "0.0.5"
+  resolved "https://github.com/NYULibraries/primo-explore-custom-login#a2a00b94d3bbbf94001d246fb051a24a6a57896a"
 
 primo-explore-custom-no-search-results@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/primo-explore-custom-no-search-results/-/primo-explore-custom-no-search-results-1.0.4.tgz#358d17e9cc242ca9949bdfb7e14fe3920e83f493"
 
 "primo-explore-custom-requests@https://github.com/NYULibraries/primo-explore-custom-requests":
-  version "0.0.10"
-  resolved "https://github.com/NYULibraries/primo-explore-custom-requests#2b0060b688b893ea94502e8e7adc5b3e6e20991b"
+  version "0.0.11"
+  resolved "https://github.com/NYULibraries/primo-explore-custom-requests#9da990697136242d19f7f2dd6823bccf408c5a34"
   dependencies:
     webpack "^4.28.4"
 
