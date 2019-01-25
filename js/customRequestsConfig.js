@@ -77,7 +77,7 @@ export default {
         return items.map(() => true);
       }
       // NYUSH patrons always see default request options
-      else if (config.values.authorizedStatuses.nyush.indexOf(user['bor-status']) > -1) {
+      else if (user && config.values.authorizedStatuses.nyush.indexOf(user['bor-status']) > -1) {
         return items.map(() => false);
       }
 
