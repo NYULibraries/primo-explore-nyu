@@ -58,14 +58,14 @@ app
     template: `<primo-explore-custom-login></primo-explore-custom-login>`
   })
   .component('prmLocationItemAfter', {
-    template: `<primo-explore-custom-requests></primo-explore-custom-requests>`,
+    template: `<primo-explore-custom-requests layout="row" layout-align="end center" layout-wrap></primo-explore-custom-requests>`,
     controller: ['$element', function($element) {
       const ctrl = this;
       ctrl.$postLink = () => {
         const $target = $element.parent().query('div.md-list-item-text');
         const $el = $element.detach();
         $target.append($el);
-        $element.addClass('layout-align-center-center layout-row');
+        $element.addClass('layout-row flex-sm-30 flex-xs-100');
       };
     }]
   })

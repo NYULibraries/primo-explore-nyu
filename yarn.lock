@@ -1896,6 +1896,11 @@ neo-async@^2.5.0:
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.0.tgz#b9d15e4d71c6762908654b5183ed38b753340835"
   integrity sha512-MFh0d/Wa7vkKO3Y3LlacqAEeHK0mckVqzDieUKTT+KGxi+zIpeVsFxymkIiRpbpDziHc290Xr9A1O4Om7otoRA==
 
+ng-attr@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/ng-attr/-/ng-attr-0.0.1.tgz#12fabe7a3cdc9e0561da49847e3b2d192cd81315"
+  integrity sha1-Evq+ejzcngVh2kmEfjstGSzYExU=
+
 nice-try@^1.0.4:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/nice-try/-/nice-try-1.0.5.tgz#a3378a7696ce7d223e88fc9b764bd7ef1089e366"
@@ -2201,9 +2206,10 @@ primo-explore-custom-no-search-results@^1.0.4:
   resolved "https://registry.yarnpkg.com/primo-explore-custom-no-search-results/-/primo-explore-custom-no-search-results-1.0.4.tgz#358d17e9cc242ca9949bdfb7e14fe3920e83f493"
 
 "primo-explore-custom-requests@https://github.com/NYULibraries/primo-explore-custom-requests":
-  version "0.0.11"
-  resolved "https://github.com/NYULibraries/primo-explore-custom-requests#9da990697136242d19f7f2dd6823bccf408c5a34"
+  version "0.0.13"
+  resolved "https://github.com/NYULibraries/primo-explore-custom-requests#f420b82d3db981e624b66cd1f42a960f07bd22e2"
   dependencies:
+    ng-attr "^0.0.1"
     webpack "^4.28.4"
 
 primo-explore-getit-to-link-resolver@^2.0.5:

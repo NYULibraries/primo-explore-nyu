@@ -1,3 +1,15 @@
+const externalLinkIcon = {
+  icon: "ic_open_in_new_24px",
+  set: "action",
+  attributes: { 'custom-requests': '' },
+};
+
+const loginIcon = {
+  set: "primo-ui",
+  icon: "sign-in",
+  attributes: { 'custom-requests': '' },
+};
+
 export default {
   name: 'primoExploreCustomRequestsConfig',
   config: {
@@ -11,19 +23,23 @@ export default {
         return {
           href: `${config.values.baseUrls.ezborrow}?query=${ti}+and+${au}`,
           label: 'Request E-ZBorrow',
+          prmIconAfter: externalLinkIcon,
         };
       },
       ill: ({ item, config }) => ({
         href: `${config.values.baseUrls.ill}?${item.delivery.GetIt2.link.match(/resolve?(.*)/)}`,
         label: 'Request ILL',
+        prmIconAfter: externalLinkIcon,
       }),
       login: () => ({
+        prmIconBefore: loginIcon,
         label: 'Login to see request options',
         action: ($injector) => $injector.get('primoExploreCustomLoginService').login(),
       }),
       afc: () => ({
         label: "Schedule a video loan",
         href: "https://nyu.qualtrics.com/jfe/form/SV_eKBzul896KmAWVL",
+        prmIconAfter: externalLinkIcon,
       })
     },
     noButtonsText: '{item.request.blocked}',
