@@ -1,4 +1,4 @@
-export let searchBarSubMenuItemsConfig = {
+export default {
   name: 'searchBarSubMenuItems',
   config: [
     {

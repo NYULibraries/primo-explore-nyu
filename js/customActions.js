@@ -1,4 +1,4 @@
-export let customActionsConfig = {
+export default {
   name: 'customActions',
   template: `
           <custom-action name="feedback"
