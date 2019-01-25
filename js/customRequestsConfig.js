@@ -49,16 +49,16 @@ export default {
         const showEzborrowArr = config.showCustomRequests.ezborrow({ user, item, items, config });
         const showIll = config.values.authorizedStatuses.ill.indexOf(user['bor-status']) > -1;
 
-        const hideDefaultRequests = config.hideDefaultRequests({ user, items, config });
-        return items.map((_e, idx) => !showEzborrowArr[idx] && hideDefaultRequests[idx] && showIll);
+        const unavailables = config.values.functions.unavailabilityArray({ items, config });
+        return items.map((_e, idx) => !showEzborrowArr[idx] && unavailables[idx] && showIll);
       },
       ezborrow: ({ item, items, config, user}) => {
         if (!user) return items.map(() => false);
         const isBook = ['BOOK', 'BOOKS'].some(type => item.pnx.addata.ristype.indexOf(type) > -1);
         const showEzborrow = isBook && config.values.authorizedStatuses.ezborrow.indexOf(user['bor-status']) > -1;
 
-        const hideDefaultRequests = config.hideDefaultRequests({ user, items, config });
-        return items.map((_e, idx) => hideDefaultRequests[idx] && showEzborrow);
+        const unavailables = config.values.functions.unavailabilityArray({ items, config });
+        return items.map((_e, idx) => unavailables[idx] && showEzborrow);
       },
       login: ({ user, items }) => items.map(() => user === undefined),
       afc: ({ item, items, config, user}) => {
@@ -72,17 +72,17 @@ export default {
       }
     },
     hideDefaultRequests: ({ items, config, user }) => {
+      // no user, then hide all requests
       if (user === undefined) {
         return items.map(() => true);
       }
+      // NYUSH patrons always see default request options
+      else if (config.values.authorizedStatuses.nyush.indexOf(user['bor-status']) > -1) {
+        return items.map(() => false);
+      }
 
-      const { checkAreItemsUnique, checkIsAvailable } = config.values.functions;
-
-      const availabilityStatuses = items.map(checkIsAvailable);
-      const itemsAreUnique = checkAreItemsUnique(items);
-      const allUnavailable = availabilityStatuses.every(status => status === false);
-
-      return availabilityStatuses.map(isAvailable => allUnavailable || (itemsAreUnique && !isAvailable));
+      // otherwise, hide only unavailable holdings
+      return config.values.functions.unavailabilityArray({ items, config });
     },
     values: {
       baseUrls: {
@@ -93,6 +93,7 @@ export default {
         ezborrow: ["50", "51", "52", "53", "54", "55", "56", "57", "58", "60", "61", "62", "63", "65", "66", "80", "81", "82", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41"],
         ill: ["30", "31", "32", "34", "35", "37", "50", "51", "52", "53", "54", "55", "56", "57", "58", "60", "61", "62", "63", "65", "66", "80", "81", "82", "89"],
         afc: ["03", "05", "10", "12", "20", "21", "30", "32", "50", "52", "53", "54", "61", "62", "70", "80", "89", "90"],
+        nyush: ["20", "21", "22", "23"],
       },
       functions: {
         checkAreItemsUnique: items => items.some((item, _i, items) => item._additionalData.itemdescription !== items[0]._additionalData.itemdescription),
@@ -111,9 +112,18 @@ export default {
           ];
 
           const hasPattern = (patterns, target) => patterns.some(str => target.match(new RegExp(str)));
-          const [circulationStatus, ...otherStatusFields] = item.itemFields;
+          const circulationStatus = item.itemFields[0];
           return !hasPattern(unavailablePatterns, circulationStatus);
         },
+        unavailabilityArray: ({ items, config }) => {
+          const { checkAreItemsUnique, checkIsAvailable } = config.values.functions;
+
+          const availabilityStatuses = items.map(checkIsAvailable);
+          const itemsAreUnique = checkAreItemsUnique(items);
+          const allUnavailable = availabilityStatuses.every(status => status === false);
+
+          return availabilityStatuses.map(isAvailable => allUnavailable || (itemsAreUnique && !isAvailable));
+        }
       }
     },
   }
