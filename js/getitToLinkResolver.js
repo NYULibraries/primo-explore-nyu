@@ -1,4 +1,4 @@
-export let getitToLinkResolverConfig = {
+export default {
   name: 'getitToLinkResolverConfig',
   config: {
     serviceSectionHeader: '{nui.getit.tab1_check}',
