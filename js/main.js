@@ -20,7 +20,7 @@ import googleAnalyticsConfig from './googleAnalyticsConfig';
 import customRequestsConfig from './customRequestsConfig';
 import customLoginConfig from './customLoginConfig';
 
-import prmLocationItemAfterPartial from '../html/prm_location_items_after_partial.html';
+import customRequestsRequestInformationTemplate from '../html/custom_requests_request_information.html';
 
 let app = angular.module('viewCustom', [
   'angularLoad',
@@ -77,7 +77,7 @@ app
     }]
   })
   .component('prmLocationItemsAfter', {
-    template: `${prmLocationItemAfterPartial}`
+    template: `${customRequestsRequestInformationTemplate}`
   });
 
 app.run(runBlock);
