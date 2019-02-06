@@ -2212,9 +2212,9 @@ primo-explore-custom-no-search-results@^1.0.4:
     ng-attr "^0.0.1"
     webpack "^4.28.4"
 
-primo-explore-getit-to-link-resolver@^2.0.5:
+"primo-explore-getit-to-link-resolver@https://github.com/NYULibraries/primo-explore-getit-to-link-resolver#chore/move_target_location":
   version "2.0.5"
-  resolved "https://registry.yarnpkg.com/primo-explore-getit-to-link-resolver/-/primo-explore-getit-to-link-resolver-2.0.5.tgz#ca13837815558839cc72e18dd481b12a9b40c15e"
+  resolved "https://github.com/NYULibraries/primo-explore-getit-to-link-resolver#9f547cf846b2ecb27df38def5a6e5933c3b26ba4"
 
 primo-explore-google-analytics@^1.0.0:
   version "1.0.0"
