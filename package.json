@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/NYULibraries/primo-explore-nyu#readme",
   "devDependencies": {
+    "cypress": "^3.1.5",
     "eslint": "^5.11.1"
   },
   "dependencies": {

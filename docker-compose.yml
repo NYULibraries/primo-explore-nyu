@@ -23,3 +23,12 @@ services:
     command: /tmp/wait-for-it.sh web:8003 -- yarn create-package --view=${VIEW}
     depends_on:
       - web
+  e2e:
+    build:
+      context: .
+      dockerfile: cypress/Dockerfile
+    command: /tmp/wait-for-it.sh web:8003 -- yarn cypress run --spec 'cypress/integration/sample_spec.spec.js'
+    depends_on:
+      - web
+    environment:
+      CYPRESS_BASE_URL: http://web:8003/primo-explore/search
