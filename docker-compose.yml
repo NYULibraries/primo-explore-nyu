@@ -1,0 +1,25 @@
+x-defaults: &x-defaults
+  build:
+    context: .
+  image: primo-explore-nyu
+  environment:
+    PROXY_SERVER: http://bobcatdev.library.nyu.edu:80
+    VIEW: NYU
+    NODE_ENV: ${NODE_ENV-development}
+  # volumes:
+    # - ./:/app/primo-explore/custom/NYU
+
+version: '3.7'
+services:
+  web:
+    <<: *x-defaults
+    ports:
+    - 8003:8003
+    - 3001:3001
+  create-package:
+    <<: *x-defaults
+    environment:
+      NODE_ENV: ${NODE_ENV-staging}
+    command: /tmp/wait-for-it.sh web:8003 -- yarn create-package --view=${VIEW}
+    depends_on:
+      - web
