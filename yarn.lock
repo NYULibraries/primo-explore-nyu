@@ -2214,7 +2214,7 @@ primo-explore-custom-no-search-results@^1.0.4:
 
 "primo-explore-getit-to-link-resolver@https://github.com/NYULibraries/primo-explore-getit-to-link-resolver#chore/move_target_location":
   version "2.0.5"
-  resolved "https://github.com/NYULibraries/primo-explore-getit-to-link-resolver#6adff184a5dd3ca11f81119655730954f2649667"
+  resolved "https://github.com/NYULibraries/primo-explore-getit-to-link-resolver#51bde767c6987a16d48ae227e368d27bb27e0d76"
 
 primo-explore-google-analytics@^1.0.0:
   version "1.0.0"
