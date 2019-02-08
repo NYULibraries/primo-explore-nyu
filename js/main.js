@@ -1,3 +1,7 @@
+import '../css/app-colors.css';
+import '../css/main.css';
+import '../css/sass/main.scss';
+
 import '@orbis-cascade/primo-explore-custom-actions';
 import 'primo-explore-custom-library-card-menu';
 import 'primo-explore-clickable-logo-to-any-link';
