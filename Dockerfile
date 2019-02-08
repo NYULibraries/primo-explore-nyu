@@ -24,7 +24,7 @@ RUN mkdir -p $INSTALL_PATH \
 WORKDIR ${INSTALL_PATH}
 
 COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile --prod || exit 0;
+RUN yarn install --frozen-lockfile --prod
 
 ADD . .
 

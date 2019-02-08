@@ -17,5 +17,10 @@
 describe('The Home Page', function () {
   it('successfully loads', function () {
     cy.visit('?vid=NYU'); // change URL to match your dev URL
+
+    cy.get('#searchBar')
+      .type('monk{enter}')
+
+    cy.url().should('include', 'monk')
   });
 });
