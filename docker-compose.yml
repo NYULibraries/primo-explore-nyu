@@ -6,8 +6,8 @@ x-defaults: &x-defaults
     PROXY_SERVER: http://bobcatdev.library.nyu.edu:80
     VIEW: NYU
     NODE_ENV: ${NODE_ENV-development}
-  # volumes:
-  #   - ./:/app/primo-explore/custom/NYU
+  volumes:
+    - ./:/app/primo-explore/custom/NYU
 
 version: '3.7'
 services:
@@ -32,5 +32,5 @@ services:
       - web
     environment:
       CYPRESS_BASE_URL: http://web:8003/primo-explore/search
-    # volumes:
-    #   - ./cypress/:/app/cypress
+    volumes:
+      - ./cypress/:/app/cypress

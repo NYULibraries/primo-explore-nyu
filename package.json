@@ -18,8 +18,17 @@
   },
   "homepage": "https://github.com/NYULibraries/primo-explore-nyu#readme",
   "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.2.2",
+    "@babel/plugin-transform-runtime": "^7.2.0",
+    "@babel/preset-env": "^7.3.1",
+    "@babel/runtime": "^7.3.1",
+    "babel-loader": "^8.0.5",
+    "babel-plugin-transform-html-import-to-string": "^0.0.1",
     "cypress": "^3.1.5",
-    "eslint": "^5.11.1"
+    "eslint": "^5.11.1",
+    "webpack": "^4.29.3",
+    "webpack-cli": "^3.2.3"
   },
   "dependencies": {
     "@orbis-cascade/primo-explore-custom-actions": "^3.1.1",
