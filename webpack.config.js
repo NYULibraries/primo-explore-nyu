@@ -1,9 +1,12 @@
+let { VIEW, NODE_ENV, PACK } = process.env;
+NODE_ENV = NODE_ENV || 'production';
+
 const path = require('path');
 const { DefinePlugin } = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const FileManagerPlugin = require('filemanager-webpack-plugin');
 
-const isProduction = process.env.NODE_ENV === 'production';
+const isProduction = NODE_ENV === 'production';
 
 // const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const devPlugins = [
@@ -27,13 +30,30 @@ const plugins = [
     onEnd: [
       {copy: [
         {
-          source: path.resolve(__dirname, './js/*.css*'),
-          destination: path.resolve(__dirname, './css'),
+          source: './js/*.css*',
+          destination: './css',
         },
       ]},
       {delete: [
-        path.resolve(__dirname, './js/*.css*'),
-      ]}
+        './js/*.css*',
+      ]},
+      ...(PACK ? [
+        // move important files to /tmp for zipping
+        {mkdir: [`./${VIEW}/`, `./${VIEW}/html/`, `./${VIEW}/img/`, `./${VIEW}/css/`, `./${VIEW}/js`]},
+        {copy: [
+          { source: './html/**/*.html', destination: `./${VIEW}/html` },
+          { source: './img/**/*', destination: `./${VIEW}/img` },
+          { source: './css/**/custom1.css', destination: `./${VIEW}/css` },
+          { source: './js/**/custom.js', destination: `./${VIEW}/js` },
+        ]},
+        {archive: [
+          {
+            source: `./${VIEW}/**/*`,
+            destination: `../../../packages/${VIEW}.${new Date().toISOString().replace(/[^0-9]/g, '').slice(0, 12) }.${isProduction ? 'production' : NODE_ENV }.zip`
+          }
+        ]},
+        {delete: ['./NYU/']}
+      ] : []),
     ]
   })
 ];
@@ -69,11 +89,6 @@ module.exports = {
           'sass-loader'
         ]
       },
-      // {
-      //   test: /\.css$/,
-      //   use: [
-      //   ]
-      // },
     ],
   },
   plugins
