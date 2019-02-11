@@ -2,11 +2,11 @@ FROM cypress/browsers:chrome69
 
 WORKDIR /app
 
-ADD package.json yarn.lock ./
-
-RUN yarn install --frozen-lockfile
+RUN yarn init -y && yarn add --dev cypress
 
 ADD cypress.json .
 ADD ./cypress/ ./cypress/
+
+RUN yarn cypress verify
 
 CMD yarn cypress run

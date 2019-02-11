@@ -40,7 +40,7 @@ services:
       <<: *x-build
       args: {}
       dockerfile: cypress/Dockerfile
-    command: yarn cypress run --spec 'cypress/integration/sample_spec.spec.js' # --browser chrome
+    command: yarn cypress run # --browser chrome
     depends_on:
       - web
     environment:

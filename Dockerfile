@@ -1,4 +1,4 @@
-FROM primo-explore-devenv:latest
+FROM quay.io/nyulibraries/primo-explore-devenv:latest
 
 ARG CENTRAL_PACKAGE_RELEASE
 
