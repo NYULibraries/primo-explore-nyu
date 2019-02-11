@@ -19,4 +19,4 @@ WORKDIR ${DEVENV_PATH}
 
 EXPOSE 8004 3001
 
-CMD yarn start:dev --host=0.0.0.0
+CMD yarn start --host=0.0.0.0

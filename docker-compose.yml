@@ -2,6 +2,10 @@ x-build: &x-build
   context: .
   args:
     CENTRAL_PACKAGE_RELEASE: https://github.com/NYULibraries/primo-explore-central-package/releases/download/v1.1.0/CENTRAL_PACKAGE.zip
+  cache_from:
+    - primo-explore-nyu
+    - quay.io/nyulibraries/primo-explore-nyu
+    - quay.io/nyulibraries/primo-explore-nyu:$BRANCH_NO_SLASH
 
 x-environment: &x-environment
   PROXY_SERVER: http://bobcatdev.library.nyu.edu:80
