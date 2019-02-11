@@ -6,4 +6,7 @@ ADD package.json yarn.lock ./
 
 RUN yarn install --frozen-lockfile
 
-ADD . .
+ADD cypress.json .
+ADD ./cypress/ ./cypress/
+
+CMD yarn cypress run

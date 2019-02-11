@@ -1,35 +1,22 @@
-FROM primo-explore-devenv-nyu:latest
+FROM primo-explore-devenv:latest
 
-ENV CENTRAL_PACKAGE_REPO https://github.com/NYULibraries/primo-explore-central-package
-ENV DEVENV_PATH /app
-ENV CENTRAL_PACKAGE_PATH /app/primo-explore/custom/CENTRAL_PACKAGE
-ENV INSTALL_PATH /app/primo-explore/custom/NYU
+ARG CENTRAL_PACKAGE_RELEASE
 
-# Install essentials
-RUN apt-get update -qq && apt-get install -y git
+ENV DEVENV_PATH /app/
+ENV CUSTOM_PACKAGE_PATH /app/primo-explore/custom/
+ENV CUSTOM_VIEW_PATH ${CUSTOM_PACKAGE_PATH}/NYU
 
-RUN mkdir -p ${CENTRAL_PACKAGE_PATH} \
-  && git clone ${CENTRAL_PACKAGE_REPO} ${CENTRAL_PACKAGE_PATH} \
-  && cd ${CENTRAL_PACKAGE_PATH} yarn install --frozen-lockfile --prod
-
-# # Install node_modules with yarn
-ADD package.json yarn.lock /tmp/
-RUN cd /tmp \
-  && yarn install --frozen-lockfile --prod
-RUN mkdir -p $INSTALL_PATH \
-  && cd $INSTALL_PATH \
-  && cp -R /tmp/node_modules $INSTALL_PATH \
-  && rm -r /tmp/* && yarn cache clean
-
-WORKDIR ${INSTALL_PATH}
-
-COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile --prod
+WORKDIR ${CUSTOM_VIEW_PATH}
 
 ADD . .
 
+WORKDIR ${CUSTOM_PACKAGE_PATH}
+
+ADD ${CENTRAL_PACKAGE_RELEASE} .
+RUN unzip CENTRAL_PACKAGE.zip && rm CENTRAL_PACKAGE.zip
+
 WORKDIR ${DEVENV_PATH}
 
-EXPOSE 8003 3001
+EXPOSE 8004 3001
 
-CMD [ "/bin/bash", "-c", "yarn start --view=${VIEW}"]
+CMD yarn start:dev --host=0.0.0.0

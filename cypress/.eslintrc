@@ -5,16 +5,22 @@
     "sourceType": "module"
   },
   "rules": {
-    "semi": 2,
+    "semi": [
+      "never", {
+        "beforeStatementContinuationChars": "always"
+      }
+    ],
     "no-unused-vars": [
       "warn"
     ]
   },
   "globals": {
     "angular": false,
-    "cy": true
+    "cy": true,
+    "Cypress": true
   },
   "env": {
-    "mocha": true
+    "mocha": true,
+    "jasmine": true
   }
 }
