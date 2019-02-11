@@ -49,16 +49,16 @@ export default {
         const showEzborrowArr = config.showCustomRequests.ezborrow({ user, item, items, config });
         const showIll = config.values.authorizedStatuses.ill.indexOf(user['bor-status']) > -1;
 
-        const unavailables = config.values.functions.unavailabilityArray({ items, config });
-        return items.map((_e, idx) => !showEzborrowArr[idx] && unavailables[idx] && showIll);
+        const requestables = config.values.functions.requestableArray({ items, config });
+        return items.map((_e, idx) => !showEzborrowArr[idx] && requestables[idx] && showIll);
       },
       ezborrow: ({ item, items, config, user}) => {
         if (!user) return items.map(() => false);
         const isBook = ['BOOK', 'BOOKS'].some(type => item.pnx.addata.ristype.indexOf(type) > -1);
         const showEzborrow = isBook && config.values.authorizedStatuses.ezborrow.indexOf(user['bor-status']) > -1;
 
-        const unavailables = config.values.functions.unavailabilityArray({ items, config });
-        return items.map((_e, idx) => unavailables[idx] && showEzborrow);
+        const requestables = config.values.functions.requestableArray({ items, config });
+        return items.map((_e, idx) => requestables[idx] && showEzborrow);
       },
       login: ({ user, items }) => items.map(() => user === undefined),
       afc: ({ item, items, config, user}) => {
@@ -82,7 +82,7 @@ export default {
       }
 
       // otherwise, hide only unavailable holdings
-      return config.values.functions.unavailabilityArray({ items, config });
+      return config.values.functions.availabilityArray({ items, config }).map(avail => !avail);
     },
     values: {
       baseUrls: {
@@ -115,10 +115,13 @@ export default {
           const circulationStatus = item.itemFields[0];
           return !hasPattern(unavailablePatterns, circulationStatus);
         },
-        unavailabilityArray: ({ items, config }) => {
-          const { checkAreItemsUnique, checkIsAvailable } = config.values.functions;
-
-          const availabilityStatuses = items.map(checkIsAvailable);
+        availabilityArray: ({ items, config }) => {
+          const { checkIsAvailable } = config.values.functions;
+          return items.map(checkIsAvailable);
+        },
+        requestableArray: ({ items, config }) => {
+          const { checkAreItemsUnique, availabilityArray } = config.values.functions;
+          const availabilityStatuses = availabilityArray({ items, config });
           const itemsAreUnique = checkAreItemsUnique(items);
           const allUnavailable = availabilityStatuses.every(status => status === false);
 
