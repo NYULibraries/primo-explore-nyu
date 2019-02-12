@@ -1,0 +1,55 @@
+x-build: &x-build
+  context: .
+  args:
+    CENTRAL_PACKAGE_RELEASE: https://github.com/NYULibraries/primo-explore-central-package/releases/download/v1.1.0/CENTRAL_PACKAGE.zip
+  cache_from:
+    - primo-explore-nyu
+    - quay.io/nyulibraries/primo-explore-nyu
+    - quay.io/nyulibraries/primo-explore-nyu:$BRANCH_NO_SLASH
+
+x-environment: &x-environment
+  PROXY_SERVER: http://bobcatdev.library.nyu.edu:80
+  VIEW: NYU
+  NODE_ENV: ${NODE_ENV-development}
+
+x-defaults: &x-defaults
+  build:
+    <<: *x-build
+  image: primo-explore-nyu
+  environment:
+    <<: *x-environment
+  volumes:
+    - ./:/app/primo-explore/custom/NYU
+
+version: '3.7'
+services:
+  web:
+    <<: *x-defaults
+    ports:
+    - 8004:8004
+    - 3001:3001
+    command: yarn start:dev --host 0.0.0.0
+  create-package:
+    <<: *x-defaults
+    environment:
+      <<: *x-environment
+      NODE_ENV: ${NODE_ENV-staging}
+      PACK: 'true'
+    command: yarn webpack
+    depends_on:
+      - web
+  e2e:
+    image: primo-explore-cypress
+    build:
+      <<: *x-build
+      args: {}
+      dockerfile: cypress/Dockerfile
+    command: yarn cypress run # --browser chrome
+    depends_on:
+      - web
+    environment:
+      <<: *x-environment
+      NODE_ENV: test
+      CYPRESS_BASE_URL: http://web:8004/primo-explore/search
+    volumes:
+      - ./cypress/:/app/cypress

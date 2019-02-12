@@ -1,0 +1,26 @@
+{
+  "extends": "eslint:recommended",
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
+  "rules": {
+    "semi": [
+      "never", {
+        "beforeStatementContinuationChars": "always"
+      }
+    ],
+    "no-unused-vars": [
+      "warn"
+    ]
+  },
+  "globals": {
+    "angular": false,
+    "cy": true,
+    "Cypress": true
+  },
+  "env": {
+    "mocha": true,
+    "jasmine": true
+  }
+}

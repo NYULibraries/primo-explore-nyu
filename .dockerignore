@@ -1,5 +1,6 @@
+node_modules/**/*
 node_modules/
-*.wiki/
-wiki/
+node_modules
+.circleci/
 cypress/videos/
 cypress/_examples/
