@@ -28,14 +28,13 @@ services:
     ports:
     - 8004:8004
     - 3001:3001
-    command: yarn start:dev --host 0.0.0.0
   create-package:
     <<: *x-defaults
     environment:
       <<: *x-environment
       NODE_ENV: ${NODE_ENV-staging}
       PACK: 'true'
-    command: yarn webpack
+    command: yarn build
     depends_on:
       - web
   e2e:
