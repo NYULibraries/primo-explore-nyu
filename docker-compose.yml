@@ -26,10 +26,19 @@ services:
     ports:
     - 8004:8004
     - 3001:3001
-    volumes:
-    - ./:/app/primo-explore/custom/NYU
-    - ../primo-explore-central-package:/app/primo-explore/custom/CENTRAL_PACKAGE
-    - ../primo-explore-central-package/img:/app/primo-explore/custom/NYU/img
+    # volumes:
+    # - ./:/app/primo-explore/custom/NYU
+    # - ../primo-explore-central-package:/app/primo-explore/custom/CENTRAL_PACKAGE
+
+  web-test:
+    <<: *x-defaults
+    environment:
+      <<: *x-environment
+      NODE_ENV: test
+    ports:
+    - 8004:8004
+    - 3001:3001
+
   create-package:
     <<: *x-defaults
     environment:
@@ -52,6 +61,6 @@ services:
     environment:
       <<: *x-environment
       NODE_ENV: test
-      CYPRESS_BASE_URL: http://web:8004/primo-explore/search
+      CYPRESS_BASE_URL: http://web-test:8004/primo-explore/search
     # volumes:
     # - ./cypress/:/app/cypress
