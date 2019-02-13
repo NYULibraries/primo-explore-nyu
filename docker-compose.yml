@@ -55,9 +55,9 @@ services:
       <<: *x-build
       args: {}
       dockerfile: cypress/Dockerfile
-    command: yarn cypress run # --browser chrome
+    # command: cypress run # --browser chrome
     depends_on:
-      - web
+      - web-test
     environment:
       <<: *x-environment
       NODE_ENV: test
