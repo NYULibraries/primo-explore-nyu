@@ -18,8 +18,8 @@ x-defaults: &x-defaults
   image: primo-explore-nyu
   environment:
     <<: *x-environment
-  volumes:
-    - ./:/app/primo-explore/custom/NYU
+  # volumes:
+  #   - ./:/app/primo-explore/custom/NYU
 
 version: '3.7'
 services:
@@ -35,8 +35,8 @@ services:
       NODE_ENV: ${NODE_ENV-staging}
       PACK: 'true'
     command: yarn build
-    volumes:
-      - ./packages/:/app/packages
+    # volumes:
+    #   - ./packages/:/app/packages
   e2e:
     image: primo-explore-cypress
     build:
@@ -50,5 +50,5 @@ services:
       <<: *x-environment
       NODE_ENV: test
       CYPRESS_BASE_URL: http://web:8004/primo-explore/search
-    volumes:
-      - ./cypress/:/app/cypress
+    # volumes:
+    #   - ./cypress/:/app/cypress
