@@ -1,5 +1,5 @@
 describe('The Home Page', function () {
-  beforeEach(() => {
+  before(() => {
     cy.visit('?vid=NYU') // change URL to match your dev URL
   })
 
@@ -7,13 +7,23 @@ describe('The Home Page', function () {
     cy.get('#searchBar')
   })
 
-  it('allows for a basic search', () => {
-    cy.get('#searchBar')
-      .type('monk{enter}')
-    cy.url().should('include', 'monk')
-    cy.get(`[id^='SEARCH_RESULT_RECORDID_']`)
-      .first()
-      .contains('Monk')
+  describe('when searching', () => {
+    before(() => {
+      cy.visit('?vid=NYU')
+    })
+
+    after(() => {
+      cy.visit('?vid=NYU')
+    })
+
+    it('allows for a basic search', () => {
+      cy.get('#searchBar')
+        .type('monk{enter}')
+      cy.url().should('include', 'monk')
+      cy.get(`[id^='SEARCH_RESULT_RECORDID_']`)
+        .first()
+        .contains('Monk')
+    })
   })
 
   describe('Using BobCat', () => {
