@@ -35,8 +35,8 @@ services:
       NODE_ENV: ${NODE_ENV-staging}
       PACK: 'true'
     command: yarn build
-    depends_on:
-      - web
+    volumes:
+      - ./packages/:/app/packages
   e2e:
     image: primo-explore-cypress
     build:

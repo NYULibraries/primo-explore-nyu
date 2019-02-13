@@ -13,8 +13,12 @@ WORKDIR ${CUSTOM_PACKAGE_PATH}
 ADD ${CENTRAL_PACKAGE_RELEASE} .
 RUN unzip CENTRAL_PACKAGE.zip && rm CENTRAL_PACKAGE.zip
 
-# Adds NYU files to image
+# Installs Node modules
 WORKDIR ${CUSTOM_VIEW_PATH}
+ADD yarn.lock package.json ./
+RUN yarn install --prod
+
+# Adds NYU files to image
 ADD . .
 
 ## Sets up for running as a container
