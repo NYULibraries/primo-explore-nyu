@@ -8,7 +8,4 @@ module.exports = {
       },
     ]
   },
-  output: {
-    chunkFilename: 'js/custom.[name].js',
-  }
 };
