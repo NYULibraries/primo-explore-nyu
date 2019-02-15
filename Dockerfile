@@ -1,4 +1,4 @@
-FROM quay.io/nyulibraries/primo-explore-devenv:latest
+FROM quay.io/nyulibraries/primo-explore-devenv:master
 
 # A url or directory refrence to a zipped CENTRAL_PACkAGE
 ARG CENTRAL_PACKAGE_RELEASE
@@ -23,5 +23,10 @@ ADD . .
 
 ## Sets up for running as a container
 WORKDIR ${DEVENV_PATH}
+
 EXPOSE 8004 3001
+
+## Prebuilds assets
+RUN VIEW=${VIEW} yarn build
+
 CMD yarn start
