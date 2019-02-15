@@ -28,7 +28,7 @@ services:
     - 3001:3001
     # volumes:
     # - ./:/app/primo-explore/custom/NYU
-    # - ../primo-explore-central-package:/app/primo-explore/custom/CENTRAL_PACKAGE
+    # - ../path/to/central-package:/app/primo-explore/custom/CENTRAL_PACKAGE
 
   web-test:
     <<: *x-defaults
