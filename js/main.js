@@ -1,11 +1,4 @@
-import '../css/main.scss';
-
-import 'primo-explore-clickable-logo-to-any-link/css/custom1.css';
-import 'primo-explore-libraryh3lp-widget/css/custom1.css';
-import 'primo-explore-getit-to-link-resolver/css/custom1.css';
-import 'primo-explore-nyu-eshelf/css/custom1.css';
-import 'primo-explore-search-bar-sub-menu/css/custom1.css';
-import 'primo-explore-custom-requests/css/custom1.css';
+import * as Sentry from '@sentry/browser';
 
 import '@orbis-cascade/primo-explore-custom-actions';
 import 'primo-explore-custom-library-card-menu';
@@ -93,6 +86,10 @@ app.run(runBlock);
 
 runBlock.$inject = ['gaInjectionService', 'nyuEshelfService'];
 function runBlock(gaInjectionService, nyuEshelfService) {
+  Sentry.init({
+    dsn: 'https://7527da50c7da4590ae8dcd1d6b56ee55@sentry.io/1394419'
+  });
   gaInjectionService.injectGACode();
   nyuEshelfService.initEshelf();
+
 }

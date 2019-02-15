@@ -1,4 +1,4 @@
-FROM quay.io/nyulibraries/primo-explore-devenv:latest
+FROM quay.io/nyulibraries/primo-explore-devenv:master
 
 # A url or directory refrence to a zipped CENTRAL_PACkAGE
 ARG CENTRAL_PACKAGE_RELEASE

@@ -1,7 +1,4 @@
 node_modules/
 *.wiki/
 wiki/
-cypress/videos/
-cypress/_examples/
 dist/
-packages/
