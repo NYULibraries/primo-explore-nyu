@@ -21,16 +21,35 @@ With Docker and docker-compose installed:
 
 On your local machine, the developer server will be accessible at `http://localhost:8004/primo-explore/search?vid={VIEW}`
 
-Within the [docker network](https://docs.docker.com/network/), this will be accordingly be accessible at domian `http://web:8004`
+Within the [docker network](https://docs.docker.com/network/), this will be accordingly be accessible at the address `http://web:8004`
 
-### If developing together with a CENTRAL_PACKAGE
+## Developing in-tandem with CENTRAL_PACKAGE
 
-You can mount your local CENTRAL_PACKAGE directory with compiled assets to the container's
+You can mount your local `central-package` directory with compiled assets to the container's own CENTRAL_PACKAGE
 
 ```yml
 web:
   volumes:
-  - /path/to/CENTRAL_PACKAGE:/primo-explore/custom/CENTRAL_PACKAGE
+  - /path/to/primo-explore-central-package:/primo-explore/custom/CENTRAL_PACKAGE
+```
+
+If you need to actively develop with your local view and central package together, you can perform the following separate containerized processes.
+
+`primo-explore-central-package`:
+Mount local central package rep to volumes
+```yml
+web:
+  volumes:
+  - ./:/primo-explore/custom/CENTRAL_PACKAGE
+```
+then `run` service `web` (without exposing ports) to dynamically recompile JS/CSS.
+```sh
+docker-compose run web
+```
+
+`primo-explore-nyu`:
+```sh
+docker-compose up web
 ```
 
 ## Build a Package (only in Docker)
@@ -42,3 +61,13 @@ NODE_ENV=[stage] docker-compose run create-package
 ```
 
 This will output a package to your `./packages/` directory
+
+## Run Tests
+
+Integration/end-to-end testing has been implemented in cypress. Cypress can run in its own container connected to a running `web-test` service.
+
+Simply execute:
+
+```sh
+docker-compose run e2e
+```
