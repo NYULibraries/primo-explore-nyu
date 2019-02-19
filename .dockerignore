@@ -3,4 +3,5 @@ node_modules/
 node_modules
 .circleci/
 cypress/videos/
+cypress/screenshots/
 cypress/_examples/
