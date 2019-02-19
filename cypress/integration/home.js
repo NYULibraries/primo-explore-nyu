@@ -22,7 +22,10 @@ describe('The Home Page', function () {
       cy.url().should('include', 'monk')
       cy.get(`[id^='SEARCH_RESULT_RECORDID_']`)
         .first()
-        .contains('Monk')
+        .then($el => {
+          // current bug with partial string matches with .should('contain.text', 'Monk')
+          expect($el.text()).to.include('Monk')
+        })
     })
   })
 
