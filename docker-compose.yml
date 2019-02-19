@@ -1,7 +1,7 @@
 x-build: &x-build
   context: .
   args:
-    CENTRAL_PACKAGE_RELEASE: https://github.com/NYULibraries/primo-explore-central-package/releases/download/v1.1.0/CENTRAL_PACKAGE.zip
+    CENTRAL_PACKAGE_RELEASE: https://github.com/NYULibraries/primo-explore-central-package/releases/download/v1.2.0a/CENTRAL_PACKAGE.zip
   cache_from:
     - primo-explore-nyu
     - quay.io/nyulibraries/primo-explore-nyu

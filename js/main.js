@@ -52,7 +52,34 @@ app
     template: customActionsConfig.template
   })
   .component('prmFullViewServiceContainerAfter', {
-    template: '<getit-to-link-resolver-full></getit-to-link-resolver-full>'
+    template: `
+      <getit-to-link-resolver-full></getit-to-link-resolver-full>
+      <div ng-if="$ctrl.isSendTo" layout="row" class="bar alert-bar zero-margin-bottom layout-align-center-center layout-row" layout-align="center center">
+      <span class="bar-text margin-right-small">
+        Don't see E-journals, E-books, or HathiTrust results, etc.? Use the
+        <a href="#getit-full" ng-click="$ctrl.handleAnchor('getit-full', $event)">GetIt (Legacy Feature)</a>
+        link below while we work to add those results to this new feature.
+      </span>
+    </div>
+    `,
+    controller: ['$anchorScroll', function ($anchorScroll) {
+      const ctrl = this;
+      ctrl.$onInit = function () {
+        ctrl.isSendTo = ctrl.prmFullViewServiceContainer.service.title === 'nui.brief.results.tabs.send_to';
+
+        ctrl.handleAnchor = (anchor, $event) => {
+          $event.preventDefault();
+
+          const yOffset = $anchorScroll.yOffset;
+          $anchorScroll.yOffset = 100;
+          $anchorScroll(anchor);
+          $anchorScroll.yOffset = yOffset;
+        };
+      };
+    }],
+    require: {
+      prmFullViewServiceContainer: '^prmFullViewServiceContainer'
+    }
   })
   .component('prmSearchResultAvailabilityLineAfter', {
     template: '<nyu-eshelf></nyu-eshelf>'
@@ -68,7 +95,7 @@ app
   })
   .component('prmLocationItemAfter', {
     template: `<primo-explore-custom-requests layout="row" layout-align="end center" layout-wrap></primo-explore-custom-requests>`,
-    controller: ['$element', function($element) {
+    controller: ['$element', function ($element) {
       const ctrl = this;
       ctrl.$postLink = () => {
         const $target = $element.parent().query('div.md-list-item-text');
@@ -85,6 +112,7 @@ app
 app.run(runBlock);
 
 runBlock.$inject = ['gaInjectionService', 'nyuEshelfService'];
+
 function runBlock(gaInjectionService, nyuEshelfService) {
   Sentry.init({
     dsn: 'https://7527da50c7da4590ae8dcd1d6b56ee55@sentry.io/1394419'

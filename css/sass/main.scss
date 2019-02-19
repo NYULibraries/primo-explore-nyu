@@ -27,3 +27,11 @@
 @import '~primo-explore-nyu-eshelf/css/custom1.css';
 @import '~primo-explore-search-bar-sub-menu/css/custom1.css';
 @import '~primo-explore-custom-requests/css/custom1.css';
+
+.anchor {
+  display: block;
+  height: 50vh;
+  /* 50% viewport height */
+  margin-top: -50vh;
+  visibility: hidden;
+}
