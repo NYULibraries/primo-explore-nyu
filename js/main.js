@@ -58,6 +58,7 @@ app
         layout="row"
         class="bar alert-bar zero-margin-bottom layout-align-center-center layout-row"
         layout-align="center center"
+        style="margin-top:2.5em;"
       >
         <span class="bar-text margin-right-small">
           Don't see E-journals, E-books, or HathiTrust results, etc.? Use the
