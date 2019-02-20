@@ -1504,10 +1504,10 @@ primo-explore-custom-requests@^0.0.13:
   dependencies:
     ng-attr "^0.0.1"
 
-primo-explore-getit-to-link-resolver@^2.0.6:
-  version "2.0.6"
-  resolved "https://registry.yarnpkg.com/primo-explore-getit-to-link-resolver/-/primo-explore-getit-to-link-resolver-2.0.6.tgz#39b59c335f62e10f3c4f5b2e90fd034d56c9e49c"
-  integrity sha512-TXZAVMTx6SsXxYJ+T07NDAgMM1ibZE8SMEe23F8XoU16qNV62rGZ5WDEsrGfCXFds8QvuU8pV3dZDZ/UX2upug==
+primo-explore-getit-to-link-resolver@^2.0.7:
+  version "2.0.7"
+  resolved "https://registry.yarnpkg.com/primo-explore-getit-to-link-resolver/-/primo-explore-getit-to-link-resolver-2.0.7.tgz#3f16a2144a705b64a4ab1f7bb0c17920f095df49"
+  integrity sha512-DoGg3RmhKcbeDJD7UjABU3QZbBd25wpsO756WelW9co8dewy98nfW3ngSFwcvPA+V1zVi8pFPpukrgDctREnOQ==
 
 primo-explore-google-analytics@^1.0.0:
   version "1.0.0"
