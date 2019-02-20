@@ -61,23 +61,26 @@ app
       >
         <span class="bar-text margin-right-small">
           Don't see E-journals, E-books, or HathiTrust results, etc.? Use the
-          <a href="#getit-full" ng-click="$ctrl.handleAnchor('getit-full', $event)">GetIt (Legacy Feature)</a>
+          <a href="#getit-full" ng-click="$ctrl.handleAnchor('getit-full', $event)">
+            GetIt (Legacy Feature)
+            <span class="sr-only">Skip to GetIt Legacy</span>
+          </a>
           link below while we work to add those results to this new feature.
         </span>
       </div>
     `,
-    controller: ['$anchorScroll', function ($anchorScroll) {
+    controller: ['$anchorScroll', '$window', function ($anchorScroll, $window) {
       const ctrl = this;
       ctrl.$onInit = function () {
         ctrl.isSendTo = ctrl.parentCtrl.service.title === 'nui.brief.results.tabs.send_to';
 
-        ctrl.handleAnchor = (anchor, $event) => {
+        ctrl.handleAnchor = (id, $event) => {
           $event.preventDefault();
-
-          const yOffset = $anchorScroll.yOffset;
-          $anchorScroll.yOffset = 100;
-          $anchorScroll(anchor);
-          $anchorScroll.yOffset = yOffset;
+          // sets yOffsetProperty based on jQuery element height, then resets to default value
+          $anchorScroll.yOffset = angular.element($window.document.querySelector(`md-toolbar.default-toolbar`));
+          $anchorScroll(id);
+          // focuses element
+          angular.element($window.document.querySelector(`#${id} a`)).focus();
         };
       };
     }],
@@ -115,7 +118,7 @@ app
     }]
   })
   .component('prmLocationItemsAfter', {
-    template: /* html */`${customRequestsRequestInformationTemplate}`
+    template: `${customRequestsRequestInformationTemplate}`
   });
 
 app.run(runBlock);
