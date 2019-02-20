@@ -52,20 +52,24 @@ app
     template: customActionsConfig.template
   })
   .component('prmFullViewServiceContainerAfter', {
-    template: `
+    template: /*html*/`
       <getit-to-link-resolver-full></getit-to-link-resolver-full>
-      <div ng-if="$ctrl.isSendTo" layout="row" class="bar alert-bar zero-margin-bottom layout-align-center-center layout-row" layout-align="center center">
-      <span class="bar-text margin-right-small">
-        Don't see E-journals, E-books, or HathiTrust results, etc.? Use the
-        <a href="#getit-full" ng-click="$ctrl.handleAnchor('getit-full', $event)">GetIt (Legacy Feature)</a>
-        link below while we work to add those results to this new feature.
-      </span>
-    </div>
+      <div ng-if="$ctrl.isSendTo"
+        layout="row"
+        class="bar alert-bar zero-margin-bottom layout-align-center-center layout-row"
+        layout-align="center center"
+      >
+        <span class="bar-text margin-right-small">
+          Don't see E-journals, E-books, or HathiTrust results, etc.? Use the
+          <a href="#getit-full" ng-click="$ctrl.handleAnchor('getit-full', $event)">GetIt (Legacy Feature)</a>
+          link below while we work to add those results to this new feature.
+        </span>
+      </div>
     `,
     controller: ['$anchorScroll', function ($anchorScroll) {
       const ctrl = this;
       ctrl.$onInit = function () {
-        ctrl.isSendTo = ctrl.prmFullViewServiceContainer.service.title === 'nui.brief.results.tabs.send_to';
+        ctrl.isSendTo = ctrl.parentCtrl.service.title === 'nui.brief.results.tabs.send_to';
 
         ctrl.handleAnchor = (anchor, $event) => {
           $event.preventDefault();
@@ -77,24 +81,29 @@ app
         };
       };
     }],
-    require: {
-      prmFullViewServiceContainer: '^prmFullViewServiceContainer'
+    bindings: {
+      parentCtrl: '<',
     }
   })
   .component('prmSearchResultAvailabilityLineAfter', {
-    template: '<nyu-eshelf></nyu-eshelf>'
+    template: /*html*/`<nyu-eshelf></nyu-eshelf>`
   })
   .component('prmSearchBookmarkFilterAfter', {
-    template: '<nyu-eshelf-toolbar></nyu-eshelf-toolbar>'
+    template: /*html*/ `<nyu-eshelf-toolbar></nyu-eshelf-toolbar>`
   })
   .component('prmSearchBarAfter', {
-    template: '<search-bar-sub-menu></search-bar-sub-menu>'
+    template: /*html*/ `<search-bar-sub-menu></search-bar-sub-menu>`
   })
   .component('prmAuthenticationAfter', {
-    template: `<primo-explore-custom-login></primo-explore-custom-login>`
+    template: /*html*/ `<primo-explore-custom-login></primo-explore-custom-login>`
   })
   .component('prmLocationItemAfter', {
-    template: `<primo-explore-custom-requests layout="row" layout-align="end center" layout-wrap></primo-explore-custom-requests>`,
+    template: /*html*/ `
+      <primo-explore-custom-requests
+        layout="row"
+        layout-align="end center"
+        layout-wrap
+      ></primo-explore-custom-requests>`,
     controller: ['$element', function ($element) {
       const ctrl = this;
       ctrl.$postLink = () => {
@@ -106,7 +115,7 @@ app
     }]
   })
   .component('prmLocationItemsAfter', {
-    template: `${customRequestsRequestInformationTemplate}`
+    template: /* html */`${customRequestsRequestInformationTemplate}`
   });
 
 app.run(runBlock);
