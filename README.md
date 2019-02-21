@@ -1,4 +1,8 @@
 [![Github commits (since latest release)](https://img.shields.io/github/commits-since/NYULibraries/primo-explore-nyu/latest.svg)](https://github.com/NYULibraries/primo-explore-nyu/releases/latest)
+
+[![CircleCI](https://circleci.com/gh/NYULibraries/primo-explore-nyu.svg?style=svg)](https://circleci.com/gh/NYULibraries/primo-explore-nyu)
+[![Docker Repository on Quay](https://quay.io/repository/nyulibraries/primo-explore-nyu/status "Docker Repository on Quay")](https://quay.io/repository/nyulibraries/primo-explore-nyu)
+
 # NYU Primo-explore package
 
 This the NYU Libraries primo-explore view package.
