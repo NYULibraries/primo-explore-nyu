@@ -17,7 +17,9 @@
     "url": "https://github.com/NYULibraries/primo-explore-nyu/issues"
   },
   "homepage": "https://github.com/NYULibraries/primo-explore-nyu#readme",
-  "devDependencies": {},
+  "devDependencies": {
+    "cypress": "^3.1.5"
+  },
   "dependencies": {
     "@orbis-cascade/primo-explore-custom-actions": "^3.1.1",
     "primo-explore-clickable-logo-to-any-link": "^1.1.1",
@@ -28,5 +30,8 @@
     "primo-explore-libraryh3lp-widget": "^1.0.9",
     "primo-explore-nyu-eshelf": "^3.1.7",
     "primo-explore-search-bar-sub-menu": "^1.0.7"
+  },
+  "optionalDependencies": {
+    "eslint": "^5.14.1"
   }
 }
