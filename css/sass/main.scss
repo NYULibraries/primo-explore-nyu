@@ -1,5 +1,27 @@
+@import '../app-colors.css';
 @import 'variables';
 @import 'availability';
 @import 'chat_widget';
 @import 'hide';
 @import 'logo';
+@import 'custom_request';
+
+// Total hack to make the homepage center correctly under the search bar for "large" screens
+// essentially makes MD's lg-10 think it's an lg-20, ugh!
+// Relies on this string of classes being static, which it won't be
+// @media (min-width: 1280px) and (max-width: 1919px) {
+//     .main._md.md-primoExplore-theme.layout-align-center-start.layout-row.flex {
+//         .flex-lg-10, .layout-lg-row > .flex-lg-10, .layout-row > .flex-lg-10 {
+//             -ms-flex: 1 1 20%;
+//             flex: 1 1 20%;
+//             max-width: 20%;
+//             max-height: 100%;
+//             box-sizing: border-box;
+//         }
+//     }
+// }
+
+@import '~primo-explore-clickable-logo-to-any-link/css/custom1.css';
+@import '~primo-explore-libraryh3lp-widget/css/custom1.css';
+@import '~primo-explore-nyu-eshelf/css/custom1.css';
+@import '~primo-explore-search-bar-sub-menu/css/custom1.css';

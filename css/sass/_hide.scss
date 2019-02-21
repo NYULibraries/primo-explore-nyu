@@ -7,11 +7,6 @@ prm-favorites md-tab-item:first-child {
   display: none !important;
 }
 
-// Hide default library card options
-prm-library-card-menu > button {
-  display: none !important;
-}
-
 // Hide browse options from mainmenu
 a.md-button[aria-label="Browse"],
 a.md-button[aria-label="mainmenu.label.Browse"] {
@@ -29,11 +24,5 @@ a.md-button[aria-label="mainmenu.label.Browse"] {
 prm-brief-result-container prm-search-result-availability-line > *:not(:last-child),
 prm-full-view prm-search-result-availability-line > *:not(:last-child),
 prm-full-view prm-search-result-availability-line-after a.check-avail-link {
-  display: none;
-}
-
-// Hide Get It section on full view
-[aria-label="Get It"],
-[id^='getit_link1_'] {
   display: none;
 }
