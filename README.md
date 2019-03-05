@@ -1,3 +1,7 @@
+# primo-explore-nyu has been consolidated into the monorepo [primo-explore-views](https://github.com/NYULibraries/primo-explore-views)
+
+---
+
 [![Github commits (since latest release)](https://img.shields.io/github/commits-since/NYULibraries/primo-explore-nyu/latest.svg)](https://github.com/NYULibraries/primo-explore-nyu/releases/latest)
 
 [![CircleCI](https://circleci.com/gh/NYULibraries/primo-explore-nyu.svg?style=svg)](https://circleci.com/gh/NYULibraries/primo-explore-nyu)
